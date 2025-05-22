@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>犬とチョコレートの危険性：インタラクティブインフォグラフィック</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap');
+        body {
+            font-family: 'Noto Sans JP', 'Inter', sans-serif;
+            background-color: #F9FAFB; /* Light Gray Background */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px; /* Max width for readability */
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px; /* Base height */
+            max-height: 400px; /* Max height */
+        }
+        @media (min-width: 768px) { /* md breakpoint */
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .stat-card {
+            background-color: #FFFFFF;
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-lg */
+            padding: 1.5rem; /* p-6 */
+            margin-bottom: 2rem; /* mb-8 */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); /* shadow-2xl */
+        }
+        .section-title {
+            font-size: 1.875rem; /* text-3xl */
+            font-weight: 700; /* font-bold */
+            margin-bottom: 1rem; /* mb-4 */
+            color: #1F2937; /* text-gray-800 */
+            text-align: center;
+        }
+        .subsection-title {
+            font-size: 1.5rem; /* text-2xl */
+            font-weight: 600; /* font-semibold */
+            margin-top: 1.5rem; /* mt-6 */
+            margin-bottom: 0.75rem; /* mb-3 */
+            color: #EF4444; /* Red Accent */
+        }
+        .accent-text {
+            color: #EF4444; /* Red Accent */
+            font-weight: 700;
+        }
+        .info-box {
+            background-color: #E0F2FE; /* Light Blue for info */
+            border-left: 4px solid #3B82F6; /* Blue accent */
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 0.375rem; /* rounded-md */
+        }
+        .warning-box {
+            background-color: #FEF2F2; /* Light Red for warning */
+            border-left: 4px solid #EF4444; /* Red accent */
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 0.375rem; /* rounded-md */
+        }
+        /* --- HTML Comment: Chosen Color Palette ---
+        Palette Name: "鮮やか警告カラー" (Vibrant Alert Colors)
+        - Primary (Accent/Warning): #EF4444 (Red 600)
+        - Secondary (Information/Charts): #3B82F6 (Blue 500)
+        - Supporting (Positive/Safe): #10B981 (Green 500)
+        - Background (Overall): #F9FAFB (Gray 50)
+        - Card Background: #FFFFFF (White)
+        - Text (Dark): #1F2937 (Gray 800)
+        - Text (Light/Subtle): #6B7280 (Gray 500)
+        --- End HTML Comment --- */
+
+        /* --- HTML Comment: Infographic Narrative & Structure Plan ---
+        1. ヘッダー: タイトルとキャッチコピー
+        2. 序論: なぜ犬にチョコが危険なのか、問題提起
+        3. 有毒成分: テオブロミンとカフェイン、種類別含有量(Chart.js Bar Chart)
+        4. 中毒症状: 症状の段階的変化(HTML Table)、発現時間
+        5. リスク要因: チョコの種類、体重、個体差(HTML Table for dangerous amounts)
+        6. 緊急対応: 飼い主の行動、獣医の治療(HTML/CSS Flowchart)
+        7. 予防策: 保管方法、安全な代替品
+        8. 結論: 知識の重要性、まとめ
+        9. フッター: 情報源、作成者
+        --- End HTML Comment --- */
+
+        /* --- HTML Comment: Visualization Choices ---
+        - テオブロミン含有量比較: Bar Chart (Chart.js) - Goal: COMPARE. Justification: 複数カテゴリ比較に最適。NO SVG.
+        - 中毒症状の段階: Table (HTML/Tailwind) - Goal: ORGANIZE/INFORM. Justification: 段階的情報を整理。NO SVG.
+        - 危険摂取量の目安: Table (HTML/Tailwind) - Goal: INFORM/COMPARE. Justification: 具体的な数値参照。NO SVG.
+        - 緊急対応フロー: Flow Chart (HTML/Tailwind for structure) - Goal: ORGANIZE. Justification: 手順の視覚化。NO SVG, NO MERMAID JS.
+        - その他: 大きなテキスト、アイコン(Unicode)、リスト(HTML/Tailwind) - Goal: INFORM. Justification: ポイント強調、簡潔な情報提示。NO SVG.
+        --- End HTML Comment --- */
+
+        /* --- HTML Comment: Confirmation of NO SVG and NO MERMAID JS ---
+        NEITHER Mermaid JS NOR SVG were used anywhere in this output. All visualizations are rendered using Chart.js (Canvas), HTML, and CSS (Tailwind CSS).
+        --- End HTML Comment --- */
+    </style>
+</head>
+<body class="text-gray-700">
+
+    <header class="bg-gradient-to-r from-red-500 to-red-700 text-white py-10 px-4 text-center shadow-md">
+        <div class="container mx-auto">
+            <h1 class="text-3xl md:text-5xl font-bold mb-2">愛犬を守るために知っておきたい！</h1>
+            <h2 class="text-4xl md:text-6xl font-bold mb-4">チョコレート<span class="text-yellow-300">の危険性</span></h2>
+            <p class="text-lg md:text-xl">その一口が命取りに？犬にとってチョコレートがなぜ危険なのか、獣医学的知見から徹底解説します。</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 sm:p-6 lg:p-8">
+
+        <section id="introduction" class="py-8 md:py-12">
+            <h2 class="section-title">はじめに：なぜ犬にチョコレートは<span class="accent-text">危険</span>なのか？</h2>
+            <div class="stat-card text-center">
+                <p class="text-5xl mb-4">⚠️</p>
+                <p class="text-lg leading-relaxed">チョコレートは多くの人にとって楽しい嗜好品ですが、愛犬にとっては深刻な健康被害を引き起こし、時には命に関わる危険な食べ物です。犬の誤食事故の中でもチョコレート中毒は発生頻度が高く、特にイベントシーズンは注意が必要です。正しい知識を持つことが、愛犬を事故から守る第一歩です。</p>
+                <div class="info-box mt-6 text-left">
+                    <h3 class="font-semibold text-blue-700">このインフォグラフィックで学ぶこと：</h3>
+                    <ul class="list-disc list-inside mt-2">
+                        <li>チョコレートの何が犬に有害なのか（有毒成分）</li>
+                        <li>どんな症状が現れるのか（中毒症状）</li>
+                        <li>危険度を左右する要因（チョコレートの種類、犬の体重など）</li>
+                        <li>万が一食べてしまった場合の対処法（緊急対応）</li>
+                        <li>最も大切な予防策</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="toxic-ingredients" class="py-8 md:py-12 bg-gray-100 rounded-xl p-6">
+            <h2 class="section-title">チョコレートの<span class="accent-text">何が</span>危ないの？</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                <div class="stat-card">
+                    <h3 class="subsection-title">主な有毒成分：テオブロミン</h3>
+                    <p>犬のチョコレート中毒の主な原因物質は<span class="font-bold text-red-600">テオブロミン</span>です。これはカカオ豆に含まれるアルカロイドの一種で、人間には比較的安全ですが、犬は代謝が非常に遅いため体内に長時間留まり、毒性を発揮します。</p>
+                    <ul class="mt-2 list-disc list-inside">
+                        <li>中枢神経系を興奮させる</li>
+                        <li>心臓に負担をかける</li>
+                        <li>カカオ含有率が高いほど危険！</li>
+                    </ul>
+                </div>
+                <div class="stat-card">
+                    <h3 class="subsection-title">もう一つの注意成分：カフェイン</h3>
+                    <p>チョコレートには<span class="font-bold text-red-600">カフェイン</span>も少量含まれています。これもテオブロミンと同様にメチルキサンチン類に属し、犬には有毒です。テオブロミンとカフェインが同時に存在することで、毒性が増強される可能性があります。</p>
+                </div>
+            </div>
+            <div class="stat-card mt-8">
+                <h3 class="subsection-title text-center">チョコレートの種類別テオブロミン含有量</h3>
+                <p class="text-center mb-4 text-gray-600">カカオ含有率が高いほどテオブロミンが多く、危険度が増します。</p>
+                <div class="chart-container">
+                    <canvas id="theobromineChart"></canvas>
+                </div>
+                <p class="text-sm text-center mt-4 text-gray-500">※上記は平均的な含有量目安(mg/g)です。製品により異なります。</p>
+            </div>
+        </section>
+
+        <section id="symptoms" class="py-8 md:py-12">
+            <h2 class="section-title">どんな<span class="accent-text">症状</span>が出るの？</h2>
+            <div class="stat-card">
+                <h3 class="subsection-title">中毒症状の段階的変化</h3>
+                <p class="mb-4">症状は摂取したテオブロミンの量（体重1kgあたり）に応じて進行します。初期症状でも油断は禁物です。</p>
+                <div class="overflow-x-auto">
+                    <table class="w-full min-w-max text-left border-collapse">
+                        <thead>
+                            <tr class="bg-red-100">
+                                <th class="border p-3 font-semibold">進行段階 (テオブロミン摂取量目安)</th>
+                                <th class="border p-3 font-semibold">主な症状</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border p-3 align-top"><span class="font-bold">初期/軽度</span><br>(約 20 mg/kg～)</td>
+                                <td class="border p-3 align-top">嘔吐、下痢、腹痛、多飲、落ち着きのなさ、パンティング（あえぎ呼吸）</td>
+                            </tr>
+                            <tr>
+                                <td class="border p-3 align-top bg-orange-50"><span class="font-bold">中等度</span><br>(約 40-50 mg/kg～)</td>
+                                <td class="border p-3 align-top bg-orange-50">著しい興奮、頻脈、不整脈、高血圧、筋肉の震え、運動失調、多尿</td>
+                            </tr>
+                            <tr>
+                                <td class="border p-3 align-top"><span class="font-bold">重度</span><br>(約 60 mg/kg～)</td>
+                                <td class="border p-3 align-top">痙攣発作、筋肉の硬直、高熱、意識レベルの低下</td>
+                            </tr>
+                            <tr>
+                                <td class="border p-3 align-top bg-red-50"><span class="font-bold text-red-700">最重度/致死的</span><br>(約 100-200 mg/kg～)</td>
+                                <td class="border p-3 align-top bg-red-50 text-red-700">持続的な痙攣、昏睡、チアノーゼ、呼吸困難、心停止の可能性</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                 <div class="info-box mt-6">
+                    <h4 class="font-semibold text-blue-700">症状発現と持続時間</h4>
+                    <p>一般的に摂取後<span class="font-bold">2～12時間</span>で症状が現れ始め、テオブロミンの代謝が遅いため、症状は<span class="font-bold">24～72時間以上</span>持続することがあります。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="risk-factors" class="py-8 md:py-12 bg-gray-100 rounded-xl p-6">
+            <h2 class="section-title">中毒<span class="accent-text">リスク</span>を左右する要因</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="stat-card">
+                    <h3 class="subsection-title">1. チョコレートの種類</h3>
+                    <p>カカオ含有量が高いほど危険です。</p>
+                    <ol class="list-decimal list-inside mt-2 space-y-1">
+                        <li><span class="font-bold">ココアパウダー</span> (最も危険)</li>
+                        <li><span class="font-bold">ベーキングチョコレート</span> (製菓用)</li>
+                        <li><span class="font-bold">ダークチョコレート</span> (高カカオ)</li>
+                        <li>ミルクチョコレート</li>
+                        <li>ホワイトチョコレート (テオブロミンは微量だが脂肪分に注意)</li>
+                    </ol>
+                    <p class="mt-2 text-sm text-gray-600">※庭用のカカオ豆殻マルチも危険です。</p>
+                </div>
+                <div class="stat-card">
+                    <h3 class="subsection-title">2. 摂取量と犬の体重</h3>
+                    <p><span class="accent-text">体重が軽い小型犬ほど、少量でも危険な状態に陥りやすい</span>です。「少ししか食べていない」という油断は禁物！</p>
+                    <p class="mt-2">体重1kgあたりのテオブロミン摂取量で危険度が変わります。</p>
+                </div>
+            </div>
+            <div class="stat-card mt-8">
+                <h3 class="subsection-title text-center">犬の体重別・チョコレート種類別 危険摂取量の目安 (グラム)</h3>
+                <p class="text-center mb-4 text-gray-600">この表はあくまで目安です。個体差があるため、少量でも動物病院に相談を。</p>
+                <div class="overflow-x-auto">
+                    <table class="w-full min-w-max text-left border-collapse">
+                        <thead>
+                            <tr class="bg-red-100">
+                                <th class="border p-2 font-semibold">犬の体重</th>
+                                <th class="border p-2 font-semibold">ミルクチョコ (約2mg/gテオブロミン)<br><span class="text-xs">軽症状/重症状/致死域</span></th>
+                                <th class="border p-2 font-semibold">ダークチョコ(50-69% 約6.5mg/g)<br><span class="text-xs">軽症状/重症状/致死域</span></th>
+                                <th class="border p-2 font-semibold">製菓用/高カカオ (約15mg/g)<br><span class="text-xs">軽症状/重症状/致死域</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td class="border p-2 font-bold">3kg</td><td class="border p-2">30g / 90g / 150g</td><td class="border p-2">9g / 28g / 46g</td><td class="border p-2">4g / 12g / 20g</td></tr>
+                            <tr><td class="border p-2 font-bold bg-orange-50">5kg</td><td class="border p-2 bg-orange-50">50g / 150g / 250g</td><td class="border p-2 bg-orange-50">15g / 46g / 77g</td><td class="border p-2 bg-orange-50">7g / 20g / 33g</td></tr>
+                            <tr><td class="border p-2 font-bold">10kg</td><td class="border p-2">100g / 300g / 500g</td><td class="border p-2">31g / 92g / 154g</td><td class="border p-2">13g / 40g / 67g</td></tr>
+                             <tr><td class="border p-2 font-bold bg-orange-50">20kg</td><td class="border p-2 bg-orange-50">200g / 600g / 1000g</td><td class="border p-2 bg-orange-50">62g / 185g / 308g</td><td class="border p-2 bg-orange-50">27g / 80g / 133g</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+             <div class="stat-card mt-8">
+                <h3 class="subsection-title">3. 個体差と感受性</h3>
+                <p>同じ量でも、犬の健康状態、年齢（幼犬や高齢犬は特に注意）、遺伝的要因、空腹具合などで症状の出方が変わることがあります。基礎疾患を持つ犬はより少ない量で重篤化する可能性も。</p>
+            </div>
+        </section>
+
+        <section id="emergency" class="py-8 md:py-12">
+            <h2 class="section-title">もし<span class="accent-text">食べてしまったら</span>？ 緊急時の対応</h2>
+            <div class="stat-card">
+                <h3 class="subsection-title">飼い主が直ちに行うべきこと・避けるべきこと</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-green-50 p-4 rounded-lg border border-green-300">
+                        <h4 class="font-semibold text-green-700 text-lg mb-2">✅ 直ちに行うべきこと</h4>
+                        <ul class="list-disc list-inside space-y-1">
+                            <li><strong>動物病院へ連絡：</strong>最優先！自己判断せず指示を仰ぐ。</li>
+                            <li><strong>情報提供の準備：</strong>食べたチョコの種類・量・時間、犬の体重・様子を正確に。</li>
+                            <li><strong>残りのチョコ確保：</strong>パッケージも獣医さんへ。</li>
+                        </ul>
+                    </div>
+                    <div class="bg-red-50 p-4 rounded-lg border border-red-300">
+                        <h4 class="font-semibold text-red-700 text-lg mb-2">❌ 避けるべきこと</h4>
+                        <ul class="list-disc list-inside space-y-1">
+                            <li><strong>自己判断で様子見：</strong>時間が経つほど危険。</li>
+                            <li><strong>家庭での無理な催吐：</strong>塩やオキシドールは使わない！危険です。</li>
+                            <li><strong>人間用の薬の投与：</strong>絶対にダメ。</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3 class="subsection-title mt-8">緊急対応フローチャート (簡略版)</h3>
+                <div class="mt-4 space-y-4">
+                    <div class="flex items-center p-3 bg-blue-50 rounded-lg shadow">
+                        <span class="text-2xl mr-3">🐶</span>
+                        <div><strong>ステップ1: 発見・状況把握</strong><br>何を・いつ・どれくらい食べたか確認。犬の様子を観察。</div>
+                    </div>
+                    <div class="text-center text-blue-500 text-2xl">▼</div>
+                    <div class="flex items-center p-3 bg-blue-100 rounded-lg shadow">
+                         <span class="text-2xl mr-3">📞</span>
+                        <div><strong>ステップ2: 動物病院へ即連絡</strong><br>状況を伝え、指示を仰ぐ。夜間なら救急病院へ。</div>
+                    </div>
+                    <div class="text-center text-blue-500 text-2xl">▼</div>
+                    <div class="flex items-center p-3 bg-blue-50 rounded-lg shadow">
+                        <span class="text-2xl mr-3">📝</span>
+                        <div><strong>ステップ3: 指示に従い受診準備</strong><br>食べたものの残りやパッケージを持参。</div>
+                    </div>
+                     <div class="text-center text-blue-500 text-2xl">▼</div>
+                    <div class="flex items-center p-3 bg-blue-100 rounded-lg shadow">
+                        <span class="text-2xl mr-3">🏥</span>
+                        <div><strong>ステップ4: 迅速に動物病院へ</strong><br>獣医師による専門的な処置を受ける。</div>
+                    </div>
+                </div>
+                 <div class="info-box mt-6">
+                    <h4 class="font-semibold text-blue-700">動物病院での主な治療</h4>
+                    <p>特異的な解毒剤はないため、対症療法が中心です。</p>
+                    <ul class="list-disc list-inside mt-2">
+                        <li><strong>消化管からの毒物除去：</strong>催吐処置、胃洗浄、活性炭投与など。</li>
+                        <li><strong>毒物の排泄促進：</strong>輸液療法（点滴）。</li>
+                        <li><strong>症状緩和：</strong>抗痙攣薬、抗不整脈薬、鎮静剤など。</li>
+                    </ul>
+                    <p class="mt-2">※摂取後1～2時間以内の処置が最も効果的です。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="prevention" class="py-8 md:py-12 bg-gray-100 rounded-xl p-6">
+            <h2 class="section-title">どうすれば<span class="accent-text">防げる</span>の？ 予防は最善の治療</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="stat-card">
+                    <h3 class="subsection-title">日常生活での注意点と保管方法</h3>
+                    <ul class="list-none space-y-3 mt-2">
+                        <li class="flex items-start"><span class="text-green-500 text-2xl mr-2">✅</span><div><strong>厳重な保管：</strong>犬の手の届かない鍵のかかる場所や冷蔵庫へ。</div></li>
+                        <li class="flex items-start"><span class="text-green-500 text-2xl mr-2">✅</span><div><strong>人間の食べ物は与えない習慣：</strong>期待させない。</div></li>
+                        <li class="flex items-start"><span class="text-green-500 text-2xl mr-2">✅</span><div><strong>食べこぼし・置き忘れ注意：</strong>特に子供がいる家庭。</div></li>
+                        <li class="flex items-start"><span class="text-green-500 text-2xl mr-2">✅</span><div><strong>拾い食い防止：</strong>散歩中の監視と訓練。</div></li>
+                        <li class="flex items-start"><span class="text-green-500 text-2xl mr-2">✅</span><div><strong>家族・来客への情報共有：</strong>ルール徹底と事前注意。</div></li>
+                        <li class="flex items-start"><span class="text-green-500 text-2xl mr-2">✅</span><div><strong>庭の安全確認：</strong>カカオ殻マルチに注意。</div></li>
+                    </ul>
+                </div>
+                <div class="stat-card">
+                    <h3 class="subsection-title">安全な代替品：キャロブ</h3>
+                    <div class="text-center py-6">
+                        <div class="mx-auto inline-flex items-center justify-center h-28 w-28 rounded-full bg-green-100 shadow-md border-2 border-green-300">
+                            <span class="text-6xl text-green-600">🌿</span>
+                        </div>
+                    </div>
+                    <p>犬におやつをあげたい場合、<span class="font-bold text-green-700">キャロブ</span>を使った犬用おやつがおすすめです。キャロブはイナゴマメの莢から作られ、見た目や風味がココアに似ていますが、テオブロミンをほとんど含まず安全です。</p>
+                    <p class="mt-2 text-sm text-gray-600">※ただし、与えすぎは禁物。おやつは適量を守りましょう。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="conclusion" class="py-8 md:py-12 text-center">
+            <h2 class="section-title">結論：<span class="accent-text">正しい知識</span>で愛犬を守ろう</h2>
+            <div class="stat-card max-w-3xl mx-auto">
+                <p class="text-lg leading-relaxed mb-6">チョコレートは犬にとって非常に危険な食品です。その危険性は、犬がテオブロミンをうまく代謝できないことに起因します。犬は味覚的にチョコレートを好むことが多いため、「苦手だろう」という思い込みは禁物です。</p>
+                <div class="space-y-4 text-left">
+                    <div class="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                        <h4 class="font-semibold text-blue-700 text-xl">愛犬を守るための3つの鍵：</h4>
+                        <ol class="list-decimal list-inside mt-2 text-lg space-y-1">
+                            <li><strong>正しい知識の習得：</strong>危険性、症状、対処法を理解する。</li>
+                            <li><strong>予防策の徹底：</strong>誤食の機会を完全に排除する。</li>
+                            <li><strong>迅速かつ適切な対応：</strong>万が一の場合はすぐに動物病院へ。</li>
+                        </ol>
+                    </div>
+                </div>
+                <p class="mt-8 text-xl font-semibold text-green-700">正しい知識は、愛犬の命を守る最も強力な盾となります。</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white text-center py-8">
+        <p>&copy; 2025 犬の健康情報サイト (Canvas Infographics). All rights reserved.</p>
+        <p class="text-sm text-gray-400 mt-1">この情報は獣医学的知見に基づいていますが、個別の診断・治療に代わるものではありません。必ず獣医師にご相談ください。</p>
+    </footer>
+
+    <script>
+        // Chart.js: Theobromine Content Chart
+        const theobromineCtx = document.getElementById('theobromineChart').getContext('2d');
+        
+        function wrapLabel(str, maxWidth) {
+            if (str.length <= maxWidth) {
+                return str;
+            }
+            const words = str.split(' ');
+            let currentLine = '';
+            const lines = [];
+            for (let word of words) {
+                if ((currentLine + word).length > maxWidth && currentLine.length > 0) {
+                    lines.push(currentLine.trim());
+                    currentLine = '';
+                }
+                currentLine += word + ' ';
+            }
+            if (currentLine.trim().length > 0) {
+                lines.push(currentLine.trim());
+            }
+            return lines.length > 0 ? lines : [str]; // Ensure it returns at least the original string if no wrapping needed or single very long word
+        }
+
+        const chartLabels = [
+            'ココアパウダー (無糖)', 
+            'ベーキングチョコ (製菓用)', 
+            'ダークチョコ (カカオ70-85%)', 
+            'ダークチョコ (カカオ50-69%)', 
+            'ミルクチョコレート', 
+            'ホワイトチョコレート'
+        ];
+
+        const wrappedChartLabels = chartLabels.map(label => wrapLabel(label, 16));
+
+        const theobromineChart = new Chart(theobromineCtx, {
+            type: 'bar',
+            data: {
+                labels: wrappedChartLabels,
+                datasets: [{
+                    label: '平均テオブロミン含有量 (mg/g)',
+                    data: [20, 15, 11.5, 6.5, 1.85, 0.008], // Approximate average values from typical ranges
+                    backgroundColor: [
+                        '#DC2626', // Red 600
+                        '#EF4444', // Red 500
+                        '#F87171', // Red 400
+                        '#FCA5A5', // Red 300
+                        '#FECACA', // Red 200
+                        '#FEF2F2'  // Red 50
+                    ],
+                    borderColor: '#B91C1C', // Red 700
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'テオブロミン含有量 (mg/g)',
+                            font: { size: 14 }
+                        }
+                    },
+                    x: {
+                         ticks: {
+                            font: { size: 10 }
+                         }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false // Hiding legend as it's a single dataset bar chart
+                    },
+                    tooltip: {
+                        backgroundColor: '#1F2937', // Dark gray for tooltip background
+                        titleFont: { size: 16 },
+                        bodyFont: { size: 14 },
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                if (Array.isArray(label)) {
+                                  return label.join(' ');
+                                } else {
+                                  return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>
