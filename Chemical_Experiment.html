@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI動画生成向け化学実験ネタ（思考実験）</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans JP', 'Inter', sans-serif;
+            background-color: #111827; /* より濃い背景色 */
+            color: #d1d5db; /* やや明るいテキスト色 */
+        }
+        .card {
+            background-color: #1f2937; /* カードの背景色 */
+            border: 1px solid #374151; /* カードの境界線 */
+            border-radius: 0.75rem; /* 12px */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            overflow: hidden; /* Ensure child elements don't overflow rounded corners */
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.3), 0 10px 10px -5px rgba(79, 70, 229, 0.2); /* 強めのホバーシャドウ */
+        }
+        .card-title {
+            font-size: 1.375rem; /* 22px */
+            font-weight: 700;
+            color: #60a5fa; /* タイトルのアクセントカラー (明るい青) */
+        }
+        .card-subtitle {
+            font-size: 1rem; /* 16px */
+            font-weight: 600;
+            color: #9ca3af; /* サブタイトルの色 (やや明るいグレー) */
+            margin-top: 0.75rem; /* 12px */
+            margin-bottom: 0.25rem; /* 4px */
+            border-left: 3px solid #60a5fa;
+            padding-left: 0.5rem;
+        }
+        .highlight-tag {
+            background-color: #374151; /* タグの背景色 */
+            color: #9ca3af; /* タグのテキスト色 */
+            padding: 0.375rem 0.875rem; /* 少し大きめのパディング */
+            border-radius: 9999px; /* ピル形状 */
+            font-size: 0.8125rem; /* 13px */
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            display: inline-block;
+            font-weight: 500;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .highlight-tag:hover {
+            background-color: #60a5fa;
+            color: #111827;
+        }
+        .main-title {
+            font-size: 2.75rem; /* 44px */
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1.5rem; /* 24px */
+            background: linear-gradient(to right, #60a5fa, #3b82f6); /* 青系のグラデーション */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            padding-top: 1rem;
+        }
+        .intro-text {
+            font-size: 1.125rem; /* 18px */
+            text-align: center;
+            margin-bottom: 3.5rem; /* 56px */
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            color: #9ca3af; /* イントロテキストの色 */
+            line-height: 1.8;
+        }
+        .icon-container { /* Changed from icon-placeholder */
+            width: 72px; /* Slightly smaller */
+            height: 72px;
+            background-color: #374151; /* アイコン背景 */
+            border-radius: 0.5rem; /* Rounded square */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.25rem; /* 中央揃えと下のマージン */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+        .icon-container img {
+            width: 48px; /* Icon image size */
+            height: 48px;
+        }
+        .card-content p {
+            font-size: 0.9375rem; /* 15px */
+            line-height: 1.7;
+            color: #d1d5db; /* 本文テキストの色 */
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto p-4 md:p-8">
+        <header>
+            <h1 class="main-title">AI動画生成向け化学実験ネタ</h1>
+            <p class="intro-text">
+                AIによる動画生成向けの、あっと目を引く大胆な化学実験の思考実験ネタです！<br class="hidden md:inline">
+                リアルな実験の制約がないので、ファンタジーやSFの要素も取り入れて、視覚的にインパクトのあるアイデアを提案します。
+            </p>
+        </header>
+
+        <main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            <article class="card p-6 flex flex-col">
+                <div class="icon-container">
+                    <img src="https://placehold.co/64x64/374151/60A5FA?text=🪐&font=noto-sans-jp" alt="惑星アイコン" class="rounded">
+                </div>
+                <h2 class="card-title mb-3 text-center">惑星規模の炎色反応ショー</h2>
+                <div class="card-content flex-grow">
+                    <h3 class="card-subtitle">アイデア</h3>
+                    <p class="mb-4">
+                        地球全体、あるいは特定の惑星（例：火星）を巨大な試験管に見立て、その大気組成や地表物質を変化させることで、惑星全体が様々な色の炎に包まれる様子を再現します。例えば、リチウムを大量に含む隕石群が突入し、惑星全体が深紅の炎に包まれる、あるいはナトリウム蒸気で覆われた惑星が黄金色に輝くなど。宇宙空間からその変化を眺める映像は圧巻です。
+                    </p>
+                    <h3 class="card-subtitle">見どころ</h3>
+                    <div class="mt-2 flex flex-wrap">
+                        <span class="highlight-tag">壮大なスケール</span>
+                        <span class="highlight-tag">カラフルな惑星</span>
+                        <span class="highlight-tag">宇宙の美</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card p-6 flex flex-col">
+                <div class="icon-container">
+                    <img src="https://placehold.co/64x64/374151/60A5FA?text=💎&font=noto-sans-jp" alt="クリスタルアイコン" class="rounded">
+                </div>
+                <h2 class="card-title mb-3 text-center">自己修復するクリスタル都市</h2>
+                <div class="card-content flex-grow">
+                    <h3 class="card-subtitle">アイデア</h3>
+                    <p class="mb-4">
+                        破壊されても、周囲の元素を取り込みながら化学反応によって自己修復し、元の美しい結晶構造の都市へと再生する様子を描きます。結晶成長の過程をミクロからマクロまでシームレスに見せ、ナノマシンが修復作業を行うような描写も加えるとSF感が増します。
+                    </p>
+                    <h3 class="card-subtitle">見どころ</h3>
+                    <div class="mt-2 flex flex-wrap">
+                        <span class="highlight-tag">破壊と再生</span>
+                        <span class="highlight-tag">結晶構造美</span>
+                        <span class="highlight-tag">未来技術</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card p-6 flex flex-col">
+                <div class="icon-container">
+                    <img src="https://placehold.co/64x64/374151/60A5FA?text=🎶&font=noto-sans-jp" alt="音符アイコン" class="rounded">
+                </div>
+                <h2 class="card-title mb-3 text-center">元素擬人化オーケストラ</h2>
+                <div class="card-content flex-grow">
+                    <h3 class="card-subtitle">アイデア</h3>
+                    <p class="mb-4">
+                        周期表の各元素が個性的なキャラクターとなり、化学的特性を音楽とダンスで表現。元素同士が出会うと、化学反応をモチーフにしたペアダンスや群舞が始まり、新しい化合物（楽曲）が生まれる様子を描きます。
+                    </p>
+                    <h3 class="card-subtitle">見どころ</h3>
+                    <div class="mt-2 flex flex-wrap">
+                        <span class="highlight-tag">魅力的なキャラ</span>
+                        <span class="highlight-tag">化学反応の可視化</span>
+                        <span class="highlight-tag">音楽とダンス</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card p-6 flex flex-col">
+                <div class="icon-container">
+                    <img src="https://placehold.co/64x64/374151/60A5FA?text=⏳&font=noto-sans-jp" alt="砂時計アイコン" class="rounded">
+                </div>
+                <h2 class="card-title mb-3 text-center">時間逆行ケミカルガーデン</h2>
+                <div class="card-content flex-grow">
+                    <h3 class="card-subtitle">アイデア</h3>
+                    <p class="mb-4">
+                        「ケミカルガーデン」が逆に収縮し、元の金属塩とケイ酸ナトリウムに分離していく様子を逆再生のように見せます。さらに時間を遡り、それらが鉱石や原料物質に戻っていく様子まで描きます。エントロピーの減少という非現実的な現象を視覚化します。
+                    </p>
+                    <h3 class="card-subtitle">見どころ</h3>
+                    <div class="mt-2 flex flex-wrap">
+                        <span class="highlight-tag">時間逆行</span>
+                        <span class="highlight-tag">不思議な成長</span>
+                        <span class="highlight-tag">結晶変化</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card p-6 flex flex-col">
+                <div class="icon-container">
+                    <img src="https://placehold.co/64x64/374151/60A5FA?text=🌌&font=noto-sans-jp" alt="オーロラアイコン" class="rounded">
+                </div>
+                <h2 class="card-title mb-3 text-center">感情に呼応するオーロラ反応</h2>
+                <div class="card-content flex-grow">
+                    <h3 class="card-subtitle">アイデア</h3>
+                    <p class="mb-4">
+                        特定の化学物質（架空）が、人間の集合的な感情を感知し、それに応じて空に巨大なオーロラのような光のカーテンを発生させます。感情の起伏によってオーロラの色や形、動きがダイナミックに変化し、時には雷や光の柱のような現象も伴います。
+                    </p>
+                    <h3 class="card-subtitle">見どころ</h3>
+                    <div class="mt-2 flex flex-wrap">
+                        <span class="highlight-tag">感情と化学</span>
+                        <span class="highlight-tag">幻想的オーロラ</span>
+                        <span class="highlight-tag">壮大なスケール</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card p-6 flex flex-col">
+                <div class="icon-container">
+                    <img src="https://placehold.co/64x64/374151/60A5FA?text=⚫&font=noto-sans-jp" alt="ブラックホールアイコン" class="rounded">
+                </div>
+                <h2 class="card-title mb-3 text-center">ブラックホール触媒による新元素創造</h2>
+                <div class="card-content flex-grow">
+                    <h3 class="card-subtitle">アイデア</h3>
+                    <p class="mb-4">
+                        ブラックホールの超重力と高エネルギー環境を巨大な触媒とし、既知の元素同士を衝突・融合させて、周期表には存在しない全く新しい超重元素や、未知の特性を持つ物質を創造するプロセスを描きます。
+                    </p>
+                    <h3 class="card-subtitle">見どころ</h3>
+                    <div class="mt-2 flex flex-wrap">
+                        <span class="highlight-tag">宇宙の神秘</span>
+                        <span class="highlight-tag">ブラックホール</span>
+                        <span class="highlight-tag">新元素創造</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card p-6 flex flex-col">
+                <div class="icon-container">
+                    <img src="https://placehold.co/64x64/374151/60A5FA?text=🧬&font=noto-sans-jp" alt="DNAアイコン" class="rounded">
+                </div>
+                <h2 class="card-title mb-3 text-center">DNA折り紙アートの自己形成</h2>
+                <div class="card-content flex-grow">
+                    <h3 class="card-subtitle">アイデア</h3>
+                    <p class="mb-4">
+                        DNAの塩基配列情報をプログラムとして利用し、DNA分子が自律的に折りたたまれ、超複雑で美しい三次元構造のアート作品や、機能を持つナノマシンを形成していく様子を分子レベルで詳細に描写します。
+                    </p>
+                    <h3 class="card-subtitle">見どころ</h3>
+                    <div class="mt-2 flex flex-wrap">
+                        <span class="highlight-tag">ミクロの精密さ</span>
+                        <span class="highlight-tag">生命の設計図</span>
+                        <span class="highlight-tag">自己組織化</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card p-6 flex flex-col">
+                <div class="icon-container">
+                    <img src="https://placehold.co/64x64/374151/60A5FA?text=💧&font=noto-sans-jp" alt="液体アイコン" class="rounded">
+                </div>
+                <h2 class="card-title mb-3 text-center">液体の記憶と再現</h2>
+                <div class="card-content flex-grow">
+                    <h3 class="card-subtitle">アイデア</h3>
+                    <p class="mb-4">
+                        特殊な液体（架空のコロイド溶液など）が、過去に溶解していた物質の形状や、経験した物理的刺激を記憶し、特定のトリガーによってその記憶を三次元的な光のホログラムや、液体の揺らぎとして再現する様子を描きます。
+                    </p>
+                    <h3 class="card-subtitle">見どころ</h3>
+                    <div class="mt-2 flex flex-wrap">
+                        <span class="highlight-tag">液体の記憶</span>
+                        <span class="highlight-tag">美しいホログラム</span>
+                        <span class="highlight-tag">過去の再現</span>
+                    </div>
+                </div>
+            </article>
+
+        </main>
+        <footer class="text-center text-gray-500 mt-12 pb-8">
+            <p>&copy; 2024 AI化学実験アイデア集</p>
+        </footer>
+    </div>
+    <script>
+        // Optional: Add any JavaScript interactions here if needed in the future.
+        // For example, to handle image loading errors for the icons:
+        document.querySelectorAll('.icon-container img').forEach(img => {
+            img.onerror = function() {
+                // Fallback if image fails to load (e.g., display text or a default icon)
+                this.alt = 'アイコン読込失敗';
+                // Example: this.src = 'path/to/default-icon.svg';
+                // Or, replace with text:
+                const parent = this.parentNode;
+                const textNode = document.createElement('span');
+                textNode.textContent = this.alt.substring(0,1); // Use first char of alt text
+                textNode.style.fontSize = '2rem';
+                textNode.style.color = '#60a5fa';
+                parent.replaceChild(textNode, this);
+            };
+        });
+    </script>
+</body>
+</html>
