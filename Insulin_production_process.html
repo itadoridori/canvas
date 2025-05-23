@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>インスリン生成の驚くべき旅 - SPAインフォグラフィック</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .process-step {
+            border: 2px solid #0079C1; /* primary-default */
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background-color: #F0F9FF; /* Lighter blue for background */
+        }
+        .process-arrow {
+            font-size: 2rem;
+            color: #00509D; /* primary-dark */
+            text-align: center;
+            margin: 0.5rem 0;
+        }
+        .molecule {
+            display: inline-block;
+            padding: 0.3rem 0.6rem;
+            border-radius: 0.3rem;
+            font-weight: bold;
+            margin: 0.2rem;
+        }
+        .preproinsulin { background-color: #7AD7F0; color: #00509D; } /* accent-lighter, primary-dark text */
+        .signal-peptide { background-color: #FFABAB; color: #D32F2F; } /* Light red, dark red text */
+        .proinsulin { background-color: #40BCD8; color: #00509D; } /* accent-light, primary-dark text */
+        .c-peptide { background-color: #A0E7E5; color: #0079C1; } /* Another light blue/teal, primary-default text */
+        .insulin-a-chain { background-color: #82E0AA; color: #1E8449; } /* Light green, dark green text */
+        .insulin-b-chain { background-color: #AED6F1; color: #2E86C1; } /* Light blue, darker blue text */
+        .mature-insulin { background-color: #00A7E1; color: white; } /* primary-light */
+
+        /* Chosen Palette: Brilliant Blues (#00509D, #0079C1, #00A7E1, #40BCD8, #7AD7F0) */
+        /* Mermaid JS was NOT used. SVG graphics were NOT used. */
+        /*
+            Infographic Plan:
+            Title: インスリン生成の驚くべき旅 (The Amazing Journey of Insulin Production)
+            Introduction: Briefly explain what insulin is and its importance.
+            Section 1: 設計図：プレプロインスリンの合成 (RER, mRNA, ribosomes)
+            Section 2: 最初の変革：プロインスリンへの変換とフォールディング (Signal peptide cleavage, C-peptide's role, disulfide bonds)
+            Section 3: 加工工場：ゴルジ体 (Transport and packaging)
+            Section 4: 最終仕上げ：分泌顆粒内の成熟インスリン (C-peptide cleavage, mature insulin, storage)
+            Section 5: 放出：血流へ (Stimulus, exocytosis, equimolar release)
+            Section 6: Cペプチドの重要性 (Clinical significance)
+            Conclusion: Summarize the importance of this process.
+
+            Visualization Choices:
+            - Overall Process Flow: HTML/CSS diagram using Tailwind. Goal: Organize. Justification: Visualizes sequence. Method: HTML/CSS. NO SVG.
+            - Preproinsulin (110 Amino Acids): Single Big Number. Goal: Inform. Justification: Highlights key stat. Method: HTML text. NO SVG.
+            - RER/Ribosome: HTML/CSS Diagram. Goal: Organize. Justification: Shows location. Method: HTML/CSS. NO SVG.
+            - Proinsulin Folding: HTML/CSS Diagram. Goal: Organize/Change. Justification: Shows transformation. Method: HTML/CSS. NO SVG.
+            - Golgi Transport: HTML/CSS Diagram. Goal: Organize/Change. Justification: Shows movement. Method: HTML/CSS. NO SVG.
+            - Mature Insulin Storage: Donut Chart (Chart.js). Goal: Compare. Justification: Shows proportion. Library: Chart.js (Canvas). NO SVG.
+            - Insulin/C-peptide Release: Bar Chart (Chart.js). Goal: Compare. Justification: Compares amounts. Library: Chart.js (Canvas). NO SVG.
+            - C-Peptide Significance: Text + Unicode Icon. Goal: Inform. Justification: Concise info. Method: HTML text. NO SVG.
+        */
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <header class="bg-[#00509D] text-white p-8 text-center">
+        <h1 class="text-4xl font-bold mb-2">インスリン生成の驚くべき旅</h1>
+        <p class="text-lg">生命を支えるホルモンが細胞内でどのように作られるのか、その詳細なプロセスを紐解きます。</p>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <section id="intro" class="bg-white rounded-lg shadow-xl p-6 mb-12">
+            <h2 class="text-3xl font-semibold text-[#0079C1] mb-4">はじめに：インスリンとは？</h2>
+            <p class="text-lg mb-3">インスリンは、私たちの体が血糖値を調節するために不可欠なホルモンです。主に食事によって血糖値が上昇した際に、膵臓のβ細胞から分泌され、血液中のブドウ糖を細胞に取り込ませることで血糖値を下げます。</p>
+            <p class="text-lg">このインフォグラフィックでは、インスリンが複雑なステップを経て細胞内でどのように精密に「製造」されるのか、その驚くべき分子レベルの物語を追っていきます。</p>
+        </section>
+
+        <div class="grid grid-cols-1 md:grid-cols-1 gap-8">
+
+            <section id="synthesis" class="bg-white rounded-lg shadow-xl p-6">
+                <h2 class="text-3xl font-semibold text-[#0079C1] mb-6 border-b-2 border-[#00A7E1] pb-2">ステップ1：設計図と最初の組み立て - プレプロインスリンの合成</h2>
+                <p class="text-lg mb-4">インスリン製造の最初のステップは、膵臓β細胞内の「粗面小胞体（RER）」と呼ばれる場所で行われます。ここで、遺伝情報（mRNA）に基づいて、アミノ酸が長く連結された「プレプロインスリン」という前駆体が作られます。</p>
+                
+                <div class="text-center my-8">
+                    <div class="text-6xl font-bold text-[#00509D]">110</div>
+                    <p class="text-xl text-gray-700 mt-2">アミノ酸からなる初期型</p>
+                </div>
+
+                <div class="process-step">
+                    <h3 class="text-xl font-semibold text-[#00509D] mb-2">粗面小胞体（RER）での作業</h3>
+                    <p class="mb-2">細胞核から運ばれたmRNA（設計図）がリボソーム（組立機械）に結合します。</p>
+                    <div class="flex flex-col items-center md:flex-row md:justify-around bg-[#7AD7F0] p-4 rounded-md">
+                        <div class="text-center mb-4 md:mb-0">
+                            <span class="text-5xl">🧬</span>
+                            <p class="font-semibold text-[#00509D]">mRNA (設計図)</p>
+                        </div>
+                        <div class="text-4xl text-[#00509D] mx-4 hidden md:block">&rarr;</div>
+                        <div class="text-4xl text-[#00509D] my-2 md:hidden">&darr;</div>
+                        <div class="text-center mb-4 md:mb-0">
+                             <span class="text-5xl">⚙️</span>
+                            <p class="font-semibold text-[#00509D]">リボソーム (組立)</p>
+                        </div>
+                        <div class="text-4xl text-[#00509D] mx-4 hidden md:block">&rarr;</div>
+                         <div class="text-4xl text-[#00509D] my-2 md:hidden">&darr;</div>
+                        <div class="text-center">
+                            <div class="molecule preproinsulin">プレプロインスリン</div>
+                            <p class="font-semibold text-[#00509D]">初期前駆体</p>
+                        </div>
+                    </div>
+                    <p class="mt-3">このプレプロインスリンは、RERの内部に取り込まれます。</p>
+                </div>
+                <p class="mt-4 text-md text-gray-600">この段階では、インスリンはまだ未完成で、活性もありません。ここから数段階の加工が始まります。</p>
+            </section>
+
+            <div class="process-arrow">&darr;</div>
+
+            <section id="folding" class="bg-white rounded-lg shadow-xl p-6">
+                <h2 class="text-3xl font-semibold text-[#0079C1] mb-6 border-b-2 border-[#00A7E1] pb-2">ステップ2：最初の変革 - プロインスリンへの変換と正しい形へ</h2>
+                <p class="text-lg mb-4">RER内で、プレプロインスリンは最初の大きな変化を遂げます。まず、分子の先頭部分にある「シグナルペプチド」と呼ばれる不要な部分が切り離されます。これにより「プロインスリン」が生成されます。</p>
+                
+                <div class="process-step">
+                    <h3 class="text-xl font-semibold text-[#00509D] mb-2">シグナルペプチドの切断</h3>
+                    <div class="flex items-center justify-center p-3 bg-[#7AD7F0] rounded">
+                        <div class="molecule preproinsulin"><span class="molecule signal-peptide">シグナル</span>プレプロインスリン</div>
+                        <div class="text-3xl text-[#00509D] mx-3">&rarr;</div>
+                        <div class="molecule proinsulin">プロインスリン</div>
+                        <div class="text-xl text-[#00509D] mx-2">+</div>
+                        <div class="molecule signal-peptide">除去されたシグナル</div>
+                    </div>
+                    <p class="mt-3">シグナルペプチドは、プレプロインスリンをRER内へ導く役割を果たした後、不要となるため除去されます。</p>
+                </div>
+
+                <p class="text-lg my-4">次に、プロインスリンは正しい立体構造に折り畳まれます（フォールディング）。この過程で、後の成熟インスリンのA鎖とB鎖を繋ぐ「ジスルフィド結合」が形成されます。この正しい折り畳みには、プロインスリン自身の一部である「Cペプチド」が重要な足場としての役割を果たします。</p>
+                <div class="process-step">
+                    <h3 class="text-xl font-semibold text-[#00509D] mb-2">フォールディングとジスルフィド結合形成</h3>
+                    <div class="text-center p-3 bg-[#40BCD8] rounded text-white">
+                        <p class="mb-2">Cペプチドの助けを借りて...</p>
+                        <div class="molecule proinsulin">プロインスリン (直線状)</div>
+                        <div class="text-3xl my-1">&darr; フォールディング &darr;</div>
+                        <div class="font-mono border-2 border-dashed border-[#00509D] p-2 rounded inline-block bg-white text-[#00509D]">
+                           A鎖---S-S---B鎖<br>
+                           |<span class="text-[#0079C1] font-bold"> Cペプチド </span>|<br>
+                           S<span style="margin-left:2.5em"></span>S<br>
+                           |<span style="margin-left:2.5em"></span>|<br>
+                           A鎖内部結合
+                        </div>
+                        <p class="mt-2">ジスルフィド結合 (S-S) が形成され、分子が安定化します。</p>
+                    </div>
+                </div>
+                 <p class="mt-4 text-md text-gray-600">Cペプチドは、A鎖とB鎖が正しい位置で結合するのを助けるガイド役のようなものです。</p>
+            </section>
+
+            <div class="process-arrow">&darr;</div>
+
+            <section id="golgi" class="bg-white rounded-lg shadow-xl p-6">
+                <h2 class="text-3xl font-semibold text-[#0079C1] mb-6 border-b-2 border-[#00A7E1] pb-2">ステップ3：加工と仕分けの拠点 - ゴルジ体への輸送</h2>
+                <p class="text-lg mb-4">正しく折り畳まれたプロインスリンは、次に「ゴルジ体」と呼ばれる細胞内小器官に輸送されます。ゴルジ体は、タンパク質のさらなる修飾、仕分け、そして最終目的地への発送準備を行う「加工工場兼配送センター」のような役割を担います。</p>
+                <div class="process-step">
+                    <h3 class="text-xl font-semibold text-[#00509D] mb-2">ゴルジ体でのプロセス</h3>
+                    <div class="flex flex-col items-center md:flex-row md:justify-around bg-[#7AD7F0] p-4 rounded-md">
+                        <div class="text-center mb-4 md:mb-0">
+                            <div class="molecule proinsulin">プロインスリン</div>
+                            <p class="font-semibold text-[#00509D]">RERから</p>
+                        </div>
+                        <div class="text-4xl text-[#00509D] mx-4 hidden md:block">&rarr;</div>
+                        <div class="text-4xl text-[#00509D] my-2 md:hidden">&darr;</div>
+                        <div class="text-center mb-4 md:mb-0">
+                             <span class="text-5xl">🏭</span>
+                            <p class="font-semibold text-[#00509D]">ゴルジ体 (加工・仕分け)</p>
+                        </div>
+                        <div class="text-4xl text-[#00509D] mx-4 hidden md:block">&rarr;</div>
+                        <div class="text-4xl text-[#00509D] my-2 md:hidden">&darr;</div>
+                        <div class="text-center">
+                            <span class="text-5xl">📦</span>
+                            <p class="font-semibold text-[#00509D]">分泌顆粒へ</p>
+                        </div>
+                    </div>
+                    <p class="mt-3">プロインスリンはゴルジ体で処理された後、「分泌顆粒」と呼ばれる小さな袋に詰め込まれます。この分泌顆粒が、インスリンの貯蔵場所となります。</p>
+                </div>
+            </section>
+
+            <div class="process-arrow">&darr;</div>
+
+            <section id="maturation" class="bg-white rounded-lg shadow-xl p-6">
+                <h2 class="text-3xl font-semibold text-[#0079C1] mb-6 border-b-2 border-[#00A7E1] pb-2">ステップ4：最終仕上げと貯蔵 - 成熟インスリンの完成</h2>
+                <p class="text-lg mb-4">分泌顆粒の中で、プロインスリンは最終的な加工を受けます。特定の酵素（プロプロテイン変換酵素やカルボキシペプチダーゼE）の働きによって、Cペプチドがプロインスリンから切り離されます。</p>
+                
+                <div class="process-step">
+                    <h3 class="text-xl font-semibold text-[#00509D] mb-2">Cペプチドの切断</h3>
+                     <div class="flex items-center justify-center p-3 bg-[#40BCD8] rounded text-white">
+                        <div class="molecule proinsulin">プロインスリン (A-C-B)</div>
+                        <div class="text-3xl text-white mx-3">+ 酵素 <span class="text-2xl">✂️</span> &rarr;</div>
+                        <div class="molecule mature-insulin">成熟インスリン (A-B)</div>
+                        <div class="text-xl text-white mx-2">+</div>
+                        <div class="molecule c-peptide">Cペプチド</div>
+                    </div>
+                    <p class="mt-3">この切断により、ジスルフィド結合でA鎖とB鎖が繋がった「成熟インスリン」と、遊離した「Cペプチド」が生成されます。これらは等しいモル量（同じ分子数）で分泌顆粒内に貯蔵されます。</p>
+                </div>
+
+                <div class="mt-8">
+                    <h3 class="text-2xl font-semibold text-[#00509D] mb-3 text-center">分泌顆粒内の貯蔵比率</h3>
+                    <div class="chart-container h-[300px] md:h-[350px]">
+                        <canvas id="storageRatioChart"></canvas>
+                    </div>
+                    <p class="text-center mt-3 text-gray-700">成熟インスリンとCペプチドは1:1の割合で貯蔵されます。</p>
+                </div>
+            </section>
+
+            <div class="process-arrow">&darr;</div>
+
+            <section id="release" class="bg-white rounded-lg shadow-xl p-6">
+                <h2 class="text-3xl font-semibold text-[#0079C1] mb-6 border-b-2 border-[#00A7E1] pb-2">ステップ5：出動！ - 血流への放出</h2>
+                <p class="text-lg mb-4">血糖値の上昇など、体からの特定のシグナルに応じて、β細胞は貯蔵していたインスリンとCペプチドを血流中に放出します。これは「エキソサイトーシス」と呼ばれるプロセスで、分泌顆粒が細胞膜と融合し、内容物を細胞外に放出する現象です。</p>
+                
+                <div class="process-step">
+                    <h3 class="text-xl font-semibold text-[#00509D] mb-2">刺激に応じた放出（エキソサイトーシス）</h3>
+                    <div class="flex flex-col items-center p-3 bg-[#7AD7F0] rounded-md">
+                        <p class="mb-2 font-semibold text-[#00509D]">血糖値上昇などのシグナル <span class="text-2xl">🔔</span></p>
+                        <div class="text-3xl my-1 text-[#00509D]">&darr;</div>
+                        <p class="mb-2 font-semibold text-[#00509D]">分泌顆粒が細胞膜へ移動・融合</p>
+                        <div class="w-full max-w-md bg-white p-4 rounded shadow-inner my-2">
+                            <div class="text-center text-sm">細胞内部</div>
+                            <div class="h-16 border-2 border-dashed border-[#0079C1] rounded-full flex items-center justify-center relative mb-1">
+                                <span class="molecule mature-insulin text-xs">インスリン</span>
+                                <span class="molecule c-peptide text-xs">Cペプチド</span>
+                                <div class="absolute -bottom-3 text-xs font-semibold text-[#0079C1]">分泌顆粒</div>
+                            </div>
+                            <div class="h-1 bg-[#00A7E1] w-full my-1"></div>
+                             <div class="text-center text-xs font-semibold text-[#00A7E1]">細胞膜</div>
+                            <div class="h-1 bg-[#00A7E1] w-full my-1"></div>
+                             <div class="text-3xl my-1 text-[#00509D] text-center">&darr; 放出 &darr;</div>
+                            <div class="text-center text-sm">細胞外部（血流へ）</div>
+                        </div>
+                        <p class="mt-2 font-semibold text-[#00509D]">インスリンとCペプチドが血中へ！</p>
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <h3 class="text-2xl font-semibold text-[#00509D] mb-3 text-center">血中への放出量</h3>
+                     <div class="chart-container h-[300px] md:h-[350px]">
+                        <canvas id="releaseRatioChart"></canvas>
+                    </div>
+                    <p class="text-center mt-3 text-gray-700">インスリンとCペプチドは等モル量で血中に放出されます。</p>
+                </div>
+            </section>
+            
+            <div class="process-arrow">&darr;</div>
+
+            <section id="cpeptide_significance" class="bg-white rounded-lg shadow-xl p-6">
+                <h2 class="text-3xl font-semibold text-[#0079C1] mb-6 border-b-2 border-[#00A7E1] pb-2">補足：Cペプチドの重要性 <span class="text-2xl">🔬</span></h2>
+                <p class="text-lg mb-3">Cペプチドは、単にインスリン生成の副産物というだけではありません。インスリンとは異なり、肝臓でほとんど代謝されずに血流を循環するため、その血中濃度を測定することで、体がどれだけ自身のインスリンを生産しているか（内因性インスリン分泌能）を評価する重要な臨床的指標となります。</p>
+                <p class="text-lg">糖尿病の診断や治療方針の決定において、Cペプチドの測定は非常に有用な情報を提供します。</p>
+                <div class="mt-4 p-4 bg-[#E0F2FE] border-l-4 border-[#0079C1] text-[#00509D]">
+                    <p class="font-semibold">ポイント：Cペプチド濃度は、体内で作られるインスリンの量を反映します。</p>
+                </div>
+            </section>
+        </div>
+
+        <section id="conclusion" class="bg-[#00509D] text-white rounded-lg shadow-xl p-8 mt-12 text-center">
+            <h2 class="text-3xl font-bold mb-4">結論：精密な生命のオーケストラ</h2>
+            <p class="text-lg mb-3">インスリンの生成は、細胞内で繰り広げられる精密かつ複雑な多段階プロセスです。プレプロインスリンの合成から成熟インスリンの放出に至るまで、各ステップは厳密に制御され、連携しています。</p>
+            <p class="text-lg">この巧妙な「分子の製造ライン」は、私たちの血糖値を適切に維持し、健康を支えるために不可欠な役割を果たしています。このインフォグラフィックが、生命の驚異的な仕組みの一端を理解する助けとなれば幸いです。</p>
+        </section>
+    </main>
+
+    <footer class="text-center p-6 mt-8 bg-gray-200 text-gray-600">
+        <p>&copy; <span id="year"></span> インスリン生成プロセス・インフォグラフィック. All rights reserved.</p>
+        <p class="text-sm">この情報は教育目的であり、医学的アドバイスに代わるものではありません。</p>
+    </footer>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        const commonChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        font: {
+                            size: 14,
+                            family: "'Inter', sans-serif"
+                        },
+                        color: '#374151' // gray-700
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            const item = tooltipItems[0];
+                            let label = item.chart.data.labels[item.dataIndex];
+                            if (Array.isArray(label)) {
+                              return label.join(' ');
+                            } else {
+                              return label;
+                            }
+                        }
+                    },
+                    bodyFont: {
+                        family: "'Inter', sans-serif",
+                        size: 12
+                    },
+                    titleFont: {
+                        family: "'Inter', sans-serif",
+                        size: 14
+                    }
+                }
+            }
+        };
+
+        // Storage Ratio Chart (Donut)
+        const storageCtx = document.getElementById('storageRatioChart').getContext('2d');
+        new Chart(storageCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['成熟インスリン', 'Cペプチド'],
+                datasets: [{
+                    label: '貯蔵比率',
+                    data: [50, 50],
+                    backgroundColor: [
+                        '#00A7E1', // primary-light for Insulin
+                        '#40BCD8'  // accent-light for C-peptide
+                    ],
+                    borderColor: [
+                        '#0079C1',
+                        '#00A7E1'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                ...commonChartOptions,
+                cutout: '60%',
+            }
+        });
+
+        // Release Ratio Chart (Bar)
+        const releaseCtx = document.getElementById('releaseRatioChart').getContext('2d');
+        new Chart(releaseCtx, {
+            type: 'bar',
+            data: {
+                labels: ['インスリン放出量', 'Cペプチド放出量'],
+                datasets: [{
+                    label: '相対的放出量 (等モル)',
+                    data: [100, 100], // Equal arbitrary units
+                    backgroundColor: [
+                        '#00A7E1', // primary-light
+                        '#40BCD8'  // accent-light
+                    ],
+                    borderColor: [
+                        '#0079C1',
+                        '#00A7E1'
+                    ],
+                    borderWidth: 1,
+                    barPercentage: 0.6,
+                    categoryPercentage: 0.7
+                }]
+            },
+            options: {
+                ...commonChartOptions,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: '相対量',
+                            font: { size: 14, family: "'Inter', sans-serif" },
+                            color: '#374151'
+                        },
+                        ticks: {
+                           font: { family: "'Inter', sans-serif" },
+                           color: '#4B5563' // gray-600
+                        }
+                    },
+                    x: {
+                       ticks: {
+                           font: { size: 12, family: "'Inter', sans-serif" },
+                           color: '#4B5563' // gray-600
+                        }
+                    }
+                },
+                plugins: {
+                    ...commonChartOptions.plugins,
+                    legend: {
+                        display: false // Typically not needed for a bar chart with one dataset comparing categories
+                    }
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>
