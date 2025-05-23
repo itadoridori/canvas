@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日本の糖尿病とその合併症：最新データで見る現状</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f8ff; /* AliceBlue */
+            color: #012a4a; /* 濃紺 */
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(to right, #023e8a, #0077b6, #48cae4);
+            color: #ffffff;
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.2em;
+            margin: 0;
+            font-weight: 700;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        h2, h3 {
+            font-family: 'Poppins', sans-serif;
+            color: #ffffff; /* テキスト色は白 */
+            background: linear-gradient(to right, #0077b6, #48cae4);
+            padding: 15px 25px;
+            border-radius: 10px;
+            margin-top: 40px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            font-weight: 600;
+        }
+        
+        h2 {
+            font-size: 1.8em;
+        }
+
+        h3 {
+            font-size: 1.5em;
+            background: linear-gradient(to right, #023e8a, #0077b6); /* 少し濃いめのグラデーション */
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12), 0 18px 40px rgba(0,0,0,0.1);
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .icon-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .icon-list li {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            font-size: 1.05em;
+        }
+
+        .icon-list .icon-background {
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(to bottom right, #0077b6, #48cae4);
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            font-size: 1.2em;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .icon-list li strong {
+            color: #023e8a;
+        }
+
+        .emphasis-box {
+            background-color: #ffc107; /* 鮮やかな黄色 */
+            color: #333; /* 暗めの文字色で見やすく */
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            font-weight: bold;
+        }
+        
+        .emphasis-box p {
+            margin: 0;
+            font-size: 1.1em;
+        }
+        
+        .emphasis-box .icon-background {
+             background: #ffffff;
+             color: #ffc107;
+        }
+
+        strong, .marker {
+            font-weight: 700;
+            color: #00509d; /* 少し濃い青 */
+        }
+        
+        .marker {
+            background: linear-gradient(transparent 60%, #a9d6e5 60%); /* 水色系マーカー */
+        }
+
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        thead th {
+            background-color: #0077b6; /* オーシャンブルー系 */
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f8f9fa; /* ゼブラストライピング */
+        }
+
+        tbody tr:hover {
+            background-color: #e0f2f7; /* ホバー時の背景色 */
+            transition: background-color 0.2s ease;
+        }
+        
+        .small-text {
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+            h2 {
+                font-size: 1.5em;
+            }
+            h3 {
+                font-size: 1.3em;
+            }
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+            .icon-list li {
+                font-size: 1em;
+            }
+            .icon-list .icon-background {
+                width: 35px;
+                height: 35px;
+                font-size: 1em;
+            }
+            /* 表のレスポンシブ対応: 横スクロール */
+            .table-responsive {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch; /* iOSでの慣性スクロール */
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>ニッポンの健康課題：糖尿病とその合併症、いま知っておきたいこと</h1>
+    </header>
+
+    <div class="container">
+        <section id="patient-numbers">
+            <h2><i class="fas fa-users"></i> 糖尿病の患者さん、どれくらいいるの？～最新状況～</h2>
+            <div class="card">
+                <ul class="icon-list">
+                    <li>
+                        <span class="icon-background"><i class="fas fa-chart-line"></i></span>
+                        <div><strong class="marker">「糖尿病が強く疑われる者」</strong>は、2019年に<strong class="marker">約1,150万人</strong>に。2012年の約950万人、2016年の約1,000万人から増加傾向でした。</div>
+                    </li>
+                    <li>
+                        <span class="icon-background"><i class="fas fa-male"></i></span>
+                        <div>2023年の国民健康・栄養調査では、<strong class="marker">「糖尿病が強く疑われる者」の割合は男性16.8％</strong>。</div>
+                    </li>
+                    <li>
+                        <span class="icon-background"><i class="fas fa-female"></i></span>
+                        <div>同じく2023年調査で、<strong class="marker">女性は8.9％</strong>。2022年（男性18.1％、女性9.1％）と近い水準です。</div>
+                    </li>
+                     <li>
+                        <span class="icon-background"><i class="fas fa-notes-medical"></i></span>
+                        <div>医療機関で治療を受けている患者さんの数（厚生労働省「患者調査」）は、2017年に328.9万人と過去最多。ただし、<strong class="marker">2020年は集計方法で数値が異なり注意が必要</strong>です（230.3万人 or 552.2万～578.9万人）。</div>
+                    </li>
+                    <li>
+                        <span class="icon-background"><i class="fas fa-user-clock"></i></span>
+                        <div>実は、診断されても<strong class="marker">治療を受けていない人が全体の4分の3もいるかも</strong>しれない、という指摘も。</div>
+                    </li>
+                    <li>
+                        <span class="icon-background"><i class="fas fa-birthday-cake"></i></span>
+                        <div><strong class="marker">年齢が上がるほど要注意！</strong> 特に70歳以上では、2019年に男性26.4％、女性19.6％、2022年70歳代で男性27.0％、女性15.8％と高い割合です。</div>
+                    </li>
+                </ul>
+                <p class="small-text">ポイント：全体の増加ペースは少し落ち着いてきたものの、高齢化で患者さんの総数は依然として多い状況です。</p>
+            </div>
+        </section>
+
+        <section id="complications">
+            <h2><i class="fas fa-exclamation-triangle"></i> 忍び寄る影…糖尿病の合併症について知ろう</h2>
+            <div class="card">
+                 <p><i class="fas fa- stethoscope"></i> 特定の2型糖尿病患者さんの調査（2017-2020年）では、なんと<strong>60.1％</strong>の方が<strong class="marker">少なくとも1つの合併症</strong>を抱えていました。日本の糖尿病患者さんの半数以上が、何らかの合併症と共に生活している可能性があります。</p>
+            </div>
+
+            <div class="grid-container">
+                <div class="card">
+                    <h3><i class="fas fa-hand-paper"></i> 糖尿病性神経障害</h3>
+                    <ul class="icon-list">
+                        <li>
+                            <span class="icon-background"><i class="fas fa-sort-amount-up-alt"></i></span>
+                            <div>最も<strong class="marker">頻度が高い</strong>合併症の一つ。手足のしびれ、痛み、感覚が鈍くなる、胃腸の不調などが起こります。</div>
+                        </li>
+                        <li>
+                            <span class="icon-background"><i class="fas fa-percentage"></i></span>
+                            <div>有病率は<strong class="marker">20％台後半～30％台</strong>との報告が多いです (JDDMデータ: 27.7%、2型糖尿病患者調査: 32.4%)。</div>
+                        </li>
+                         <li>
+                            <span class="icon-background"><i class="fas fa-user-secret"></i></span>
+                            <div><strong class="marker">初期は自覚症状がない</strong>ことも多く、気づかないうちに進行しているケースも。</div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fas fa-eye"></i> 糖尿病網膜症</h3>
+                    <ul class="icon-list">
+                        <li>
+                            <span class="icon-background"><i class="fas fa-eye-slash"></i></span>
+                            <div>目の奥の血管が傷つき、進行すると<strong class="marker">視力低下や失明</strong>の恐れも。定期的な眼底検査がとても大切！</div>
+                        </li>
+                        <li>
+                            <span class="icon-background"><i class="fas fa-users"></i></span>
+                            <div>2005年時点で国内の患者数は約300万人、年間約3,000人が失明していると報告されています。</div>
+                        </li>
+                        <li>
+                            <span class="icon-background"><i class="fas fa-chart-pie"></i></span>
+                            <div>2型糖尿病患者さんの調査（2017-2020年）では有病率<strong class="marker">51.0％</strong>、JDDMデータでは<strong class="marker">26.4％</strong>と報告されています。</div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fas fa-kidneys"></i> 糖尿病性腎症</h3>
+                    <ul class="icon-list">
+                        <li>
+                            <span class="icon-background"><i class="fas fa-procedures"></i></span>
+                            <div>腎臓の機能がだんだん悪くなり、最終的には<strong class="marker">人工透析が必要になる</strong>ことも。</div>
+                        </li>
+                        <li>
+                            <span class="icon-background"><i class="fas fa-hands-helping"></i></span>
+                            <div>今、日本で<strong class="marker">新たに透析を始める方の最大の原因</strong>がこの病気です。</div>
+                        </li>
+                        <li>
+                            <span class="icon-background"><i class="fas fa-hospital-user"></i></span>
+                            <div>2022年には、新規透析患者さんのうち<strong class="marker">39.5％（約15,675人）</strong>が糖尿病性腎症が原因でした。</div>
+                        </li>
+                         <li>
+                            <span class="icon-background"><i class="fas fa-bed"></i></span>
+                            <div>2022年末の慢性透析患者さん全体でも<strong class="marker">39.5％（約137,252人）</strong>が糖尿病性腎症によるものです。</div>
+                        </li>
+                        <li>
+                            <span class="icon-background"><i class="fas fa-file-medical-alt"></i></span>
+                            <div>有病率は調査により幅があり、JDDM10で<strong class="marker">42％</strong>（アルブミン尿あり）、2017-2020年調査では<strong class="marker">54.8％</strong>と高い報告もあります。</div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fas fa-shoe-prints"></i> 糖尿病性足病変</h3>
+                    <ul class="icon-list">
+                        <li>
+                            <span class="icon-background"><i class="fas fa-band-aid"></i></span>
+                            <div>足の神経や血流が悪くなり、<strong class="marker">潰瘍や壊疽（えそ）</strong>ができてしまうことも。重症化すると足を切断することも…。</div>
+                        </li>
+                        <li>
+                            <span class="icon-background"><i class="fas fa-walking"></i></span>
+                            <div>ある推計では約6万人が足壊疽を抱え、年間約3万人が下肢切断に至るとも。ただ、福岡県の大規模調査では欧米より低い発症率（0.3%）や切断率（0.05%）ですが、それでも<strong class="marker">年間数千人規模で発生</strong>しています。</div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fas fa-brain"></i> 脳梗塞</h3>
+                    <ul class="icon-list">
+                        <li>
+                            <span class="icon-background"><i class="fas fa-bolt"></i></span>
+                            <div>糖尿病の方は、そうでない方に比べて<strong class="marker">脳梗塞のリスクが約2～3倍高い</strong>と言われています。動脈硬化が進みやすいためです。</div>
+                        </li>
+                        <li>
+                            <span class="icon-background"><i class="fas fa-ambulance"></i></span>
+                            <div>脳血管疾患と心血管疾患を合わせた年間発症率は、糖尿病患者さん1,000人あたり17.2人との報告があります。</div>
+                        </li>
+                         <li>
+                            <span class="icon-background"><i class="far fa-question-circle"></i></span>
+                            <div>2023年の患者調査で脳梗塞の総患者数は131.2万人ですが、このうち糖尿病を合併しているかは不明です。</div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fas fa-heartbeat"></i> 虚血性心疾患（狭心症・心筋梗塞）</h3>
+                    <ul class="icon-list">
+                        <li>
+                            <span class="icon-background"><i class="fas fa-heart-broken"></i></span>
+                            <div>心臓の血管が詰まったり狭くなったりする病気。こちらも<strong class="marker">リスクが約2～3倍高く</strong>、動脈硬化が原因です。</div>
+                        </li>
+                        <li>
+                            <span class="icon-background"><i class="fas fa-user-md"></i></span>
+                            <div>糖尿病の方は、心筋梗塞の典型的な胸の痛みを感じにくい「無痛性心筋梗塞」を起こすこともあり、発見が遅れるリスクがあります。</div>
+                        </li>
+                        <li>
+                            <span class="icon-background"><i class="far fa-question-circle"></i></span>
+                            <div>2023年の患者調査では狭心症97.8万人、急性心筋梗塞7.5万人などと報告されていますが、糖尿病合併の有無は不明です。</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <section id="summary">
+            <h2><i class="fas fa-flag-checkered"></i> まとめ：日本の糖尿病、これからの課題は？</h2>
+            <div class="emphasis-box">
+                <p><span class="icon-background"><i class="fas fa-info-circle"></i></span> 日本の糖尿病は、<strong class="marker">「糖尿病が強く疑われる人」の増加ペースは少しゆるやかになった</strong>ものの、<strong class="marker">高齢化の影響で患者さんの総数は依然として多い</strong>状況です。</p>
+                <p style="margin-top:10px;"><span class="icon-background"><i class="fas fa-exclamation-circle"></i></span> そして、多くの方が神経障害、網膜症、腎症、足病変、さらには脳梗塞や虚血性心疾患といった、生活に大きく関わる<strong class="marker">合併症を抱えている</strong>のが現状です。</p>
+                <p style="margin-top:10px;"><span class="icon-background"><i class="fas fa-hospital"></i></span> 特に<strong class="marker">糖尿病性腎症は、新たに透析治療を始める方の最大の原因</strong>となっており、医療への負担も非常に大きいことが改めて浮き彫りになっています。</p>
+            </div>
+        </section>
+
+        <section id="data-table-example">
+            <h2><i class="fas fa-table"></i> 参考データ：糖尿病が強く疑われる者の割合（年齢階級別）</h2>
+            <div class="card">
+                <p>これはサンプルデータですが、このように情報を表でまとめることもできます。</p>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>年齢階級</th>
+                                <th>男性 (2019年)</th>
+                                <th>女性 (2019年)</th>
+                                <th>男性 (2022年, 70代)</th>
+                                <th>女性 (2022年, 70代)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>40-49歳</td>
+                                <td>データ例: 8.5%</td>
+                                <td>データ例: 3.2%</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td>50-59歳</td>
+                                <td>データ例: 15.0%</td>
+                                <td>データ例: 6.5%</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td>60-69歳</td>
+                                <td>データ例: 22.1%</td>
+                                <td>データ例: 13.4%</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td>70歳以上 / 70歳代</td>
+                                <td>26.4%</td>
+                                <td>19.6%</td>
+                                <td>27.0%</td>
+                                <td>15.8%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                 <p class="small-text">※上記表内の「データ例」は説明のための架空の数値です。70歳以上のデータは本文中の数値を引用しています。</p>
+            </div>
+        </section>
+
+    </div>
+
+</body>
+</html>
