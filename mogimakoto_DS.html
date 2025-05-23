@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>トランプが挑む巨大な壁！アメリカを動かす「見えざる手」の正体</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ocean-dark: #023e8a;
+            --ocean-medium: #0077b6;
+            --ocean-light: #48cae4;
+            --ocean-very-light: #e0f2f7; /* Table hover */
+            --accent-yellow: #ffc107;
+            --text-dark: #012a4a;
+            --text-light: #ffffff;
+            --bg-page: #f0f8ff; /* AliceBlue */
+            --bg-card: #ffffff;
+            --border-color: #dee2e6;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-dark);
+            line-height: 1.7;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* --- Header --- */
+        header {
+            background: linear-gradient(to right, var(--ocean-dark), var(--ocean-light));
+            color: var(--text-light);
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            border-radius: 0 0 25px 25px;
+        }
+
+        header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.2rem; /* 35.2px */
+            margin: 0;
+            font-weight: 700;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        /* --- Card Style --- */
+        .card {
+            background-color: var(--bg-card);
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden; /* For heading background */
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
+        }
+
+        /* --- Typography & Content --- */
+        h2, h3 {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-dark); /* Heading text color */
+            margin-top: 0; /* Remove default top margin */
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 1.8rem; /* 28.8px */
+             /* Add gradient background to h2 */
+            background: linear-gradient(to right, var(--ocean-dark), var(--ocean-light));
+            color: var(--text-light);
+            padding: 15px 30px;
+            border-radius: 10px;
+            margin-left: -30px; /* Counteract card padding */
+            margin-right: -30px; /* Counteract card padding */
+            margin-top: -30px; /* Counteract card padding */
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h3 {
+            font-size: 1.4rem; /* 22.4px */
+            color: var(--ocean-dark);
+            border-bottom: 2px solid var(--ocean-light);
+            padding-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 1em;
+            font-size: 1rem; /* 16px */
+        }
+
+        strong {
+            font-weight: 700;
+            color: var(--ocean-medium);
+        }
+
+        .marker {
+            background: linear-gradient(transparent 65%, var(--accent-yellow) 65%);
+            padding: 0.1em 0.2em;
+            font-weight: bold;
+        }
+
+        /* --- Icons & Lists --- */
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        li {
+            display: flex;
+            align-items: flex-start; /* Align icon top */
+            margin-bottom: 20px;
+            font-size: 0.95rem; /* 15.2px */
+        }
+
+        .icon-circle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px;
+            height: 35px;
+            min-width: 35px; /* Prevent shrinking */
+            border-radius: 50%;
+            background: linear-gradient(to bottom right, var(--ocean-medium), var(--ocean-light));
+            color: var(--text-light);
+            margin-right: 15px;
+            font-size: 1rem; /* Icon size */
+             margin-top: 2px; /* Adjust vertical alignment */
+        }
+
+        /* --- Emphasis Box --- */
+        .emphasis-box {
+            background-color: var(--accent-yellow);
+            color: #333; /* Darker text for yellow bg */
+            padding: 20px;
+            border-radius: 8px;
+            margin: 25px 0;
+            border-left: 6px solid #e6ac00; /* Darker yellow */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .emphasis-box strong {
+            color: #c08c00; /* Even darker for strong tags */
+        }
+
+        /* --- Table Style --- */
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 0.9rem; /* 14.4px */
+            border-radius: 8px;
+            overflow: hidden; /* Needed for border-radius on table */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .styled-table th,
+        .styled-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .styled-table thead tr {
+            background-color: var(--ocean-medium);
+            color: var(--text-light);
+            text-align: left;
+            font-weight: bold;
+            font-family: 'Poppins', sans-serif;
+        }
+        .styled-table thead th {
+            border-bottom: 2px solid var(--ocean-dark);
+        }
+
+        .styled-table tbody tr {
+            background-color: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .styled-table tbody tr:nth-of-type(even) {
+            background-color: #f8f9fa; /* Light grey for zebra */
+        }
+
+        .styled-table tbody tr:last-of-type {
+            border-bottom: 2px solid var(--ocean-medium);
+        }
+
+        .styled-table tbody tr:hover {
+            background-color: var(--ocean-very-light);
+            transition: background-color 0.2s ease;
+            cursor: default;
+        }
+
+        /* --- Diagram/Flow Elements --- */
+        .step-diagram {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            background-color: #eaf7ff; /* Very light blue */
+            padding: 15px 20px;
+            border-radius: 10px;
+            border-left: 5px solid var(--ocean-medium);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .step:hover {
+             transform: scale(1.02);
+             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .step-icon {
+            font-size: 1.5rem; /* 24px */
+            color: var(--ocean-medium);
+            margin-right: 15px;
+            min-width: 30px; /* Ensure icon width */
+            text-align: center;
+        }
+
+        .step-text strong {
+            display: block;
+            color: var(--ocean-dark);
+            margin-bottom: 3px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .arrow-down {
+            text-align: center;
+            font-size: 1.8rem; /* 28.8px */
+            color: var(--ocean-light);
+            margin: -10px 0; /* Overlap slightly */
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem; /* 28.8px */
+            }
+            .card {
+                padding: 20px;
+            }
+             h2 {
+                font-size: 1.5rem; /* 24px */
+                padding: 12px 20px;
+                margin-left: -20px;
+                margin-right: -20px;
+                margin-top: -20px;
+            }
+             h3 {
+                font-size: 1.2rem; /* 19.2px */
+            }
+            .styled-table {
+                font-size: 0.85rem; /* 13.6px */
+                display: block; /* Allow horizontal scroll */
+                overflow-x: auto; /* Enable horizontal scroll */
+                white-space: nowrap; /* Prevent wrapping */
+            }
+             .styled-table thead, .styled-table tbody, .styled-table tr, .styled-table th, .styled-table td {
+                 display: block; /* Stack table cells */
+             }
+             .styled-table thead {
+                 display: none; /* Hide traditional header */
+             }
+             .styled-table tr {
+                 border: 1px solid var(--border-color);
+                 margin-bottom: 10px;
+                 border-radius: 8px;
+                 background-color: white !important; /* Override zebra */
+             }
+              .styled-table td {
+                 display: flex; /* Use flex for label/value */
+                 justify-content: space-between; /* Space out label and value */
+                 padding: 10px 15px;
+                 text-align: right; /* Align value to right */
+                 border-bottom: none; /* Remove inner borders */
+                 white-space: normal; /* Allow text wrapping */
+             }
+             .styled-table td::before {
+                 content: attr(data-label); /* Use data-label for header */
+                 font-weight: bold;
+                 text-align: left; /* Align label to left */
+                 margin-right: 10px; /* Space between label and value */
+                 color: var(--ocean-medium);
+                 font-family: 'Poppins', sans-serif;
+             }
+             .styled-table td:last-child {
+                  border-bottom: none;
+             }
+             .styled-table tbody tr:hover {
+                 background-color: var(--ocean-very-light) !important;
+             }
+
+        }
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.6rem; /* 25.6px */
+            }
+            body {
+                font-size: 15px; /* Adjust base font size */
+            }
+             h2 {
+                font-size: 1.3rem; /* 20.8px */
+            }
+             h3 {
+                font-size: 1.1rem; /* 17.6px */
+            }
+            .container {
+                 padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>トランプが挑む巨大な壁！アメリカを動かす「見えざる手」の正体</h1>
+    </header>
+
+    <div class="container">
+
+        <section class="card">
+            <h2><i class="fa-solid fa-bullseye"></i> はじめに：戦いのゴングは鳴った</h2>
+            <p>多くのアメリカ国民が「悪魔の民主党政権」と感じた4年間が終わり、変化への期待が高まっています。しかし、これは単にバイデン・ハリス政権が倒れたという話ではありません。</p>
+            <p>トランプ氏の本当の戦いは、<strong>彼らを操っていた「見えざる手」との対決</strong>です。彼らが真の権力を握っていなかったことは、その言動からも明らかでした。トランプ氏にとって、今回の勝利は、ようやく本当の戦いのリングに上がったことを意味します。</p>
+            <p>この資料では、トランプ氏がこれから立ち向かうであろう<strong>「真の敵」</strong>の構造を解き明かしていきます。</p>
+        </section>
+
+        <section class="card">
+            <h2><i class="fa-solid fa-satellite-dish"></i> 情報戦線：メディアとSNSの壁</h2>
+            <h3>大手メディア：偏向報道の砦</h3>
+            <ul>
+                <li>
+                    <span class="icon-circle"><i class="fa-solid fa-tv"></i></span>
+                    <div><strong>大手ネットワーク (ABC, CBS, NBC, CNN):</strong> 完全に民主党の応援団と化し、トランプ氏を徹底的に批判。</div>
+                </li>
+                <li>
+                    <span class="icon-circle"><i class="fa-brands fa-fox"></i></span>
+                    <div><strong>Fox News:</strong> 中立に見えて内部は割れており、反トランプ派も多数存在。タッカー・カールソンの追放劇も。</div>
+                </li>
+                 <li>
+                    <span class="icon-circle"><i class="fa-solid fa-newspaper"></i></span>
+                    <div><strong>日本のメディア:</strong> アメリカ大手メディアの情報を鵜呑みにし、横流ししているケースが多い。</div>
+                </li>
+            </ul>
+            <p>トランプ氏はこの状況に対し<strong>「フェイクニュース」</strong>と繰り返し批判し、SNS、特に<span class="marker">X (旧Twitter)</span>を武器に直接発信を試みましたが…</p>
+
+            <h3>SNS：言論統制の過去と変化</h3>
+             <ul>
+                <li>
+                    <span class="icon-circle"><i class="fa-solid fa-ban"></i></span>
+                    <div><strong>情報統制:</strong> ジャック・ドーシー時代のTwitter、Meta (Facebook)、Google (YouTube) など大手プラットフォームは、トランプ氏やその支持者の主張を<span class="marker">「陰謀論」として削除・BAN</span>。議事堂襲撃事件後のアカウント停止は象徴的。</div>
+                </li>
+                 <li>
+                    <span class="icon-circle"><i class="fa-solid fa-handshake-angle"></i></span>
+                    <div><strong>圧力の暴露:</strong> FBIやCIAがTwitter社に対し、トランプ氏の言論封殺を求める<span class="marker">強い圧力をかけていた</span>ことを、元オーナーが暴露。</div>
+                </li>
+                <li>
+                    <span class="icon-circle"><i class="fa-brands fa-xing"></i></span>
+                    <div><strong>転換点：イーロン・マスク:</strong> 2022年にマスク氏がTwitter社を買収し「X」へ。情報統制を行っていた社員を解雇し、<span class="marker">「言論の自由のプラットフォーム」</span>として再建。トランプ氏も復帰し、強力な発信手段を取り戻しました。</div>
+                </li>
+            </ul>
+            <div class="emphasis-box">
+                <strong><i class="fa-solid fa-lightbulb"></i> ポイント:</strong> イーロン・マスクはリバタリアン（自由至上主義）であり、あらゆる言論統制に反対。トランプ氏とは思想が異なりますが、「民主党の全体主義化」に対抗する点で強力な味方となりました。
+            </div>
+        </section>
+
+        <section class="card">
+            <h2><i class="fa-solid fa-landmark-dome"></i> 国家機関：権力の武器化と機能不全</h2>
+            <h3>司法省・FBI：「司法の武器化」</h3>
+             <ul>
+                <li>
+                    <span class="icon-circle"><i class="fa-solid fa-gavel"></i></span>
+                    <div><strong>トランプ氏への捜査:</strong> 議事堂襲撃事件への関与疑惑や機密文書持ち出し疑惑で、司法省はトランプ氏を起訴し、FBIが強制捜査を実行。</div>
+                </li>
+                 <li>
+                    <span class="icon-circle"><i class="fa-solid fa-shield-halved"></i></span>
+                    <div><strong>「司法の武器化」:</strong> 野党政治家を不正疑惑などで失脚させる手法は途上国でよく見られますが、これがバイデン政権下で行われたと指摘されています。FBI長官クリストファー・レイがその中心に。</div>
+                 </li>
+                 <li>
+                    <span class="icon-circle"><i class="fa-solid fa-link"></i></span>
+                    <div><strong>SNSへの圧力連携:</strong> 前述の通り、FBIなどはSNSにも圧力をかけ、言論統制に関与していた疑いが濃厚です。</div>
+                </li>
+            </ul>
+             <p>※トランプ氏の大統領当選により、現職大統領は起訴されない特権があるため、これらの捜査・訴追は一時停止または取り下げられる可能性があります。</p>
+
+            <h3>国土安全保障省 (DHS)：機能不全と闇</h3>
+             <ul>
+                <li>
+                    <span class="icon-circle"><i class="fa-solid fa-person-military-pointing"></i></span>
+                    <div><strong>機能不全:</strong> 9.11後に設立されたにも関わらず、メキシコ国境からの<span class="marker">不法移民流入という「国家の危機」</span>に全く対応せず。</div>
+                </li>
+                 <li>
+                    <span class="icon-circle"><i class="fa-solid fa-user-secret"></i></span>
+                    <div><strong>闇の疑惑:</strong> 国境から流入する麻薬や人身売買を行う<span class="marker">メキシコのカルテル（マフィア）とDHSが繋がっている</span>のではないか、という深刻な疑惑があります。</div>
+                </li>
+                 <li>
+                    <span class="icon-circle"><i class="fa-solid fa-shield-virus"></i></span>
+                    <div><strong>シークレットサービス:</strong> トランプ氏の警護を行うシークレットサービスもDHS傘下ですが、バトラーでの暗殺未遂事件など、<span class="marker">意図的な職務怠慢</span>ではないかと疑われる点も。</div>
+                </li>
+            </ul>
+             <p>長官のマヨルカス氏は失職見込み。後任人事が注目されます。</p>
+        </section>
+
+        <section class="card">
+             <h2><i class="fa-solid fa-industry"></i> 巨大複合体：癒着が生む歪み</h2>
+             <h3>軍産複合体：戦争で儲ける人々</h3>
+             <div class="step-diagram">
+                 <div class="step">
+                     <div class="step-icon"><i class="fa-solid fa-user-tie"></i></div>
+                     <div class="step-text"><strong>軍の高官</strong> (例: ロイド・オースティン国防長官)</div>
+                 </div>
+                 <div class="arrow-down"><i class="fa-solid fa-arrow-down"></i></div>
+                  <div class="step">
+                     <div class="step-icon"><i class="fa-solid fa-building"></i></div>
+                     <div class="step-text"><strong>退役後、軍需産業へ天下り</strong> (例: レイセオン<small>(RTX)</small>, ロッキード, ボーイング等)</div>
+                 </div>
+                  <div class="arrow-down"><i class="fa-solid fa-arrow-down"></i></div>
+                 <div class="step">
+                     <div class="step-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+                     <div class="step-text"><strong>国防総省(ペンタゴン)が天下り先に配慮</strong> <br> <i class="fa-solid fa-arrow-right"></i> <span class="marker">戦争が長引く方が武器が売れて儲かる</span>という構造</div>
+                 </div>
+             </div>
+             <p>この<strong>「軍産複合体」</strong>は、アメリカの長年の課題です。金のために戦争を望む勢力は、平和を願うトランプ氏とは対立します。</p>
+
+            <h3>遺産複合体：病気で儲ける人々</h3>
+             <ul>
+                <li>
+                    <span class="icon-circle"><i class="fa-solid fa-pills"></i></span>
+                    <div><strong>ビッグ・ファーマ:</strong> 大手製薬会社は、病気が流行すると莫大な利益を得ます。パンデミックはその典型例でした。</div>
+                </li>
+                 <li>
+                    <span class="icon-circle"><i class="fa-solid fa-hospital"></i></span>
+                    <div><strong>政府機関との癒着:</strong> 保健福祉省やCDC（疾病予防管理センター）と製薬会社が癒着する構造は<strong>「遺産複合体」</strong>と呼ばれます。</div>
+                </li>
+                 <li>
+                    <span class="icon-circle"><i class="fa-solid fa-user-doctor"></i></span>
+                    <div><strong>アンソニー・ファウチ博士:</strong> 長年、米国の保健行政を牛耳り、パンデミック時にはワクチン接種等を強力に推進。その裏で製薬会社が巨額の利益を得た構図が批判されています。</div>
+                 </li>
+            </ul>
+             <div class="emphasis-box">
+                <strong><i class="fa-solid fa-gavel"></i> 告発者：ロバート・F・ケネディ・ジュニア:</strong> ケネディ大統領の甥。元々は環境派の民主党員でしたが、ワクチンの危険性や遺産複合体の問題を告発。民主党を離党し、後にトランプ支持を表明しました。彼の著書「アンソニー・ファウチの真実」は大きな反響を呼びました。
+            </div>
+
+            <h3>国務省・CIA：特定のイデオロギー</h3>
+             <ul>
+                <li>
+                    <span class="icon-circle"><i class="fa-solid fa-flag-usa"></i></span>
+                    <div><strong>ウクライナ介入の背景:</strong> 2014年のウクライナ・マイダン革命を、当時のオバマ政権（国務省・CIA）が背後で支援したことは多くの証拠があります。中心人物はビクトリア・ヌーランド氏。</div>
+                </li>
+                 <li>
+                    <span class="icon-circle"><i class="fa-solid fa-user-friends"></i></span>
+                    <div><strong>バイデン政権での復活:</strong> ブリンケン国務長官、ヌーランド国務次官（当時）など、ウクライナ介入に関わった人物が復帰。彼らの多くはウクライナ系ユダヤ人で、強い<span class="marker">反ロシア感情</span>を持つとされます。</div>
+                 </li>
+                 <li>
+                    <span class="icon-circle"><i class="fa-solid fa-rainbow"></i></span>
+                    <div><strong>駐日大使の影響力:</strong> ラーム・エマニュエル駐日大使（当時）のように、米国の価値観（例: LGBT理解増進法）を他国に押し付ける動きも。</div>
+                </li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <h2><i class="fa-solid fa-network-wired"></i> ディープステート：構造的な癒着</h2>
+            <p>トランプ氏が<strong>「ディープステート（深層国家）」</strong>と呼ぶのは、特定の秘密組織ではありません。それは、これまで見てきたような…</p>
+            <ul>
+                <li>
+                    <span class="icon-circle"><i class="fa-solid fa-users-gear"></i></span>
+                    <div><strong>官僚機構:</strong> 特にオバマ政権時代に任用され、民主党寄りの高級官僚たち（FBI, CIA, NSAなどに潜む）</div>
+                </li>
+                <li>
+                    <span class="icon-circle"><i class="fa-solid fa-building-columns"></i></span>
+                    <div><strong>巨大企業:</strong> マス・メディア、軍需産業、大手製薬会社、大手IT企業など</div>
+                </li>
+            </ul>
+            <p>…これらが<strong>相互に癒着し、既得権益を守ろうとする<span class="marker">巨大な構造全体</span></strong>を指しています。この構造が一体となってトランプ氏を権力の座から引きずり下ろし、再選を妨害してきた、というのが彼の主張の核心です。</p>
+            <div class="emphasis-box">
+                 <strong><i class="fa-solid fa-skull-crossbones"></i> 敵の巨大さ:</strong> この構造全体と戦うことは、文字通り命がけであり、一筋縄ではいきません。
+            </div>
+        </section>
+
+        <section class="card">
+            <h2><i class="fa-solid fa-money-bill-trend-up"></i> ウォール街：金の流れ</h2>
+            <p>これらの巨大企業や政治活動（特に民主党）に資金を提供している大元が、ニューヨークの<strong>ウォール街（金融資本）</strong>です。</p>
+            <table class="styled-table">
+                <thead>
+                    <tr>
+                        <th>主体</th>
+                        <th>特徴</th>
+                        <th>スタンス（対トランプ）</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td data-label="主体">巨大銀行・投資会社</td>
+                        <td data-label="特徴">軍需、メディア、製薬などに投資。利益が最優先。一枚岩ではない。</td>
+                        <td data-label="スタンス">様々。儲かるならどちらでも良いリアリストも多い（例: ブラックロックのラリー・フィンク）。</td>
+                    </tr>
+                     <tr>
+                        <td data-label="主体">ジョージ・ソロス</td>
+                        <td data-label="特徴">著名な投資家。明確な左派・民主党支持者。</td>
+                        <td data-label="スタンス"><strong>明確に反トランプ。</strong> 資金提供などで妨害活動。</td>
+                    </tr>
+                     <tr>
+                         <td data-label="主体">トランプ氏 / イーロン・マスク</td>
+                         <td data-label="特徴">自身が億万長者。</td>
+                         <td data-label="スタンス">ウォール街の<span class="marker">傀儡になりにくい。</span> 金融資本からの独立性が高い。</td>
+                     </tr>
+                </tbody>
+            </table>
+            <p>トランプ氏はウォール街全体を敵に回すことはせず、<span class="marker">ディール（取引）を通じて、露骨な政治介入を止めさせようとする</span>可能性があります。一部メディアの論調変化（例: ワシントン・ポスト）はその兆候かもしれません。</p>
+        </section>
+
+         <section class="card">
+            <h2><i class="fa-solid fa-person-rifle"></i> 今後の展望：命がけの戦い</h2>
+            <h3>戦略：個別撃破とディール</h3>
+            <p>トランプ氏といえども、これら全ての敵と同時に戦うことは不可能です。おそらく、<strong>優先順位をつけて個別に対応し、時には取引も行いながら、</strong>徐々に構造を変えていく戦略を取るでしょう。</p>
+            <ul>
+                <li>
+                    <span class="icon-circle"><i class="fa-solid fa-users"></i></span>
+                    <div><strong>強力な味方:</strong> イーロン・マスク（言論空間の確保）、ロバート・F・ケネディ・ジュニア（遺産複合体への切り込み）などの存在は大きい。</div>
+                </li>
+            </ul>
+
+            <h3>残された脅威：物理的排除</h3>
+             <p>選挙で敗れたとしても、既得権益を守りたい勢力にとって、トランプ氏やその協力者（マスク氏、ケネディ氏など）は依然として邪魔な存在です。</p>
+             <div class="emphasis-box" style="border-color: red; background-color: #ffebee;">
+                <strong style="color: #c62828;"><i class="fa-solid fa-triangle-exclamation"></i> 警告:</strong> 最も懸念されるのは、<strong>テロや暗殺といった<span class="marker" style="background: linear-gradient(transparent 65%, #ffcdd2 65%);">物理的な排除</span></strong>の危険性です。彼らの戦いは、本当に命がけのものとなります。
+            </div>
+            <p>今後の動向から目が離せません。</p>
+        </section>
+
+    </div>
+
+</body>
+</html>
