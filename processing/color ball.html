@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>P5.js 3D Voxel Cloud Animation</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/p5.min.js"></script>
+  <style>
+    /* ページ全体のスタイル調整 */
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh; /* 画面の高さに合わせる */
+      background-color: #000000; /* 黒色の背景 */
+      font-family: sans-serif;
+      overflow: hidden; /* スクロールバーを隠す */
+    }
+    /* キャンバスのコンテナ */
+    main {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+  <main id="canvas-container">
+    </main>
+  <script>
+    let rotationAngle = 0; // 回転角度を保持する変数 (元のコードの t に相当)
+    const W = 600;         // キャンバスの幅と高さ
+    const a = 17;          // グリッドのサイズパラメータ (0から16までの17段階)
+    let rotationAxis;      // 回転軸ベクトル
+
+    // p5.jsの初期設定関数
+    function setup() {
+      // WEBGLモードでキャンバスを作成
+      let canvas = createCanvas(W, W, WEBGL);
+      canvas.parent('canvas-container');
+
+      // 回転軸ベクトルを初期化し、正規化
+      rotationAxis = createVector(3, 4, 5).normalize();
+      
+      // noiseSeed(random(10000)); // 必要であればノイズシードを設定して毎回同じパターンに
+      // frameRate(30); // パフォーマンスに応じてフレームレート調整
+      console.log("3D Voxel Cloud Animation Setup Complete.");
+    }
+
+    // p5.jsの描画関数（フレームごとに繰り返し実行）
+    function draw() {
+      background(0); // 背景を黒でクリア
+
+      // 回転角度を更新
+      rotationAngle += PI / 9; 
+
+      // シーン全体を回転
+      rotate(rotationAngle, rotationAxis);
+
+      // グリッドの中心座標 (0-16の範囲なので、中心は8)
+      const centerX = (a - 1) / 2.0;
+      const centerY = (a - 1) / 2.0;
+      const centerZ = (a - 1) / 2.0;
+
+      // 3つのネストしたループで3Dグリッドを処理
+      // x, y, z は a-1 (16) から 0 までデクリメントされる
+      for (let x = a - 1; x >= 0; x--) {
+        for (let y = a - 1; y >= 0; y--) {
+          for (let z = a - 1; z >= 0; z--) {
+            
+            // 元の条件: x&15&&y&15&&z&15 || stroke(...)+point(...)
+            // これは、if ( !( (x&15) && (y&15) && (z&15) ) ) { ... } と同等
+            // x&15 は x が 0 または 16 の場合に 0 (false) となる。
+            // つまり、x, y, z のいずれかが 0 または 16 (グリッドの面) の場合に点を描画する
+            if (!((x & 15) && (y & 15) && (z & 15))) {
+              
+              // ストロークカラーを設定 (値は0-255にクランプされる)
+              // 元のコード: x*a+a, y*a+a, z*a+a
+              stroke(
+                (x + 1) * a, 
+                (y + 1) * a, 
+                (z + 1) * a
+              );
+              // ★変更点: 粒のサイズを2倍にする (2から4に変更)
+              strokeWeight(4); 
+
+              // ノイズ値を取得
+              let noiseVal = noise(x * 0.1, y * 0.1, z * 0.1 + rotationAngle * 0.01); // ノイズのスケールと時間変化を調整
+
+              // sin値を計算 (時間とノイズに基づいて振動)
+              let sinVal = sin(rotationAngle / 3 + noiseVal * PI); // ノイズの影響を強調
+
+              // map関数で値を変換
+              // 元のコード: map(sin(t/3+noise(x,y,z)),0,.5,a,2,1)
+              // 最後の1は withinBounds=true を意味する
+              // sinValが0のとき17(a)、0.5のとき2にマッピング。範囲外はクランプ。
+              let mappedVal = map(sinVal, 0, 0.5, a, 2, true);
+
+              // グリッド中心からの距離を計算
+              let d = dist(x, y, z, centerX, centerY, centerZ);
+              if (d < 0.01) d = 0.01; // ゼロ除算を避ける
+
+              // ポイントの位置をスケーリングする係数lを計算
+              let l = (14 * mappedVal) / d;
+
+              // ポイントの座標を計算 (グリッド中心を原点としてスケーリング)
+              let pointX = (x - centerX) * l;
+              let pointY = (y - centerY) * l;
+              let pointZ = (z - centerZ) * l;
+              
+              point(pointX, pointY, pointZ);
+            }
+          }
+        }
+      }
+    }
+  </script>
+</body>
+</html>

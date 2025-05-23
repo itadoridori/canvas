@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>P5.js Dynamic Texture Sphere</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/p5.min.js"></script>
+  <style>
+    /* ページ全体のスタイル調整 */
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh; /* 画面の高さに合わせる */
+      background-color: #000000; /* 黒色の背景 */
+      font-family: sans-serif;
+      overflow: hidden; /* スクロールバーを隠す */
+    }
+    /* キャンバスのコンテナ */
+    main {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+  <main id="canvas-container">
+    </main>
+  <script>
+    let f = 0; // ★時間変数を再有効化
+    let W = 400; // キャンバスの幅と高さ
+    let textureGraphics; // ★テクスチャ関連を再有効化
+    let noiseFunction;   // ★ノイズ関数関連を再有効化
+    
+    const sphereDetail = 24; // 球体の詳細度
+
+    function setup() {
+      let canvas = createCanvas(W, W, WEBGL);
+      canvas.parent('canvas-container');
+      
+      noiseFunction = noise; // ★ノイズ関数を初期化
+      textureGraphics = createGraphics(2 * W, W); // ★オフスクリーンバッファを作成
+      textureGraphics.background(0,0); // 透明な背景で開始
+      textureGraphics.strokeWeight(1);
+
+      console.log("Dynamic Texture Sphere Setup Complete (Re-applying Texture).");
+      orbitControl(); // マウス操作を有効化
+    }
+
+    function draw() {
+      background(50); // ★背景を明るいグレーに
+
+      // ★カメラ設定: オブジェクトが見やすい位置に固定
+      camera(0, 0, W * 1.8, // Z座標を W * 1.8 (720) に設定 (球体半径150が見えるように)
+             0, 0, 0,      
+             0, 1, 0);     
+
+      // ★ライティング: 環境光のみ、最大輝度
+      ambientLight(255); 
+
+      // ★背景球体の描画はコメントアウト
+      /*
+      push();
+      noStroke();
+      sphere(2500, backgroundSphereDetail); 
+      pop();
+      */
+
+      // ★テクスチャ生成処理を再有効化
+      textureGraphics.stroke(130, 130, 130, 100); 
+      textureGraphics.fill(0, 0, 0, 8); // 軌跡が残るように半透明の黒で描画      
+      
+      let tgW = textureGraphics.width;
+      for (let i = 0; i < 200; i++) { // ループ回数は200で維持
+        let rawRectX = f + 10000 * noiseFunction(i, 0) - 2500; 
+        let rectY = noiseFunction(0, i) * W;
+        let rectWidth = noiseFunction(i, f / W) * W + 99;
+        let rectHeight = noiseFunction(i * 0.5, f / W * 0.5) * W + 50; 
+
+        // 継ぎ目対策のロジック
+        let startX = rawRectX % tgW;
+        if (startX < 0) {
+            startX += tgW;
+        }
+
+        if (startX + rectWidth <= tgW) {
+            textureGraphics.rect(startX, rectY, rectWidth, rectHeight);
+        } else {
+            let part1Width = tgW - startX;
+            textureGraphics.rect(startX, rectY, part1Width, rectHeight);
+            let part2Width = rectWidth - part1Width;
+            textureGraphics.rect(0, rectY, part2Width, rectHeight);
+        }
+      }
+      
+      // ★回転する球体にテクスチャを適用
+      push();
+      noStroke(); 
+      // normalMaterial(); // normalMaterialの代わりにテクスチャを使用
+      textureWrap(REPEAT); // ★テクスチャの繰り返しを設定
+      texture(textureGraphics); // ★生成したテクスチャを適用
+      
+      // 球体をX軸とY軸周りに回転させる
+      rotateX(frameCount * 0.01);
+      rotateY(frameCount * 0.015);
+                                     
+      sphere(150, sphereDetail); // ★球体の半径を150に戻し、詳細度を指定
+      pop();
+
+      f -= 0.5; // ★時間変数の更新を再有効化
+    }
+  </script>
+</body>
+</html>

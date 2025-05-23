@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>P5.js 3D Torus Formation</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/p5.min.js"></script>
+  <style>
+    /* ページ全体のスタイル調整 */
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh; /* 画面の高さに合わせる */
+      background-color: #000000; /* 黒色の背景 */
+      font-family: sans-serif;
+      overflow: hidden; /* スクロールバーを隠す */
+    }
+    /* キャンバスのコンテナ */
+    main {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+  <main id="canvas-container">
+    </main>
+  <script>
+    let f = 0; // 時間変数 (アニメーション用)
+    let W = 400; // キャンバスの幅と高さ
+
+    // p5.jsの初期設定関数
+    function setup() {
+      // WEBGLモードでキャンバスを作成
+      let canvas = createCanvas(W, W, WEBGL);
+      canvas.parent('canvas-container');
+      console.log("3D Torus Formation Setup Complete.");
+      // ambientLight(60); // 環境光を少し追加しても良い
+      // debugMode(); // 軸などを表示してデバッグしやすくする
+    }
+
+    // p5.jsの描画関数（フレームごとに繰り返し実行）
+    function draw() {
+      // 背景をクリア (黒)
+      background(0);
+
+      // ★変更点: カメラの位置と向きを調整して表示範囲を広げる
+      // オブジェクト群のY軸中心は約Y=25、カメラをZ軸方向にW*1.8の位置へ移動
+      camera(0, 25, W * 1.8,  // カメラの位置 (eyeX, eyeY, eyeZ)
+             0, 25, 0,       // 見つめる点の位置 (centerX, centerY, centerZ)
+             0, 1, 0);      // カメラの上方向 (upX, upY, upZ)
+      
+      // orbitControl(); // マウスでカメラを操作できるようにする（デバッグに便利）
+
+      // 点光源を設定
+      // 元のコード: [-3,-3,3].map(a=>pointLight([W],W*a,n=0,W))
+      // [W] は color(W,W,W) -> color(400,400,400) -> white と解釈される
+      // n=0 はライトのy座標
+      pointLight(color(255, 255, 255), W * -3, 0, W); // 左奥からのライト1
+      pointLight(color(255, 255, 255), W * -3, 0, W); // 左奥からのライト2 (同じ位置)
+      pointLight(color(255, 255, 255), W * 3, 0, W);   // 右奥からのライト
+
+      let n_sphere_drawn_flag = 0; // このフレームで球体を描画したかのフラグ (ループ内で一度だけ描画するため)
+
+      // 円形にトーラスを配置するループ
+      // 元のコード: for(y=0;y<P;y+=P/16)
+      for (let y_angle = 0; y_angle < PI; y_angle += PI / 16) {
+        push(); // 現在の変換行列を保存
+
+        let Y_offset_calc = y_angle + PI / 16; // 元のコードの Y
+        
+        // トーラスのY軸方向の位置を計算し移動
+        // 元のコード: T(0,Y*(W/P)-200)
+        translate(0, Y_offset_calc * (W / PI) - (W/2), 0); // W/2 (200) を引いて中央付近に
+
+        // X軸周りに90度回転
+        rotateX(PI / 2);
+
+        // トーラスの半径Zを時間と角度に基づいて計算
+        // 元のコード: Z=170*sin(Y+cos(f))
+        let Z_radius_calc = 170 * sin(Y_offset_calc + cos(f));
+
+        // トーラスを描画
+        // 元のコード: torus(Z,2,W) -> WはdetailX。大きすぎるので調整
+        // トーラスの半径は正である必要があるため、abs() を使用
+        noStroke(); // トーラスと球体にはストロークなしの方が見栄えが良いことが多い
+        fill(100 + Z_radius_calc, 150 - Z_radius_calc/2, 200 + sin(f + y_angle) * 50); // 色を動的に変更
+        torus(abs(Z_radius_calc), 10, 24, 16); // 半径, チューブの半径, detailX, detailY
+
+        // 球体のためにさらにZ軸方向に移動
+        // 元のコード: T(0,0,Z-200)
+        translate(0, 0, Z_radius_calc - (W/2));
+
+        // ループの最初のイテレーションでのみ球体を描画
+        // 元のコード: !n&&sphere(70,W) -> Wはdetail。大きすぎるので調整
+        if (n_sphere_drawn_flag === 0) {
+          fill(255, 150 + sin(f*2)*50 , 50); // 球体の色
+          sphere(70, 24, 24); // 半径, detailX, detailY
+        }
+        
+        pop(); // 保存した変換行列を復元
+        n_sphere_drawn_flag++; // 球体描画フラグをインクリメント (実質、次のイテレーションでは描画されない)
+      }
+
+      // 時間変数を更新
+      f += PI / 64;
+
+      // 背景として非常に大きなボックスを描画
+      // 元のコード: box(6e3)
+      push();
+      noStroke();
+      fill(15, 15, 25); // 背景ボックスの色を非常に暗い青紫に
+      box(6000);
+      pop();
+    }
+  </script>
+</body>
+</html>
