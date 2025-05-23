@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>イタリア土着ブドウ品種の魅力（スライド版）：地域別詳細と特徴比較</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #2c3e50; /* スライド外の背景色 */
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .slide-container {
+            width: 100%;
+            max-width: 1120px; /* 16:9 (例: 1120x630) */
+            margin-bottom: 25px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+        }
+
+        .slide {
+            background-color: #eaf7ff; /* スライドの背景色 */
+            color: #1c313a; /* 主要テキスト色 */
+            aspect-ratio: 16 / 9;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* 上揃え */
+            align-items: center;
+            padding: 25px 35px;
+            box-sizing: border-box;
+            text-align: center;
+            overflow-y: auto; /* 内容が多い場合は縦スクロール */
+            border-radius: 10px;
+            position: relative;
+        }
+        
+        .slide.title-slide {
+             background: linear-gradient(135deg, #005f73, #0a9396, #48cae4);
+             color: #ffffff;
+             justify-content: center;
+        }
+
+        .slide h1 { /* 動画全体のタイトル用 */
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.6em; 
+            margin: 0 0 10px 0;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        
+        .slide.title-slide h1 {
+            font-size: 3.2em;
+        }
+        .slide.title-slide p.subtitle {
+            font-family: 'Poppins', sans-serif; /* 標準フォントに変更 */
+            font-size: 1.3em;
+            opacity: 0.9;
+            margin-top: 10px;
+        }
+
+        .slide h2 { /* 各スライドのメインタイトル（地域区分など） */
+            font-family: 'Poppins', sans-serif;
+            font-size: 2em;
+            margin: 15px 0 18px 0; 
+            color: #005f73; 
+            font-weight: 600;
+            width: 100%;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #0a9396;
+        }
+        
+        .slide h3 { /* 州のタイトルなど */
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.7em; 
+            margin: 20px 0 15px 0;
+            color: #0077b6; 
+            font-weight: 600;
+            text-align: left;
+            width: 100%;
+            max-width: 95%;
+        }
+         .slide h4 { /* 品種名など */
+            font-family: 'Poppins', sans-serif; /* 標準フォントに変更 */
+            font-size: 1.4em; 
+            margin: 18px 0 10px 0;
+            color: #023e8a;
+            font-weight: 700;
+            text-align: left;
+            width: 100%;
+            max-width: 95%;
+            border-left: 5px solid #48cae4; /* 左にアクセントボーダー */
+            padding-left: 10px;
+        }
+
+        .slide p {
+            font-family: 'Noto Sans JP', sans-serif;
+            font-size: 1em; 
+            line-height: 1.65; 
+            margin: 0 0 12px 0;
+            max-width: 95%;
+            text-align: left; 
+        }
+        
+        .slide ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0 0 15px 0;
+            text-align: left;
+            width: 100%;
+            max-width: 95%;
+        }
+        .slide ul li {
+            font-size: 0.95em; 
+            margin-bottom: 7px;
+            display: flex;
+            align-items: flex-start; /* テキストが複数行になる場合を考慮 */
+            background-color: rgba(255,255,255,0.7); 
+            padding: 7px 10px;
+            border-radius: 4px;
+            border-left: 4px solid #0a9396; /* 強調 */
+        }
+        .slide ul li .fas {
+            color: #0077b6; 
+            margin-right: 8px;
+            margin-top: 4px; 
+            width: 18px; 
+            text-align: center;
+            flex-shrink: 0; /* アイコンが縮まないように */
+        }
+        .slide ul li strong {
+             color: #012a4a; 
+             font-family: 'Poppins', sans-serif;
+        }
+        
+        .icon-showcase {
+            font-size: 2.8em; 
+            margin-bottom: 15px;
+            color: #0077b6;
+        }
+        .slide.title-slide .icon-showcase {
+             color: #ffffff;
+        }
+        .icon-showcase .fas + .fas {
+            margin-left: 20px;
+        }
+
+        .slide.footer-slide {
+            background: linear-gradient(135deg, #005f73, #0a9396);
+            color: #ffffff;
+            justify-content: center; 
+        }
+        .slide.footer-slide h2 {
+            font-family: 'Poppins', sans-serif;
+            color: #ffffff;
+            font-size: 2.4em;
+            border-bottom: none;
+        }
+        .slide.footer-slide p {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.15em;
+            text-align: center;
+        }
+        
+        .styled-table-wrapper-slide {
+            overflow-x: auto; 
+            width: 100%;
+            max-width: 98%; 
+            margin-top: 15px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background-color: #fff; 
+        }
+        .styled-table-slide {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.75em; 
+            min-width: 1000px; 
+        }
+
+        .styled-table-slide thead tr {
+            background-color: #0077b6; 
+            color: #ffffff;
+            text-align: left;
+            font-weight: bold;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .styled-table-slide th,
+        .styled-table-slide td {
+            padding: 8px 10px; 
+            border-bottom: 1px solid #dee2e6; 
+            white-space: nowrap; 
+        }
+        .styled-table-slide td:nth-child(4), 
+        .styled-table-slide td:nth-child(9) 
+         {
+            white-space: normal; 
+            min-width: 160px; 
+        }
+        .styled-table-slide tbody tr:nth-of-type(even) {
+            background-color: #eaf7ff; 
+        }
+        .styled-table-slide tbody tr:hover {
+            background-color: #d4ebf7; 
+        }
+        .styled-table-slide th .fas { 
+            margin-right: 4px;
+        }
+
+        .highlight-box-slide {
+            background-color: #fff3cd; 
+            color: #583c00; 
+            padding: 15px; 
+            border-radius: 6px;
+            margin: 15px auto;
+            border: 1px solid #ffeeba;
+            text-align: left; 
+            width: 100%;
+            max-width: 95%;
+            font-size: 0.9em; 
+        }
+         .highlight-box-slide p { font-size: 1em; } 
+        .highlight-box-slide i {
+            margin-right: 8px;
+            color: #c79100; 
+        }
+        
+        .quote-slide {
+            font-style: italic;
+            color: #005f73; 
+            border-left: 4px solid #0a9396; /* ボーダーを太く */
+            padding: 10px 15px; /* パディング調整 */
+            margin: 12px auto;
+            width: 100%;
+            max-width: 95%;
+            background-color: #e0f2f7; /* 背景色を少し濃く */
+            border-radius: 4px;
+            font-size: 0.9em; 
+        }
+
+        /* レスポンシブ調整 */
+        @media (max-width: 992px) { 
+            .slide { padding: 20px 25px; }
+            .slide h1 { font-size: 2.3em; }
+            .slide.title-slide h1 { font-size: 2.8em; }
+            .slide.title-slide p.subtitle { font-size: 1.2em; }
+            .slide h2 { font-size: 1.8em; }
+            .slide h3 { font-size: 1.5em; }
+            .slide h4 { font-size: 1.25em; }
+            .slide p { font-size: 0.95em; }
+            .slide ul li { font-size: 0.9em; }
+            .styled-table-slide { font-size: 0.7em; }
+        }
+         @media (max-width: 768px) {
+            body { padding: 10px; }
+            .slide-container { max-width: 100%; } 
+            .slide h1 { font-size: 2.1em; }
+            .slide.title-slide h1 { font-size: 2.5em; }
+            .slide h2 { font-size: 1.6em; }
+            .slide h3 { font-size: 1.4em; }
+            .slide h4 { font-size: 1.15em; }
+            .slide p { font-size: 0.9em; }
+            .slide ul li { font-size: 0.85em; }
+            .styled-table-slide { font-size: 0.65em; }
+             .styled-table-slide td:nth-child(4), 
+             .styled-table-slide td:nth-child(9) {
+                min-width: 140px; 
+            }
+        }
+         @media (max-width: 480px) {
+            .slide { padding: 15px 20px; }
+            .slide h1 { font-size: 1.7em; }
+            .slide.title-slide h1 { font-size: 2.1em; }
+            .slide.title-slide p.subtitle { font-size: 1em; }
+            .slide h2 { font-size: 1.4em; }
+            .slide h3 { font-size: 1.3em; }
+            .slide h4 { font-size: 1.05em; }
+            .slide p { font-size: 0.85em; }
+            .slide ul li { font-size: 0.8em; }
+            .styled-table-slide { font-size: 0.6em; }
+             .styled-table-slide td:nth-child(4), 
+             .styled-table-slide td:nth-child(9) {
+                min-width: 120px; 
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slide-container">
+        <section class="slide title-slide">
+            <h1>イタリア土着ブドウ品種の魅力</h1>
+            <p class="subtitle">テロワールと食卓を彩る、奥深きワインの世界へ</p>
+            <div class="icon-showcase" style="margin-top: 20px;">
+                <i class="fas fa-wine-bottle"></i>
+                <i class="fas fa-map-marked-alt"></i>
+                <i class="fas fa-utensils"></i>
+            </div>
+        </section>
+    </div>
+
+    <div class="slide-container">
+        <section class="slide">
+            <h2><i class="fas fa-info-circle"></i> イタリアワインの魂、土着品種</h2>
+            <p>イタリアには、各地域に根ざした数多くの「土着品種」が存在します。これらは、その土地の気候や土壌、食文化と深く結びつき、ワインに多様性と唯一無二の個性をもたらしています。</p>
+            <p>この動画では、代表的な土着品種とその魅力をご紹介します！</p>
+        </section>
+    </div>
+
+    <div class="slide-container">
+        <section class="slide">
+            <h2><i class="fas fa-mountain"></i> 北イタリア：アルプスの清涼感と高貴なワイン</h2>
+            <p>アルプス山脈の影響を受ける北イタリア。冷涼な気候は、ワインにエレガントな酸味と複雑なアロマをもたらします。ピエモンテ、ヴェネト、トレンティーノ・アルト・アディジェ、フリウリ・ヴェネツィア・ジューリアなどが代表的な産地です。</p>
+            <div class="icon-showcase">
+                <i class="fas fa-snowflake"></i>
+                <i class="fas fa-seedling"></i>
+                 <i class="fas fa-chess-queen"></i>
+            </div>
+        </section>
+    </div>
+
+    <div class="slide-container">
+        <section class="slide">
+            <h2><i class="fas fa-map-pin"></i> ピエモンテ州：ネッビオーロの故郷</h2>
+            <p>アルプス山脈の麓に位置し、イタリアで最も名高いワイン産地の一つ。収穫期の霧（ネッビア）は、晩熟なネッビオーロ種に影響を与え、複雑な風味を形成します。</p>
+            
+            <h4><i class="fas fa-wine-glass"></i> ネッビオーロ (Nebbiolo)</h4>
+            <ul>
+                <li><i class="fas fa-certificate"></i><strong>特徴：</strong>高貴な黒ブドウ。淡い色ながらしっかりした酸とタンニン。長期熟成でバラ、トリュフ香。</li>
+                <li><i class="fas fa-medal"></i><strong>代表DOCG：</strong>バローロ、バルバレスコ。</li>
+                <li><i class="fas fa-utensils"></i><strong>マリアージュ：</strong>牛肉煮込み、ジビエ、トリュフ料理。</li>
+            </ul>
+
+            <h4><i class="fas fa-wine-glass"></i> バルベーラ (Barbera)</h4>
+            <ul>
+                <li><i class="fas fa-certificate"></i><strong>特徴：</strong>濃い色調、高い酸、少ないタンニン、ジューシーな赤い果実風味。</li>
+                <li><i class="fas fa-medal"></i><strong>代表DOCG：</strong>バルベーラ・ダスティ、ニッツァ。</li>
+                <li><i class="fas fa-utensils"></i><strong>マリアージュ：</strong>トマトパスタ、サラミ、ピザ。</li>
+            </ul>
+             <h4><i class="fas fa-wine-glass-alt"></i> モスカート・ビアンコ (Moscato Bianco)</h4>
+            <ul>
+                <li><i class="fas fa-certificate"></i><strong>特徴：</strong>アロマティック。桃、アプリコット、セージの香り。甘口微発泡ワイン。</li>
+                <li><i class="fas fa-medal"></i><strong>代表DOCG：</strong>アスティ DOCG。</li>
+                <li><i class="fas fa-utensils"></i><strong>マリアージュ：</strong>デザート、フルーツタルト。</li>
+            </ul>
+        </section>
+    </div>
+
+    <div class="slide-container">
+        <section class="slide">
+            <h2><i class="fas fa-map-pin"></i> ヴェネト州：プロセッコとアマローネの地</h2>
+            <p>イタリア最大のワイン生産量を誇ることも多い州。スパークリングのプロセッコから濃厚なアマローネまで多様。「アパッシメント」製法が特徴。</p>
+            
+            <h4><i class="fas fa-wine-glass-alt"></i> グレーラ (Glera) (プロセッコ)</h4>
+            <ul>
+                <li><i class="fas fa-certificate"></i><strong>特徴：</strong>プロセッコに使用。軽やかで白桃、リンゴ、洋ナシ、アカシアの花の香り。</li>
+                <li><i class="fas fa-medal"></i><strong>代表DOCG：</strong>コネリアーノ・ヴァルドッビアーデネ・プロセッコ・スペリオーレ。</li>
+                <li><i class="fas fa-utensils"></i><strong>マリアージュ：</strong>食前酒、軽い前菜、シーフード。</li>
+            </ul>
+
+            <h4><i class="fas fa-wine-glass-alt"></i> ガルガネーガ (Garganega)</h4>
+            <ul>
+                <li><i class="fas fa-certificate"></i><strong>特徴：</strong>ソアーヴェの主要品種。青リンゴ、アーモンド、ミネラル感。熟成で蜂蜜香も。</li>
+                <li><i class="fas fa-medal"></i><strong>代表DOCG：</strong>ソアーヴェ・スペリオーレ。</li>
+                <li><i class="fas fa-utensils"></i><strong>マリアージュ：</strong>シーフード、リゾット、白身肉。</li>
+            </ul>
+            
+            <h4><i class="fas fa-wine-glass"></i> コルヴィーナ (Corvina)</h4>
+            <ul>
+                <li><i class="fas fa-certificate"></i><strong>特徴：</strong>アマローネの主要品種。チェリー香、しっかりした骨格。アパッシメント向き。</li>
+                <li><i class="fas fa-medal"></i><strong>代表DOCG：</strong>アマローネ・デッラ・ヴァルポリチェッラ。</li>
+                <li><i class="fas fa-utensils"></i><strong>マリアージュ：</strong>アマローネ：ジビエ、煮込み肉。</li>
+            </ul>
+        </section>
+    </div>
+    
+    <div class="slide-container">
+        <section class="slide">
+            <h2><i class="fas fa-map-pin"></i> トレンティーノ・アルト・アディジェ州</h2>
+            <p>イタリア最北、山岳地帯。アロマティックな白や個性的な赤が特徴。ゲルマン文化の影響も。</p>
+            <h4><i class="fas fa-wine-glass-alt"></i> ゲヴュルツトラミネール</h4>
+            <ul>
+                <li><i class="fas fa-certificate"></i><strong>特徴：</strong>非常にアロマティック。ライチ、バラ、ジンジャーの強烈な香り。</li>
+                <li><i class="fas fa-medal"></i><strong>代表DOC：</strong>アルト・アディジェ・ゲヴュルツトラミネール DOC。</li>
+                <li><i class="fas fa-utensils"></i><strong>マリアージュ：</strong>スパイシーなアジア料理、ミュンスターチーズ。</li>
+            </ul>
+             <h4><i class="fas fa-wine-glass"></i> ラグレイン</h4>
+            <ul>
+                <li><i class="fas fa-certificate"></i><strong>特徴：</strong>濃い色調の赤。土っぽさ、プラム、ダークベリーのノート。</li>
+                <li><i class="fas fa-medal"></i><strong>代表DOC：</strong>アルト・アディジェ・ラグレイン DOC。</li>
+                <li><i class="fas fa-utensils"></i><strong>マリアージュ：</strong>スペック（燻製ハム）、ジビエ。</li>
+            </ul>
+        </section>
+    </div>
+
+    <div class="slide-container">
+        <section class="slide">
+            <h2><i class="fas fa-map-pin"></i> フリウリ・ヴェネツィア・ジューリア州</h2>
+            <p>イタリア北東の角。高品質な白、特にアロマティックでミネラル豊かなスタイル。オレンジワインも注目。</p>
+            <h4><i class="fas fa-wine-glass-alt"></i> フリウラーノ</h4>
+            <ul>
+                <li><i class="fas fa-certificate"></i><strong>特徴：</strong>代表的な白。洋ナシ、リンゴ、アーモンド、ハーブのニュアンス。</li>
+                <li><i class="fas fa-medal"></i><strong>代表DOC：</strong>フリウリ・コッリ・オリエンターリ DOC。</li>
+                <li><i class="fas fa-utensils"></i><strong>マリアージュ：</strong>プロシュット・サン・ダニエーレ、魚料理。</li>
+            </ul>
+            <h4><i class="fas fa-wine-glass-alt"></i> リボッラ・ジャッラ</h4>
+            <ul>
+                <li><i class="fas fa-certificate"></i><strong>特徴：</strong>古代品種。高い酸。柑橘類、青リンゴのノート。オレンジワインにも。</li>
+                <li><i class="fas fa-medal"></i><strong>代表DOC：</strong>コッリオ DOC。</li>
+                <li><i class="fas fa-utensils"></i><strong>マリアージュ：</strong>シーフード、寿司。</li>
+            </ul>
+        </section>
+    </div>
+
+
+    <div class="slide-container">
+        <section class="slide">
+            <h2><i class="fas fa-landmark"></i> 中部イタリア：サンジョヴェーゼの王国</h2>
+            <p>なだらかな丘陵地帯が広がる中部イタリア。トスカーナ州のサンジョヴェーゼ、マルケ州のヴェルディッキオ、アブルッツォ州のモンテプルチアーノなどが有名です。</p>
+            <div class="icon-showcase">
+                <i class="fas fa-vihara"></i>
+                <i class="fas fa-sun"></i>
+                <i class="fas fa-paint-brush"></i>
+            </div>
+        </section>
+    </div>
+
+    <div class="slide-container">
+        <section class="slide">
+            <h2><i class="fas fa-map-pin"></i> トスカーナ州：サンジョヴェーゼと芸術の都</h2>
+            <p>フィレンツェを州都とし、イタリアで最も有名なワイン産地の一つ。サンジョヴェーゼ種がこの地を支配しています。</p>
+            <h4><i class="fas fa-wine-glass"></i> サンジョヴェーゼ (Sangiovese)</h4>
+            <ul>
+                <li><i class="fas fa-certificate"></i><strong>特徴：</strong>イタリア最多栽培の黒ブドウ。高い酸、しっかりしたタンニン。チェリー、プラム、トマトの葉の香り。</li>
+                <li><i class="fas fa-medal"></i><strong>代表DOCG：</strong>キャンティ・クラッシコ、ブルネッロ・ディ・モンタルチーノ。</li>
+                <li><i class="fas fa-utensils"></i><strong>マリアージュ：</strong>トマトパスタ、ピザ、ビステッカ。</li>
+            </ul>
+            <h4><i class="fas fa-wine-glass-alt"></i> ヴェルナッチャ (Vernaccia)</h4>
+            <ul>
+                <li><i class="fas fa-certificate"></i><strong>特徴：</strong>古代からの白。フレッシュで辛口。フローラル、柑橘類、アーモンドのノート。</li>
+                <li><i class="fas fa-medal"></i><strong>代表DOCG：</strong>ヴェルナッチャ・ディ・サン・ジミニャーノ。</li>
+                <li><i class="fas fa-utensils"></i><strong>マリアージュ：</strong>シーフード、鶏肉。</li>
+            </ul>
+        </section>
+    </div>
+    
+    <div class="slide-container">
+        <section class="slide">
+             <h2><i class="fas fa-map-pin"></i> マルケ州：ヴェルディッキオとアドリア海の幸</h2>
+             <p>アドリア海沿岸。卓越した白「ヴェルディッキオ」と、注目すべき赤ワインで知られています。</p>
+             <h4><i class="fas fa-wine-glass-alt"></i> ヴェルディッキオ</h4>
+             <ul>
+                 <li><i class="fas fa-certificate"></i><strong>特徴：</strong>マルケ代表白。高い酸、青リンゴ、柑橘類、アーモンド後味。長期熟成可能。</li>
+                 <li><i class="fas fa-medal"></i><strong>代表DOCG：</strong>ヴェルディッキオ・デイ・カステッリ・ディ・イエージ・リゼルヴァ。</li>
+                 <li><i class="fas fa-utensils"></i><strong>マリアージュ：</strong>アドリア海シーフード。</li>
+             </ul>
+        </section>
+    </div>
+
+    <div class="slide-container">
+        <section class="slide">
+            <h2><i class="fas fa-map-pin"></i> アブルッツォ州：モンテプルチアーノ</h2>
+            <p>ローマの東。コストパフォーマンスに優れたモンテプルチアーノが有名。</p>
+            <h4><i class="fas fa-wine-glass"></i> モンテプルチアーノ</h4>
+            <ul>
+                <li><i class="fas fa-certificate"></i><strong>特徴：</strong>主要な赤。柔らかく親しみやすい。熟したダークフルーツ、リコリスのノート。</li>
+                <li><i class="fas fa-medal"></i><strong>代表DOC：</strong>モンテプルチアーノ・ダブルッツォ。</li>
+                <li><i class="fas fa-utensils"></i><strong>マリアージュ：</strong>ラム串焼き、ミートソースパスタ。</li>
+            </ul>
+        </section>
+    </div>
+
+
+    <div class="slide-container">
+        <section class="slide">
+            <h2><i class="fas fa-umbrella-beach"></i> 南イタリアと島々：太陽の恵みと力強さ</h2>
+            <p>太陽の光をたっぷり浴びる南イタリアと島々。ワインは力強く果実味豊かなものが多く、火山性土壌由来のミネラル感も特徴です。カンパーニア、プーリア、シチリアなどが代表的。</p>
+             <div class="icon-showcase">
+                <i class="fas fa-volcano"></i>
+                <i class="fas fa-anchor"></i>
+                <i class="fas fa-sun"></i>
+            </div>
+        </section>
+    </div>
+
+    <div class="slide-container">
+        <section class="slide">
+            <h2><i class="fas fa-map-pin"></i> カンパーニア州：古代からのワイン造り</h2>
+            <p>ナポリ周辺、火山性土壌が個性を生む。力強い赤とミネラル豊かな白が特徴。</p>
+            <h4><i class="fas fa-wine-glass"></i> アリアニコ (Aglianico)</h4>
+            <ul>
+                <li><i class="fas fa-certificate"></i><strong>特徴：</strong>「南のバローロ」。高貴な赤。フルボディ、高いタンニンと酸。長期熟成向き。</li>
+                <li><i class="fas fa-medal"></i><strong>代表DOCG：</strong>タウラージ。</li>
+                <li><i class="fas fa-utensils"></i><strong>マリアージュ：</strong>濃厚な肉料理、ジビエ。</li>
+            </ul>
+            <h4><i class="fas fa-wine-glass-alt"></i> グレコ (Greco)</h4>
+            <ul>
+                <li><i class="fas fa-certificate"></i><strong>特徴：</strong>古代ギリシャ由来の白。フルボディでアロマティック。火山性土壌由来のミネラル感。</li>
+                <li><i class="fas fa-medal"></i><strong>代表DOCG：</strong>グレコ・ディ・トゥーフォ。</li>
+                <li><i class="fas fa-utensils"></i><strong>マリアージュ：</strong>シーフード、モッツァレッラ。</li>
+            </ul>
+        </section>
+    </div>
+
+    <div class="slide-container">
+        <section class="slide">
+             <h2><i class="fas fa-map-pin"></i> プーリア州：太陽と大地の恵み</h2>
+             <p>イタリアの「かかと」。太陽に恵まれ、果実味豊かな赤ワインが有名。</p>
+             <h4><i class="fas fa-wine-glass"></i> プリミティーヴォ</h4>
+             <ul>
+                 <li><i class="fas fa-certificate"></i><strong>特徴：</strong>ジンファンデルと同一。濃厚でフルボディ。ダークベリー、ジャム、リコリスの香り。</li>
+                 <li><i class="fas fa-medal"></i><strong>代表DOC：</strong>プリミティーヴォ・ディ・マンドゥーリア。</li>
+                 <li><i class="fas fa-utensils"></i><strong>マリアージュ：</strong>バーベキュー、煮込み料理。</li>
+             </ul>
+        </section>
+    </div>
+    
+    <div class="slide-container">
+        <section class="slide">
+            <h2><i class="fas fa-map-pin"></i> シチリア州：地中海の太陽とエトナ火山</h2>
+            <p>地中海最大の島。エトナ火山のテロワールが生むミネラル豊かなワインや、ネロ・ダーヴォラが代表的。</p>
+            <h4><i class="fas fa-wine-glass"></i> ネロ・ダーヴォラ</h4>
+            <ul>
+                <li><i class="fas fa-certificate"></i><strong>特徴：</strong>シチリア最重要の赤。豊かなダークフルーツ、リコリス、スパイシーさ。</li>
+                <li><i class="fas fa-medal"></i><strong>代表DOCG：</strong>チェラスオーロ・ディ・ヴィットリア (ブレンド)。</li>
+                <li><i class="fas fa-utensils"></i><strong>マリアージュ：</strong>グリル肉、マグロ。</li>
+            </ul>
+             <h4><i class="fas fa-wine-glass-alt"></i> カリカンテ (エトナ・ビアンコ)</h4>
+            <ul>
+                <li><i class="fas fa-certificate"></i><strong>特徴：</strong>エトナ山の主要白。高い酸とミネラル感。柑橘類、アニス、スモーキーな個性。</li>
+                <li><i class="fas fa-medal"></i><strong>代表DOC：</strong>エトナ・ビアンコ。</li>
+                <li><i class="fas fa-utensils"></i><strong>マリアージュ：</strong>グリルした魚。</li>
+            </ul>
+        </section>
+    </div>
+
+    <div class="slide-container">
+        <section class="slide">
+             <h2><i class="fas fa-map-pin"></i> サルデーニャ州：島の個性</h2>
+             <p>地中海に浮かぶ大きな島。スペインと歴史的な繋がりを持つユニークなブドウ品種が特徴です。</p>
+             <h4><i class="fas fa-wine-glass-alt"></i> ヴェルメンティーノ</h4>
+             <ul>
+                 <li><i class="fas fa-certificate"></i><strong>特徴：</strong>サルデーニャで最も有名な白。アロマティックでフレッシュ、しばしば塩味。</li>
+                 <li><i class="fas fa-medal"></i><strong>代表DOCG：</strong>ヴェルメンティーノ・ディ・ガッルーラ。</li>
+                 <li><i class="fas fa-utensils"></i><strong>マリアージュ：</strong>シーフード、甲殻類。</li>
+             </ul>
+        </section>
+    </div>
+    
+    <div class="slide-container">
+        <section class="slide">
+            <h2><i class="fas fa-map-pin"></i> カラブリア州：ガリオッポの可能性</h2>
+            <p>イタリアの「つま先」。主に赤ワインが生産され、ガリオッポ種が代表的です。</p>
+            <h4><i class="fas fa-wine-glass"></i> ガリオッポ</h4>
+            <ul>
+                <li><i class="fas fa-certificate"></i><strong>特徴：</strong>カラブリア最重要の赤。ミディアムボディ。良好な酸とタンニン、赤い果実、バラの香り。</li>
+                <li><i class="fas fa-medal"></i><strong>代表DOC：</strong>チロ。</li>
+                <li><i class="fas fa-utensils"></i><strong>マリアージュ：</strong>ラム肉、スパイシーなソーセージ。</li>
+            </ul>
+        </section>
+    </div>
+
+
+    <div class="slide-container">
+        <section class="slide">
+            <h2><i class="fas fa-table"></i> 主要土着ブドウ品種比較表</h2>
+            <p>代表的な土着品種の特徴を一覧で見てみましょう。（左右にスクロールしてご覧ください）</p>
+            <div class="styled-table-wrapper-slide">
+                <table class="styled-table-slide">
+                    <thead>
+                        <tr>
+                            <th><i class="fas fa-signature"></i>品種名</th>
+                            <th><i class="fas fa-map-marker-alt"></i>主な産地</th>
+                            <th><i class="fas fa-palette"></i>色</th>
+                            <th><i class="fas fa-wine-glass-alt"></i>香り・風味</th>
+                            <th><i class="fas fa-weight-hanging"></i>ボディ</th>
+                            <th><i class="fas fa-lemon"></i>酸度</th>
+                            <th><i class="fas fa-seedling"></i>タンニン(赤)</th>
+                            <th><i class="fas fa-award"></i>代表DOC/DOCG</th>
+                            <th><i class="fas fa-utensils"></i>マリアージュ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>ネッビオーロ</td>
+                            <td>ピエモンテ州</td>
+                            <td>赤</td>
+                            <td>バラ、スミレ、チェリー、タール、トリュフ、革製品（熟成時）</td>
+                            <td>フル</td>
+                            <td>高</td>
+                            <td>高</td>
+                            <td>バローロ、バルバレスコ</td>
+                            <td>牛肉の煮込み、ジビエ、トリュフ</td>
+                        </tr>
+                        <tr>
+                            <td>サンジョヴェーゼ</td>
+                            <td>トスカーナ州他</td>
+                            <td>赤</td>
+                            <td>チェリー、プラム、トマトの葉、なめし革、土っぽさ</td>
+                            <td>ミディアム～フル</td>
+                            <td>高</td>
+                            <td>中～高</td>
+                            <td>キャンティ・クラッシコ、ブルネッロ</td>
+                            <td>トマトソースパスタ、グリル肉</td>
+                        </tr>
+                        <tr>
+                            <td>バルベーラ</td>
+                            <td>ピエモンテ州</td>
+                            <td>赤</td>
+                            <td>赤いチェリー、ラズベリー、プラム、豊かな果実味</td>
+                            <td>ミディアム</td>
+                            <td>高</td>
+                            <td>低～中</td>
+                            <td>バルベーラ・ダスティ、ニッツァ</td>
+                            <td>ミートソースパスタ、サラミ、ピザ</td>
+                        </tr>
+                        <tr>
+                            <td>コルヴィーナ</td>
+                            <td>ヴェネト州</td>
+                            <td>赤</td>
+                            <td>チェリー、ベリー、アーモンド（アマローネはレーズン香）</td>
+                            <td>ミディアム～フル</td>
+                            <td>中</td>
+                            <td>中</td>
+                            <td>ヴァルポリチェッラ、アマローネ</td>
+                            <td>アマローネ：ジビエ。ヴァルポリチェッラ：パスタ</td>
+                        </tr>
+                        <tr>
+                            <td>アリアニコ</td>
+                            <td>カンパーニア州等</td>
+                            <td>赤</td>
+                            <td>ブラックチェリー、プラム、リコリス、タール、スモーキー</td>
+                            <td>フル</td>
+                            <td>高</td>
+                            <td>高</td>
+                            <td>タウラージ、アリアニコ・デル・ヴルトゥレ</td>
+                            <td>ラムのロースト、濃厚な煮込み</td>
+                        </tr>
+                        <tr>
+                            <td>プリミティーヴォ</td>
+                            <td>プーリア州</td>
+                            <td>赤</td>
+                            <td>ブラックベリー、プラムジャム、チョコ、リコリス</td>
+                            <td>フル</td>
+                            <td>中～低</td>
+                            <td>中</td>
+                            <td>プリミティーヴォ・ディ・マンドゥーリア</td>
+                            <td>BBQミート、煮込み料理</td>
+                        </tr>
+                        <tr>
+                            <td>ネロ・ダーヴォラ</td>
+                            <td>シチリア州</td>
+                            <td>赤</td>
+                            <td>ブラックベリー、プラム、チェリー、リコリス、スパイス</td>
+                            <td>ミディアム～フル</td>
+                            <td>中</td>
+                            <td>中</td>
+                            <td>チェラスオーロ・ディ・ヴィットリア</td>
+                            <td>グリル肉、マグロ、パスタ・ノルマ</td>
+                        </tr>
+                        <tr>
+                            <td>モンテプルチアーノ</td>
+                            <td>アブルッツォ州等</td>
+                            <td>赤</td>
+                            <td>プラム、ブラックベリー、チェリー、土っぽさ</td>
+                            <td>ミディアム～フル</td>
+                            <td>中</td>
+                            <td>低～中</td>
+                            <td>モンテプルチアーノ・ダブルッツォ</td>
+                            <td>ラム串焼き、ミートソースパスタ</td>
+                        </tr>
+                         <tr>
+                            <td>ガリオッポ</td>
+                            <td>カラブリア州</td>
+                            <td>赤/ロゼ</td>
+                            <td>赤い果実、バラ、やや素朴な風味、良好な酸</td>
+                            <td>ミディアム</td>
+                            <td>中～高</td>
+                            <td>中～高</td>
+                            <td>チロ</td>
+                            <td>スパイシーソーセージ、ラム肉</td>
+                        </tr>
+                        <tr>
+                            <td>カンノナウ</td>
+                            <td>サルデーニャ州</td>
+                            <td>赤</td>
+                            <td>イチゴ、ラズベリー、プラム、ハーブ、スパイス</td>
+                            <td>ミディアム～フル</td>
+                            <td>中</td>
+                            <td>中</td>
+                            <td>カンノナウ・ディ・サルデーニャ</td>
+                            <td>ラムのロースト、ポルチェッドゥ</td>
+                        </tr>
+                        <tr>
+                            <td>ヴェルメンティーノ</td>
+                            <td>サルデーニャ州等</td>
+                            <td>白</td>
+                            <td>柑橘類、青リンゴ、洋ナシ、塩味、ハーブ</td>
+                            <td>ミディアム</td>
+                            <td>中～高</td>
+                            <td>N/A</td>
+                            <td>ヴェルメンティーノ・ディ・ガッルーラ</td>
+                            <td>シーフード、グリル魚、ペスト</td>
+                        </tr>
+                        <tr>
+                            <td>ヴェルナッチャ</td>
+                            <td>トスカーナ州</td>
+                            <td>白</td>
+                            <td>青リンゴ、柑橘類、アーモンド、フローラル</td>
+                            <td>ミディアム</td>
+                            <td>高</td>
+                            <td>N/A</td>
+                            <td>ヴェルナッチャ・ディ・サン・ジミニャーノ</td>
+                            <td>シーフード、鶏肉、野菜料理</td>
+                        </tr>
+                        <tr>
+                            <td>ガルガネーガ</td>
+                            <td>ヴェネト州</td>
+                            <td>白</td>
+                            <td>青リンゴ、洋ナシ、アーモンド、カモミール</td>
+                            <td>ミディアム</td>
+                            <td>中～高</td>
+                            <td>N/A</td>
+                            <td>ソアーヴェ・クラッシコ</td>
+                            <td>シーフード、リゾット、白身肉</td>
+                        </tr>
+                        <tr>
+                            <td>フィアーノ</td>
+                            <td>カンパーニア州</td>
+                            <td>白</td>
+                            <td>洋ナシ、蜂蜜、ヘーゼルナッツ、白い花、スモーキー</td>
+                            <td>ミディアム～フル</td>
+                            <td>中～高</td>
+                            <td>N/A</td>
+                            <td>フィアーノ・ディ・アヴェッリーノ</td>
+                            <td>風味の強いシーフード、鶏肉</td>
+                        </tr>
+                        <tr>
+                            <td>グレコ</td>
+                            <td>カンパーニア州</td>
+                            <td>白</td>
+                            <td>アプリコット、桃、リンゴの皮、火打石ミネラル</td>
+                            <td>フル</td>
+                            <td>高</td>
+                            <td>N/A</td>
+                            <td>グレコ・ディ・トゥーフォ</td>
+                            <td>甲殻類、モッツァレッラ</td>
+                        </tr>
+                        <tr>
+                            <td>ヴェルディッキオ</td>
+                            <td>マルケ州</td>
+                            <td>白</td>
+                            <td>青リンゴ、レモン、フェンネル、アーモンド、ミネラル</td>
+                            <td>ミディアム</td>
+                            <td>高</td>
+                            <td>N/A</td>
+                            <td>ヴェルディッキオ・デイ・カステッリ・ディ・イエージ</td>
+                            <td>アドリア海シーフード、ブロデット</td>
+                        </tr>
+                        <tr>
+                            <td>フリウラーノ</td>
+                            <td>フリウリV.G.州</td>
+                            <td>白</td>
+                            <td>洋ナシ、リンゴ、アーモンド、ハーブ</td>
+                            <td>ミディアム</td>
+                            <td>中</td>
+                            <td>N/A</td>
+                            <td>フリウリ・コッリ・オリエンターリ</td>
+                            <td>プロシュット、フリッタータ</td>
+                        </tr>
+                        <tr>
+                            <td>リボッラ・ジャッラ</td>
+                            <td>フリウリV.G.州</td>
+                            <td>白</td>
+                            <td>レモン、青リンゴ、（オレンジワイン：ナッツ香）</td>
+                            <td>ライト～ミディアム</td>
+                            <td>高</td>
+                            <td>N/A</td>
+                            <td>コッリオ</td>
+                            <td>シーフード、（オレンジワイン：サラミ）</td>
+                        </tr>
+                        <tr>
+                            <td>グレーラ</td>
+                            <td>ヴェネト州</td>
+                            <td>発泡白</td>
+                            <td>白桃、リンゴ、洋ナシ、アカシアの花</td>
+                            <td>ライト</td>
+                            <td>中～高</td>
+                            <td>N/A</td>
+                            <td>プロセッコ</td>
+                            <td>食前酒、軽い前菜</td>
+                        </tr>
+                        <tr>
+                            <td>モスカート・ビアンコ</td>
+                            <td>ピエモンテ州</td>
+                            <td>発泡/スティル白(甘)</td>
+                            <td>桃、アプリコット、セージ、オレンジの花</td>
+                            <td>ライト～ミディアム</td>
+                            <td>中～高</td>
+                            <td>N/A</td>
+                            <td>アスティ、モスカート・ダスティ</td>
+                            <td>フルーツデザート、焼き菓子</td>
+                        </tr>
+                        <tr>
+                            <td>アルネイス</td>
+                            <td>ピエモンテ州</td>
+                            <td>白</td>
+                            <td>洋ナシ、アプリコット、白い花、アーモンド</td>
+                            <td>ミディアム</td>
+                            <td>中</td>
+                            <td>N/A</td>
+                            <td>ロエロ・アルネイス</td>
+                            <td>前菜、魚料理、白身肉</td>
+                        </tr>
+                        <tr>
+                            <td>コルテーゼ</td>
+                            <td>ピエモンテ州</td>
+                            <td>白</td>
+                            <td>レモン、青リンゴ、ハーブ、ミネラル、アーモンド後味</td>
+                            <td>ライト～ミディアム</td>
+                            <td>高</td>
+                            <td>N/A</td>
+                            <td>ガヴィ</td>
+                            <td>シーフード、ペストパスタ</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="quote-slide">白ワインは<strong style="color:#0077b6;">柑橘系の香りとミネラル感</strong>、赤ワインは<strong style="color:#c0392b;">高い酸とタンニン</strong>がイタリア土着品種のキーワードになることも！</p>
+        </section>
+    </div>
+
+    <div class="slide-container">
+        <section class="slide">
+            <h2><i class="fas fa-lightbulb"></i> 土着品種の尽きない魅力</h2>
+            <p>イタリアの土着品種は、その土地の文化や歴史を映し出す「生きた遺産」。多様な個性を持つワインたちは、私たちの食卓を豊かに彩ってくれます。</p>
+            <p>ぜひ、お気に入りの一本を見つけて、イタリアワインの奥深い世界を楽しんでください！</p>
+            <div class="icon-showcase" style="margin-top:20px;">
+                 <i class="fas fa-heart"></i>
+                 <i class="fas fa-search-location"></i>
+                 <i class="fas fa-glass-cheers"></i>
+            </div>
+        </section>
+    </div>
+
+    <div class="slide-container">
+        <section class="slide footer-slide">
+            <h2>ご視聴ありがとうございました！</h2>
+            <p>Salute! Cin Cin!</p>
+        </section>
+    </div>
+
+</body>
+</html>
