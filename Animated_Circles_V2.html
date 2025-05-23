@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>P5.js Animated Circles V2 (パラメータ調整機能付き)</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/p5.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column; /* コントロールとキャンバスを縦に並べる */
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #222;
+      font-family: sans-serif;
+      color: #fff; /* テキストの色を白に */
+    }
+    main {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      overflow: hidden;
+    }
+    .controls {
+      display: grid; /* グリッドレイアウトに変更 */
+      grid-template-columns: auto 1fr auto; /* ラベル、スライダー、値表示 */
+      gap: 8px 10px; /* 行間、列間の隙間 */
+      padding: 15px;
+      background-color: rgba(50,50,50,0.7);
+      border-radius: 5px;
+      margin-bottom: 20px;
+      width: calc(100% - 40px); /* キャンバス幅に合わせる試み */
+      max-width: 380px; /* コントロール全体の最大幅 */
+    }
+    .controls label {
+      text-align: right;
+      white-space: nowrap; /* ラベルが折り返さないように */
+    }
+    .controls input[type="range"] {
+      width: 100%; /* スライダーが利用可能な幅全体に広がるように */
+      margin: 0;
+    }
+    .controls span {
+      text-align: left;
+      min-width: 35px; /* 値表示エリアの最小幅 */
+    }
+  </style>
+</head>
+<body>
+  <div class="controls">
+    <label for="r_step">Rステップ:</label>
+    <input type="range" id="r_step" min="1" max="20" step="1" value="4">
+    <span id="r_step_val">4</span>
+
+    <label for="t_step">Tステップ:</label>
+    <input type="range" id="t_step" min="0.05" max="1.0" step="0.01" value="0.3">
+    <span id="t_step_val">0.30</span>
+
+    <label for="green_divisor">緑の時間除数:</label>
+    <input type="range" id="green_divisor" min="1" max="200" step="1" value="50">
+    <span id="green_divisor_val">50</span>
+
+    <label for="blue_divisor">青の時間除数:</label>
+    <input type="range" id="blue_divisor" min="1" max="100" step="1" value="7">
+    <span id="blue_divisor_val">7</span>
+    
+    <label for="diameter_factor">直径スケール:</label>
+    <input type="range" id="diameter_factor" min="0.1" max="2.0" step="0.05" value="1.0">
+    <span id="diameter_factor_val">1.00</span>
+  </div>
+  <main id="canvas-container">
+    </main>
+  <script>
+    let t = 0;   // 時間変数
+    let W;       // キャンバスの幅と高さ
+    let w_param; // 元のコードのw
+
+    // スライダー要素と値表示要素の参照
+    let rStepSlider, tStepSlider, greenDivisorSlider, blueDivisorSlider, diameterFactorSlider;
+    let rStepVal, tStepVal, greenDivisorVal, blueDivisorVal, diameterFactorVal;
+
+    // パラメータの値を保持する変数
+    let currentRStep = 4;
+    let currentTStep = 0.3;
+    let currentGreenDivisor = 50;
+    let currentBlueDivisor = 7;
+    let currentDiameterFactor = 1.0;
+
+    function updateParameters() {
+      currentRStep = float(rStepSlider.value());
+      rStepVal.html(currentRStep);
+
+      currentTStep = float(tStepSlider.value());
+      tStepVal.html(currentTStep.toFixed(2));
+
+      currentGreenDivisor = float(greenDivisorSlider.value());
+      greenDivisorVal.html(currentGreenDivisor);
+      
+      currentBlueDivisor = float(blueDivisorSlider.value());
+      blueDivisorVal.html(currentBlueDivisor);
+
+      currentDiameterFactor = float(diameterFactorSlider.value());
+      diameterFactorVal.html(currentDiameterFactor.toFixed(2));
+    }
+
+    function setup() {
+      w_param = 200; 
+      W = w_param * 2; 
+      let canvas = createCanvas(W, W);
+      canvas.parent('canvas-container'); 
+      noFill(); 
+
+      // スライダー要素を取得
+      rStepSlider = select('#r_step');
+      tStepSlider = select('#t_step');
+      greenDivisorSlider = select('#green_divisor');
+      blueDivisorSlider = select('#blue_divisor');
+      diameterFactorSlider = select('#diameter_factor');
+
+      // 値表示用span要素を取得
+      rStepVal = select('#r_step_val');
+      tStepVal = select('#t_step_val');
+      greenDivisorVal = select('#green_divisor_val');
+      blueDivisorVal = select('#blue_divisor_val');
+      diameterFactorVal = select('#diameter_factor_val');
+      
+      // スライダーのinputイベントに関数を紐付け
+      rStepSlider.input(updateParameters);
+      tStepSlider.input(updateParameters);
+      greenDivisorSlider.input(updateParameters);
+      blueDivisorSlider.input(updateParameters);
+      diameterFactorSlider.input(updateParameters);
+
+      // 初期値を設定・表示
+      updateParameters();
+
+      console.log("Animated Circles V2 (Interactive) Setup Complete. Canvas size: " + W + "x" + W);
+    }
+
+    function draw() {
+      background(0); 
+
+      // Rは半径に関連する値として使用
+      for (let R = 1; R < w_param; R += currentRStep) { // スライダーの値を使用
+        // Tは角度として使用
+        for (let T = 0; T < TAU; T += currentTStep) { // スライダーの値を使用
+          
+          stroke(
+            W * cos(R),
+            W * tan(t / max(1, currentGreenDivisor)), // スライダーの値を使用, 0除算を避ける
+            W * sin(R + t / max(1, currentBlueDivisor)) // スライダーの値を使用, 0除算を避ける
+          );
+
+          let circX = R * cos(T) + w_param;
+          let circY = R * sin(T) + w_param;
+
+          let U = atan2(circY - w_param, circX - w_param);
+
+          // 直径計算時のターゲットポイントにスライダーの値を反映
+          let targetX = (w_param * currentDiameterFactor) * cos(U) + w_param;
+          let targetY = (w_param * currentDiameterFactor) * sin(U) + w_param;
+          
+          let diameter = dist(circX, circY, targetX, targetY);
+          
+          circle(circX, circY, diameter);
+        }
+      }
+
+      t = ++t % w_param;
+    }
+  </script>
+</body>
+</html>
