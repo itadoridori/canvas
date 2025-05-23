@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>血糖調節インタラクティブガイド</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Visualization & Content Choices:
+        - Report Info (Overall Glucose Homeostasis): Goal: Introduce core concepts. Viz/Presentation: Text, HTML/CSS diagram of balance. Interaction: Nav clicks. Justification: Foundational understanding. Library/Method: HTML, JS.
+        - Report Info (Insulin Details - Synthesis, Action, Regulation): Goal: Explain the sole glucose-lowering hormone. Viz/Presentation: Tabbed text, HTML/CSS diagram for synthesis. Interaction: Tab clicks. Justification: Organized detail. Library/Method: HTML, JS.
+        - Report Info (Counter-regulatory Hormones - Glucagon, Adrenaline, Cortisol, GH): Goal: Explain multiple glucose-raising hormones. Viz/Presentation: Tabbed/sectioned text, HTML/CSS diagram for HPA axis (Cortisol). Interaction: Nav/Tab clicks, button for comparison table. Justification: Detailed and comparative view. Library/Method: HTML, JS.
+        - Report Info (Table 1, 2, 3 - Hormone Summaries, Comparisons): Goal: Present comparative data. Viz/Presentation: HTML tables. Interaction: Static display, potentially highlighted rows on hover. Justification: Direct data comparison. Library/Method: HTML.
+        - Report Info (Evolutionary Perspective - Why 1 vs. Many, Thrifty Gene): Goal: Explain evolutionary rationale. Viz/Presentation: Text, HTML/CSS conceptual graphic. Interaction: Minimal. Justification: Narrative clarity. Library/Method: HTML.
+        - Report Info (Modern Mismatch - Lifestyle Impact, Insulin Resistance, T2D): Goal: Illustrate modern health implications. Viz/Presentation: Text, HTML/CSS 'Then vs. Now' comparison, Chart.js bar chart for conceptual risk factor changes. Interaction: Static chart, clear textual explanation. Justification: Visual impact of lifestyle changes. Library/Method: HTML, JS, Chart.js.
+        - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #F8F9FA; color: #343A40; }
+        .nav-link { transition: all 0.3s ease; }
+        .nav-link.active { color: #20C997; border-bottom: 2px solid #20C997; font-weight: 600;}
+        .nav-link:hover { color: #20C997; }
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        .tab-button { transition: all 0.3s ease; }
+        .tab-button.active { background-color: #20C997; color: white; }
+        .tab-button:hover { background-color: #66D9B8; color: white; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 300px; max-height: 400px; }
+        @media (min-width: 768px) { .chart-container { height: 350px; } }
+        .info-card { background-color: white; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06); padding: 1.5rem; margin-bottom: 1rem; }
+        .info-card h3 { color: #20C997; }
+        .diagram { border: 1px solid #DEE2E6; padding: 1rem; border-radius: 0.5rem; background-color: #FFFFFF; margin-top:1rem; margin-bottom:1rem; }
+        .diagram-arrow { text-align: center; font-size: 1.5rem; color: #20C997; margin: 0.5rem 0; }
+        .comparison-table th, .comparison-table td { border: 1px solid #DEE2E6; padding: 0.5rem; text-align: left; }
+        .comparison-table th { background-color: #E9ECEF; }
+        .stress-bar { background-color: #FFA07A; height: 20px; border-radius: 0.25rem; text-align: center; color: white; font-size: 0.8rem; line-height: 20px; }
+        .activity-bar { background-color: #98FB98; height: 20px; border-radius: 0.25rem; text-align: center; color: #343A40; font-size: 0.8rem; line-height: 20px; }
+        .calorie-bar { background-color: #ADD8E6; height: 20px; border-radius: 0.25rem; text-align: center; color: #343A40; font-size: 0.8rem; line-height: 20px; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-3">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <h1 class="text-2xl font-semibold text-gray-700">血糖調節インタラクティブガイド</h1>
+                <div class="flex flex-wrap justify-center md:justify-end mt-4 md:mt-0 space-x-1 md:space-x-4" id="navigation">
+                    <a href="#home" class="nav-link px-3 py-2 rounded-md text-sm font-medium active">ホーム</a>
+                    <a href="#insulin" class="nav-link px-3 py-2 rounded-md text-sm font-medium">インスリン</a>
+                    <a href="#counter-regulatory" class="nav-link px-3 py-2 rounded-md text-sm font-medium">血糖上昇ホルモン</a>
+                    <a href="#evolution" class="nav-link px-3 py-2 rounded-md text-sm font-medium">進化の視点</a>
+                    <a href="#mismatch" class="nav-link px-3 py-2 rounded-md text-sm font-medium">現代とのミスマッチ</a>
+                    <a href="#summary" class="nav-link px-3 py-2 rounded-md text-sm font-medium">まとめ</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-8">
+        <section id="home" class="content-section active">
+            <h2 class="text-3xl font-bold mb-6 text-center text-[#20C997]">ようこそ！血糖調節の世界へ</h2>
+            <p class="text-lg mb-4 text-gray-700 leading-relaxed">
+                このインタラクティブガイドへようこそ。ここでは、私たちの体がいかにして血糖値という重要なバランスを保っているのかを探求します。血糖値は生命維持に不可欠なエネルギー源であり、その精密なコントロールは健康の鍵を握ります。このガイドでは、血糖値を下げる唯一の主要ホルモンであるインスリンと、血糖値を上げる複数のホルモン（グルカゴン、アドレナリン、コルチゾール、成長ホルモン）の働き、そしてそれらがなぜこのような非対称な構成になっているのか、進化の視点から解き明かします。さらに、この古代からのメカニズムが、現代のライフスタイルとどのように相互作用し、私たちの健康に影響を与えているのかについても深く掘り下げていきます。各セクションを通じて、複雑な生体システムへの理解を深め、健康的な生活を送るためのヒントを見つけていただければ幸いです。
+            </p>
+            <div class="info-card">
+                <h3 class="text-2xl font-semibold mb-3">血糖ホメオスタシス：生命のバランス</h3>
+                <p class="mb-2">血糖値とは、血液中のグルコース（ブドウ糖）の濃度のことです。私たちの体、特に脳はグルコースを主要なエネルギー源としており、血糖値を一定の範囲（空腹時約80-90 mg/dL）に保つことが極めて重要です。この恒常性維持（ホメオスタシス）は、複数のホルモンと神経系が複雑に連携することで成り立っています。</p>
+                <div class="diagram">
+                    <p class="text-center font-semibold">血糖値のバランス</p>
+                    <div class="flex justify-around items-center mt-4">
+                        <div class="text-center">
+                            <p class="text-lg font-medium text-blue-600">血糖値低下</p>
+                            <div class="diagram-arrow text-blue-600">⬇</div>
+                            <p class="font-semibold">インスリン</p>
+                            <p class="text-sm">(唯一の主要ホルモン)</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-lg font-medium text-red-600">血糖値上昇</p>
+                            <div class="diagram-arrow text-red-600">⬆</div>
+                            <p class="font-semibold">グルカゴン<br>アドレナリン<br>コルチゾール<br>成長ホルモン</p>
+                            <p class="text-sm">(複数のホルモン)</p>
+                        </div>
+                    </div>
+                    <p class="mt-4 text-sm text-gray-600 text-center">この「1対多」のホルモンバランスが、本ガイドの中心的なテーマです。</p>
+                </div>
+            </div>
+            <p class="text-lg mt-6 text-gray-700 leading-relaxed">
+                ナビゲーションメニューから興味のあるセクションを選び、血糖調節の奥深い世界を探索してください。
+            </p>
+        </section>
+
+        <section id="insulin" class="content-section">
+            <h2 class="text-3xl font-bold mb-6 text-center text-[#20C997]">インスリン：グルコース低下を司る唯一の指揮者</h2>
+            <p class="text-lg mb-6 text-gray-700 leading-relaxed">
+                インスリンは、膵臓のβ細胞から分泌される、血糖値を下げる唯一の主要なホルモンです。食事によって血糖値が上昇するとインスリンが分泌され、グルコースを細胞に取り込ませたり、肝臓や筋肉でグリコーゲンとして貯蔵したり、脂肪として蓄えたりする働きを促進します。このセクションでは、インスリンがどのように作られ、どのように作用し、その分泌がどのように調節されているのかを詳しく見ていきましょう。
+            </p>
+            <div class="mb-4 border-b border-gray-200">
+                <nav class="flex space-x-4" aria-label="Tabs" id="insulin-tabs">
+                    <button data-tab="insulin-synthesis" class="tab-button active px-3 py-2 font-medium text-sm rounded-md">生合成</button>
+                    <button data-tab="insulin-action" class="tab-button px-3 py-2 font-medium text-sm rounded-md">作用機序</button>
+                    <button data-tab="insulin-regulation" class="tab-button px-3 py-2 font-medium text-sm rounded-md">分泌調節</button>
+                </nav>
+            </div>
+
+            <div id="insulin-synthesis" class="tab-content active info-card">
+                <h3 class="text-xl font-semibold mb-3">インスリンの生合成：前駆体から活性型へ</h3>
+                <p class="mb-2">インスリンは膵臓のβ細胞で、プレプロインスリンという前駆体として作られます。これが段階的にプロセシング（加工）されて、最終的に活性を持つインスリン分子が完成します。</p>
+                <ol class="list-decimal list-inside space-y-1 mb-3">
+                    <li>プレプロインスリンが粗面小胞体で合成される。</li>
+                    <li>シグナルペプチドが切断され、プロインスリンとなる。</li>
+                    <li>プロインスリンはゴルジ装置でCペプチドが切断され、A鎖とB鎖からなる成熟インスリンとなる。</li>
+                    <li>インスリンとCペプチドは等モル量で分泌顆粒に貯蔵され、血中に放出される。</li>
+                </ol>
+                <div class="diagram">
+                    <p class="text-center font-semibold">インスリン生合成の概略</p>
+                    <div class="text-center">プレプロインスリン</div>
+                    <div class="diagram-arrow">⬇ (シグナルペプチド切断)</div>
+                    <div class="text-center">プロインスリン (A鎖-Cペプチド-B鎖)</div>
+                    <div class="diagram-arrow">⬇ (Cペプチド切断)</div>
+                    <div class="text-center">成熟インスリン (A鎖-S-S-B鎖) + Cペプチド</div>
+                </div>
+                <p class="text-sm mt-2">Cペプチドの測定は、内因性インスリン分泌能の指標として臨床的に重要です。</p>
+            </div>
+
+            <div id="insulin-action" class="tab-content info-card">
+                <h3 class="text-xl font-semibold mb-3">インスリンの作用機序：グルコース処理と貯蔵の促進</h3>
+                <p class="mb-2">インスリンは、細胞表面のインスリン受容体に結合することで作用を発揮します。主な作用は以下の通りです。</p>
+                <ul class="list-disc list-inside space-y-1">
+                    <li><strong>グルコース取り込み増加：</strong> 筋肉や脂肪細胞でGLUT4輸送体を細胞膜へ移行させ、グルコースの取り込みを促進。</li>
+                    <li><strong>グリコーゲン合成促進：</strong> 肝臓や筋肉でグルコースからグリコーゲンの合成を促進。</li>
+                    <li><strong>脂肪合成促進：</strong> 肝臓や脂肪細胞で脂肪の合成を促進。</li>
+                    <li><strong>糖新生抑制：</strong> 肝臓での新たなグルコース産生を抑制。</li>
+                    <li><strong>グリコーゲン分解抑制：</strong> 肝臓でのグリコーゲン分解を抑制。</li>
+                    <li><strong>タンパク質合成促進：</strong> 筋肉でのタンパク質合成を促進。</li>
+                </ul>
+                <p class="mt-2">これらの作用により、インスリンは血糖値を下げるだけでなく、エネルギーを貯蔵する強力な同化ホルモンとして機能します。</p>
+            </div>
+
+            <div id="insulin-regulation" class="tab-content info-card">
+                <h3 class="text-xl font-semibold mb-3">インスリン分泌の調節：シグナルの交響曲</h3>
+                <p class="mb-2">インスリン分泌は、複数の因子によって精密に調節されています。</p>
+                <ul class="list-disc list-inside space-y-1">
+                    <li><strong>主要刺激（グルコース）：</strong> 食後の血糖値上昇が最も強力な刺激。</li>
+                    <li><strong>アミノ酸：</strong> 特定のアミノ酸（アルギニン、ロイシンなど）も分泌を刺激。</li>
+                    <li><strong>インクレチンホルモン：</strong> GLP-1やGIPなどがグルコース依存的にインスリン分泌を増強。</li>
+                    <li><strong>神経制御：</strong> 副交感神経（迷走神経）は促進、交感神経（アドレナリン）は抑制。</li>
+                    <li><strong>抑制シグナル：</strong> ソマトスタチン、低血糖、インスリン自身のフィードバック。</li>
+                </ul>
+                <p class="mt-2">これらの調節機構により、体内の状況に応じてインスリン分泌が最適化されます。</p>
+            </div>
+        </section>
+
+        <section id="counter-regulatory" class="content-section">
+            <h2 class="text-3xl font-bold mb-6 text-center text-[#20C997]">血糖上昇ホルモン群：低血糖を防ぐ守護者たち</h2>
+            <p class="text-lg mb-6 text-gray-700 leading-relaxed">
+                インスリンとは対照的に、血糖値を上昇させるホルモンは複数存在します。これらは「インスリン拮抗ホルモン」または「カウンターレギュラトリーホルモン」と呼ばれ、主に低血糖を防ぐために働きます。グルカゴン、アドレナリン、コルチゾール、成長ホルモンがその代表です。これらのホルモンは、肝臓でのグルコース産生を増やしたり、末梢組織でのグルコース利用を抑えたりすることで血糖値を維持します。このセクションでは、これらのホルモンがそれぞれどのように機能するのかを見ていきましょう。
+            </p>
+            <div class="mb-4 border-b border-gray-200">
+                <nav class="flex flex-wrap space-x-2 sm:space-x-4" aria-label="Tabs" id="counter-regulatory-tabs">
+                    <button data-tab="glucagon" class="tab-button active px-3 py-2 font-medium text-sm rounded-md">グルカゴン</button>
+                    <button data-tab="adrenaline" class="tab-button px-3 py-2 font-medium text-sm rounded-md">アドレナリン</button>
+                    <button data-tab="cortisol" class="tab-button px-3 py-2 font-medium text-sm rounded-md">コルチゾール</button>
+                    <button data-tab="growth-hormone" class="tab-button px-3 py-2 font-medium text-sm rounded-md">成長ホルモン</button>
+                    <button data-tab="counter-comparison" class="tab-button px-3 py-2 font-medium text-sm rounded-md">比較表</button>
+                </nav>
+            </div>
+
+            <div id="glucagon" class="tab-content active info-card">
+                <h3 class="text-xl font-semibold mb-3">A. グルカゴン：主要な血糖上昇ホルモン</h3>
+                <p class="mb-2">膵臓α細胞から分泌。主な作用は肝臓でのグリコーゲン分解促進と糖新生促進です。</p>
+                <ul class="list-disc list-inside space-y-1">
+                    <li><strong>産生：</strong> 膵臓α細胞。</li>
+                    <li><strong>主要標的：</strong> 肝臓。</li>
+                    <li><strong>作用機序：</strong> 肝グリコーゲン分解促進、糖新生促進。</li>
+                    <li><strong>分泌刺激：</strong> 低血糖、特定のアミノ酸、交感神経刺激。</li>
+                    <li><strong>分泌抑制：</strong> 高血糖、インスリン、ソマトスタチン。</li>
+                </ul>
+                <p class="mt-2">グルカゴンは、特に空腹時や絶食時に血糖値を維持するのに重要な役割を果たします。</p>
+            </div>
+
+            <div id="adrenaline" class="tab-content info-card">
+                <h3 class="text-xl font-semibold mb-3">B. アドレナリン：「闘争か逃走か」のグルコース動員</h3>
+                <p class="mb-2">副腎髄質から分泌。ストレス反応時に血糖値を急速に上昇させます。</p>
+                <ul class="list-disc list-inside space-y-1">
+                    <li><strong>産生：</strong> 副腎髄質。</li>
+                    <li><strong>作用機序：</strong> 肝グリコーゲン分解促進、筋グリコーゲン分解促進（局所利用）、糖新生促進、インスリン分泌抑制、グルカゴン分泌促進。</li>
+                    <li><strong>分泌刺激：</strong> ストレス（身体的・精神的）、低血糖、運動。</li>
+                </ul>
+                <p class="mt-2">アドレナリンは、緊急時に迅速にエネルギーを供給するためのホルモンです。</p>
+            </div>
+
+            <div id="cortisol" class="tab-content info-card">
+                <h3 class="text-xl font-semibold mb-3">C. コルチゾール：慢性ストレスとグルコース調節</h3>
+                <p class="mb-2">副腎皮質から分泌。長期間のストレスに対応し、血糖値を維持します。</p>
+                <ul class="list-disc list-inside space-y-1">
+                    <li><strong>産生：</strong> 副腎皮質。</li>
+                    <li><strong>作用機序：</strong> 糖新生促進、末梢組織でのインスリン抵抗性誘導、タンパク質異化促進。グルカゴンやアドレナリンの作用を増強する許容効果も持ちます。</li>
+                    <li><strong>分泌刺激：</strong> ストレス（HPA軸を介して）、低血糖、日内変動（早朝に高値）。</li>
+                </ul>
+                <div class="diagram mt-3">
+                    <p class="text-center font-semibold">HPA軸（視床下部-下垂体-副腎系）</p>
+                    <div class="text-center">ストレスなど</div>
+                    <div class="diagram-arrow">⬇</div>
+                    <div class="text-center">視床下部 (CRH放出)</div>
+                    <div class="diagram-arrow">⬇</div>
+                    <div class="text-center">下垂体前葉 (ACTH放出)</div>
+                    <div class="diagram-arrow">⬇</div>
+                    <div class="text-center">副腎皮質 (コルチゾール放出)</div>
+                    <div class="diagram-arrow">🔄 (コルチゾールによるネガティブフィードバック)</div>
+                </div>
+                <p class="mt-2">慢性的なコルチゾール高値は、インスリン抵抗性や高血糖の原因となり得ます。</p>
+            </div>
+
+            <div id="growth-hormone" class="tab-content info-card">
+                <h3 class="text-xl font-semibold mb-3">D. 成長ホルモン（GH）：成長促進と血糖上昇</h3>
+                <p class="mb-2">下垂体前葉から分泌。成長を促進するほか、血糖値を上昇させる作用も持ちます。</p>
+                <ul class="list-disc list-inside space-y-1">
+                    <li><strong>産生：</strong> 下垂体前葉。</li>
+                    <li><strong>作用機序：</strong> インスリン抵抗性誘導、肝グルコース産生促進、脂肪分解促進。</li>
+                    <li><strong>分泌刺激：</strong> GHRH、グレリン、睡眠、運動、低血糖。</li>
+                    <li><strong>分泌抑制：</strong> ソマトスタチン、IGF-1。</li>
+                </ul>
+                <p class="mt-2">成長ホルモンは、特に絶食時や睡眠中に血糖値を維持するのに役立ちます。</p>
+            </div>
+            <div id="counter-comparison" class="tab-content info-card">
+                <h3 class="text-xl font-semibold mb-3">血糖上昇ホルモンの比較</h3>
+                <p class="mb-2">これらの血糖上昇ホルモンは、それぞれ異なる特徴を持ちながら、協力して低血糖を防いでいます。以下の表は、レポートの表2に基づいた主な比較です。</p>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full comparison-table">
+                        <thead>
+                            <tr>
+                                <th>ホルモン名</th>
+                                <th>主要産生部位</th>
+                                <th>血糖効果の主要標的器官</th>
+                                <th>主要な血糖上昇機序</th>
+                                <th>作用発現／持続時間</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>グルカゴン</td>
+                                <td>膵臓α細胞</td>
+                                <td>肝臓</td>
+                                <td>肝グリコーゲン分解、糖新生</td>
+                                <td>速やか／比較的短い</td>
+                            </tr>
+                            <tr>
+                                <td>アドレナリン</td>
+                                <td>副腎髄質</td>
+                                <td>肝臓、筋肉、脂肪組織、膵臓</td>
+                                <td>肝グリコーゲン分解、糖新生、インスリン分泌抑制、グルカゴン分泌促進</td>
+                                <td>極めて速やか／短い</td>
+                            </tr>
+                            <tr>
+                                <td>コルチゾール</td>
+                                <td>副腎皮質</td>
+                                <td>肝臓、筋肉、脂肪組織</td>
+                                <td>糖新生、インスリン抵抗性誘導、タンパク質異化</td>
+                                <td>遅い／持続的</td>
+                            </tr>
+                            <tr>
+                                <td>成長ホルモン</td>
+                                <td>下垂体前葉</td>
+                                <td>肝臓、筋肉、脂肪組織</td>
+                                <td>インスリン抵抗性誘導、肝グルコース産生</td>
+                                <td>遅い／持続的</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="mt-3 text-sm">これらのホルモンは、作用の発現時間や持続時間が異なるため、急性的な対応から長期的な適応まで、様々な状況で血糖値を維持することができます。</p>
+            </div>
+        </section>
+
+        <section id="evolution" class="content-section">
+            <h2 class="text-3xl font-bold mb-6 text-center text-[#20C997]">進化の視点：なぜ「一つは下降、多くは上昇」なのか？</h2>
+            <p class="text-lg mb-6 text-gray-700 leading-relaxed">
+                血糖値を下げる主要なホルモンがインスリン一つであるのに対し、上げるホルモンが複数存在するのには、進化的な理由があります。人類の祖先は、食糧が不安定で飢餓に直面する機会が多い環境で生きてきました。このような状況では、高血糖よりも低血糖の方が生命にとって直接的な脅威でした。特に脳はグルコースを主要なエネルギー源とするため、低血糖は深刻な機能障害や死に直結します。このセクションでは、このホルモンシステムの非対称性がどのように生存に有利に働いてきたのかを探ります。
+            </p>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="info-card">
+                    <h3 class="text-xl font-semibold mb-3">低血糖予防の至上命題</h3>
+                    <p class="mb-2">進化の過程で、食糧不足は日常的な課題でした。脳はグルコースにほぼ完全に依存しているため、血糖値を維持し、特に低血糖を防ぐことは生存に不可欠でした。</p>
+                    <p>短時間の重度な低血糖でも脳に不可逆的なダメージを与える可能性があるため、血糖値を上げるための堅牢で冗長な（複数の予備がある）メカニズムが進化的に選択されたと考えられます。</p>
+                </div>
+                <div class="info-card">
+                    <h3 class="text-xl font-semibold mb-3">生存戦略としての冗長性</h3>
+                    <p class="mb-2">グルカゴン、アドレナリン、コルチゾール、成長ホルモンといった複数のホルモンが、異なる経路で血糖値を上昇させることができます。これは、一つのシステムが機能不全に陥っても、他のシステムが補うことができる多層的な防御機構を形成します。</p>
+                    <p>長時間の絶食、激しい身体活動（狩猟や逃走）、急性ストレス（傷害や感染）など、生存が脅かされる状況でこの冗長性が重要になります。</p>
+                </div>
+                <div class="info-card md:col-span-2">
+                    <h3 class="text-xl font-semibold mb-3">「倹約遺伝子」仮説</h3>
+                    <p class="mb-2">ジェームズ・ニールによって提唱されたこの仮説は、食糧が不安定な環境では、エネルギーを効率的に貯蔵し、飢餓時にはそれを節約できるような遺伝的素質（倹約遺伝子）が生存に有利だったと示唆しています。</p>
+                    <p class="mb-2">インスリンによる食後の効率的なエネルギー貯蔵と、複数の血糖上昇ホルモンによる飢餓時のグルコース維持能力は、この「倹約的」な生理機能の一部と考えられます。入手可能な時にエネルギーを素早く蓄え、希少な時にはそれを慎重に保存するシステムが、進化の過程で有利に働いたのです。</p>
+                    <p>血糖値を上げる多くのホルモンは、外部からのグルコース供給がない場合に体内でグルコースを産生・維持することで、この倹約戦略に不可欠な役割を果たしています。</p>
+                </div>
+            </div>
+             <div class="diagram mt-6">
+                <p class="text-center font-semibold text-lg mb-3">進化の圧力と血糖調節</p>
+                <div class="flex flex-col md:flex-row justify-around items-center text-center">
+                    <div class="mb-4 md:mb-0">
+                        <p class="text-2xl">🐒</p>
+                        <p class="font-medium">祖先の環境</p>
+                        <p class="text-sm">食糧不足・飢餓の脅威</p>
+                        <p class="text-sm text-red-600 font-semibold">低血糖リスク > 高血糖リスク</p>
+                    </div>
+                    <div class="text-2xl mx-4 text-[#20C997]">➡️</div>
+                    <div class="mb-4 md:mb-0">
+                        <p class="text-2xl">🛡️</p>
+                        <p class="font-medium">適応戦略</p>
+                        <p class="text-sm">血糖上昇システムの冗長化</p>
+                        <p class="text-sm">効率的なエネルギー貯蔵</p>
+                    </div>
+                     <div class="text-2xl mx-4 text-[#20C997]">➡️</div>
+                    <div>
+                        <p class="text-2xl">🧬</p>
+                        <p class="font-medium">結果</p>
+                        <p class="text-sm">1つの血糖低下ホルモン</p>
+                        <p class="text-sm">複数の血糖上昇ホルモン</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="mismatch" class="content-section">
+            <h2 class="text-3xl font-bold mb-6 text-center text-[#20C997]">現代のライフスタイルと古代の機構：代謝的不協和</h2>
+            <p class="text-lg mb-6 text-gray-700 leading-relaxed">
+                私たちの体は、飢餓の時代を生き抜くために最適化された「倹約的」な遺伝子を受け継いでいます。しかし、現代社会は飽食、運動不足、慢性的な心理社会的ストレスといった、祖先の時代とは全く異なる環境です。この「進化的ミスマッチ」が、インスリン抵抗性、2型糖尿病、肥満といった現代の代謝性疾患の蔓延に深く関わっています。このセクションでは、古代の生存機構が現代でどのように裏目に出ているのかを考察します。
+            </p>
+            <div class="info-card mb-6">
+                <h3 class="text-xl font-semibold mb-3">進化的ミスマッチとは？</h3>
+                <p class="mb-2">私たちの遺伝子は、食糧が乏しく、身体活動が多い環境に適応してきましたが、現代の生活環境は以下のような特徴があります：</p>
+                <ul class="list-disc list-inside space-y-1">
+                    <li><strong>カロリー過剰：</strong> 高カロリーで加工された食品が容易に入手可能。</li>
+                    <li><strong>座りがちな行動：</strong> 身体活動の大幅な減少。</li>
+                    <li><strong>慢性ストレス：</strong> 持続的な心理社会的ストレス。</li>
+                </ul>
+                <p class="mt-2">この環境の変化に私たちの体は十分に適応できておらず、かつて生存に有利だった形質が、現代では逆に健康問題を引き起こす原因となっています。</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6 mb-6">
+                <div class="info-card">
+                    <h4 class="text-lg font-semibold mb-2">ミスマッチの帰結：インスリン抵抗性</h4>
+                    <p>慢性的なカロリー過剰と運動不足は、インスリンの効きが悪くなる「インスリン抵抗性」を引き起こします。また、慢性ストレスによるコルチゾール高値もインスリン抵抗性を助長します。体がインスリンに反応しにくくなると、血糖値を下げるためにより多くのインスリンが必要となり、膵臓β細胞に負担がかかります。</p>
+                </div>
+                <div class="info-card">
+                    <h4 class="text-lg font-semibold mb-2">膵臓β細胞の疲弊</h4>
+                    <p>持続的なインスリン抵抗性により、膵臓β細胞はインスリンを過剰に分泌し続けます（高インスリン血症）。この状態が長く続くと、β細胞は疲弊し、最終的には十分なインスリンを分泌できなくなり、2型糖尿病の発症につながります。</p>
+                </div>
+            </div>
+            
+            <div class="info-card mb-6">
+                <h3 class="text-xl font-semibold mb-3">古代の環境 vs 現代の環境</h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <h4 class="text-lg font-semibold mb-2 text-center">🏹 古代の環境</h4>
+                        <p class="mb-1"><strong>食生活：</strong> 狩猟採集、時折の飢餓</p>
+                        <div class="w-full bg-gray-200 rounded-full h-5 mb-2">
+                          <div class="calorie-bar" style="width: 30%;">低〜中</div>
+                        </div>
+                        <p class="mb-1"><strong>身体活動：</strong> 高い（狩猟、移動）</p>
+                        <div class="w-full bg-gray-200 rounded-full h-5 mb-2">
+                          <div class="activity-bar" style="width: 80%;">高</div>
+                        </div>
+                        <p class="mb-1"><strong>ストレス：</strong> 急性、身体的（捕食者、怪我）</p>
+                        <div class="w-full bg-gray-200 rounded-full h-5 mb-2">
+                          <div class="stress-bar bg-orange-400" style="width: 40%;">急性</div>
+                        </div>
+                        <p class="mt-2 text-sm"><strong>代謝的特徴：</strong> インスリン感受性良好、効率的なエネルギー貯蔵</p>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-semibold mb-2 text-center">🍔 現代の環境</h4>
+                        <p class="mb-1"><strong>食生活：</strong> 飽食、高カロリー加工食品</p>
+                        <div class="w-full bg-gray-200 rounded-full h-5 mb-2">
+                          <div class="calorie-bar" style="width: 90%;">高</div>
+                        </div>
+                        <p class="mb-1"><strong>身体活動：</strong> 低い（デスクワーク、座りがち）</p>
+                        <div class="w-full bg-gray-200 rounded-full h-5 mb-2">
+                          <div class="activity-bar" style="width: 20%;">低</div>
+                        </div>
+                        <p class="mb-1"><strong>ストレス：</strong> 慢性、心理社会的</p>
+                        <div class="w-full bg-gray-200 rounded-full h-5 mb-2">
+                          <div class="stress-bar bg-red-500" style="width: 75%;">慢性</div>
+                        </div>
+                        <p class="mt-2 text-sm"><strong>代謝的特徴：</strong> インスリン抵抗性、肥満、2型糖尿病リスク増大</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <h3 class="text-xl font-semibold mb-3">代謝性疾患への影響</h3>
+                <p class="mb-2">この進化的ミスマッチは、2型糖尿病、メタボリックシンドローム、肥満といった現代病の主要な原因と考えられています。かつて生存に役立った血糖上昇ホルモン群（特にコルチゾールなど）が慢性的に活性化され、インスリンの働きを妨げることで、代謝バランスが崩れてしまうのです。</p>
+                <div class="chart-container mt-4">
+                    <canvas id="mismatchChart"></canvas>
+                </div>
+                <p class="text-sm mt-2 text-center">（概念図：現代における代謝性疾患リスク因子の相対的増加イメージ）</p>
+            </div>
+        </section>
+
+        <section id="summary" class="content-section">
+            <h2 class="text-3xl font-bold mb-6 text-center text-[#20C997]">まとめ：21世紀における血糖ホメオスタシスの舵取り</h2>
+            <p class="text-lg mb-4 text-gray-700 leading-relaxed">
+                血糖ホメオスタシスは、インスリンという単一の主要な血糖降下ホルモンと、グルカゴン、アドレナリン、コルチゾール、成長ホルモンといった複数の血糖上昇ホルモンとの間の複雑な相互作用によって維持されています。このホルモンシステムの数的非対称性は、飢餓の時代における生存を優先し、低血糖に対して堅牢な防御機構を築き上げた進化の遺産です。
+            </p>
+            <div class="info-card mb-4">
+                <p class="mb-2">しかし、カロリーが豊富で、慢性的なストレスが多く、身体活動が少ない現代のライフスタイルは、これらの古代の生存メカニズムを代謝性疾患の誘因へと転換させてしまいました。「多くは上昇」システムが慢性的に刺激され（例：慢性ストレスによるコルチゾール）、かつ／または「一つは下降」システム（インスリン）に慢性的な負荷がかかる（例：高炭水化物食による持続的なインスリン需要）ことで、調節能力が疲弊し、代謝のバランスが崩れます。</p>
+                <p>この進化的ミスマッチの理解は、2型糖尿病、肥満、メタボリックシンドロームといった代謝性疾患の予防と管理に不可欠です。食事、運動、ストレス管理といったライフスタイル介入は、このミスマッチの環境的要因に直接対処するため、極めて重要です。</p>
+            </div>
+            <div class="info-card">
+                <h3 class="text-xl font-semibold mb-3">今後の課題</h3>
+                <p class="mb-2">今後の課題は、現代の環境とライフスタイルを私たちの生理学的設計により近づけること、あるいはこの根強いミスマッチの負の帰結を緩和する方法を見出すことです。この複雑な調節ネットワークのさらなる解明は、より効果的な予防戦略と治療法の開発につながるでしょう。</p>
+                <p>このインタラクティブガイドが、皆様の血糖調節に関する理解を深め、より健康的な生活を送るための一助となれば幸いです。</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-100 mt-12 py-8 text-center">
+        <p class="text-gray-600 text-sm">血糖調節インタラクティブガイド | 情報源：提供されたレポートに基づく</p>
+    </footer>
+
+    <script>
+        const navLinks = document.querySelectorAll('#navigation a');
+        const contentSections = document.querySelectorAll('.content-section');
+        let mismatchChartInstance = null;
+
+        function updateActiveNav(hash) {
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === hash) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        }
+
+        function displayContent(hash) {
+            contentSections.forEach(section => {
+                if ('#' + section.id === hash) {
+                    section.classList.add('active');
+                } else {
+                    section.classList.remove('active');
+                }
+            });
+
+            updateActiveNav(hash);
+
+            if (hash === '#mismatch' && !mismatchChartInstance) {
+                renderMismatchChart();
+            }
+        }
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (event) => {
+                event.preventDefault();
+                const targetId = link.getAttribute('href');
+                history.pushState(null, null, targetId);
+                displayContent(targetId);
+                window.scrollTo(0, 0);
+            });
+        });
+
+        function setupTabs(tabContainerId, defaultTab) {
+            const tabButtons = document.querySelectorAll(`#${tabContainerId} .tab-button`);
+            
+            const navElement = document.getElementById(tabContainerId);
+            if (!navElement) {
+                // console.error(`Tab navigation container with ID '${tabContainerId}' not found.`);
+                return; 
+            }
+
+            const parentSection = navElement.closest('section.content-section');
+            if (!parentSection) {
+                // console.error(`Parent section for tab container '${tabContainerId}' not found.`);
+                return;
+            }
+            const tabContents = parentSection.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetTab = button.dataset.tab;
+
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+
+                    tabContents.forEach(content => {
+                        if (content.id === targetTab) {
+                            content.classList.add('active');
+                        } else {
+                            content.classList.remove('active');
+                        }
+                    });
+                });
+            });
+
+             if (defaultTab) {
+                const defaultButton = document.querySelector(`#${tabContainerId} .tab-button[data-tab="${defaultTab}"]`);
+                if (defaultButton) {
+                    defaultButton.click();
+                } else {
+                    // console.warn(`Default tab button for '${defaultTab}' in container '${tabContainerId}' not found.`);
+                }
+            }
+        }
+        
+        setupTabs('insulin-tabs', 'insulin-synthesis');
+        setupTabs('counter-regulatory-tabs', 'glucagon');
+
+
+        function renderMismatchChart() {
+            const ctx = document.getElementById('mismatchChart').getContext('2d');
+            if (mismatchChartInstance) {
+                mismatchChartInstance.destroy();
+            }
+            mismatchChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['カロリー摂取', '身体活動レベル', '慢性ストレスレベル'],
+                    datasets: [
+                        {
+                            label: '祖先の環境（概念値）',
+                            data: [30, 80, 20], 
+                            backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: '現代の環境（概念値）',
+                            data: [90, 20, 75], 
+                            backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            title: {
+                                display: true,
+                                text: '相対的レベル (概念値)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: '生活環境の変化：祖先 vs 現代 (概念図)',
+                            font: { size: 16 }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += context.parsed.y;
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        window.addEventListener('popstate', () => {
+            displayContent(window.location.hash || '#home');
+        });
+
+        // Initial display based on URL hash or default to #home
+        displayContent(window.location.hash || '#home');
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ホルモン調整と糖尿病：インフォグラフィック</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans JP', 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Light blue-gray background */
+        }
+        .header-bg {
+            background-color: #3b82f6; /* Blue-500 */
+        }
+        .section-title {
+            border-bottom: 3px solid #3b82f6; /* Blue-500 */
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+            font-size: 1.75rem; /* Increased size */
+            font-weight: 700;
+            color: #1e3a8a; /* Blue-800 */
+        }
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%; /* Ensure cards in a row have same height */
+        }
+        .card-content {
+            flex-grow: 1;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .icon-container { /* Container for SVG to control size and centering */
+            width: 60px;
+            height: 60px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .icon-container svg { /* Style for SVGs */
+            width: 100%;
+            height: 100%;
+        }
+        .hormone-icon {
+            border: 2px solid;
+            border-radius: 50%;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem; /* Base font size */
+            width: 80px;
+            height: 80px;
+            text-align: center; /* Ensure text is centered if it wraps */
+            white-space: normal; /* Allow text to wrap within the circle */
+            line-height: 1.2; /* Adjust line height for better multi-line fit */
+        }
+        .insulin-icon {
+            border-color: #10b981; /* Emerald-500 */
+            color: #047857; /* Emerald-700 */
+        }
+        .glucagon-icon {
+            border-color: #ef4444; /* Red-500 */
+            color: #b91c1c; /* Red-700 */
+        }
+        .adrenaline-icon {
+            border-color: #f97316; /* Orange-500 */
+            color: #c2410c; /* Orange-700 */
+        }
+        .cortisol-icon {
+            border-color: #eab308; /* Yellow-500 */
+            color: #a16207; /* Yellow-700 */
+        }
+        .growth-hormone-icon {
+            border-color: #8b5cf6; /* Violet-500 */
+            color: #6d28d9; /* Violet-700 */
+        }
+        .arrow {
+            font-size: 2rem;
+            margin: 0 10px;
+            color: #6b7280; /* Gray-500 */
+        }
+        .highlight {
+            color: #3b82f6; /* Blue-500 */
+            font-weight: bold;
+        }
+        .danger {
+            color: #ef4444; /* Red-500 */
+            font-weight: bold;
+        }
+        .solution-item {
+            background-color: #e0f2fe; /* Light blue for solution items */
+            border-left: 5px solid #0ea5e9; /* Sky-500 */
+        }
+        .detail-list {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+            margin-top: 0.5rem;
+        }
+
+        /* For smaller screens, adjust text sizes */
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 1.5rem;
+            }
+            .hormone-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 0.8rem; /* Slightly reduced font size for better fit on small screens */
+                padding: 6px; /* Slightly reduced padding to give more room for text */
+            }
+            .card {
+                padding: 15px;
+            }
+            .icon-container { /* Ensure icon size is consistent on mobile */
+                width: 50px;
+                height: 50px;
+            }
+            /* Adjust font sizes in text content for better mobile readability */
+            p, ul {
+                font-size: 0.95rem; /* Slightly smaller base text on mobile */
+            }
+            .text-xl { /* Adjust specific text sizes */
+                font-size: 1.15rem;
+            }
+            .text-lg {
+                font-size: 1rem;
+            }
+            .text-2xl {
+                font-size: 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="header-bg text-white p-6 shadow-lg">
+        <div class="container mx-auto text-center">
+            <h1 class="text-3xl md:text-4xl font-bold">血糖値のホメオスタシス：ホルモンによる絶妙な調整と現代の課題</h1>
+            <p class="mt-2 text-lg">進化の遺産と現代病「糖尿病」のつながり</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <section class="mb-12">
+            <h2 class="section-title">血糖値：生命維持の鍵</h2>
+            <div class="grid md:grid-cols-2 gap-6 items-stretch">
+                <div class="card">
+                    <div class="icon-container mx-auto">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-blue-500">
+                            <title>脳のアイコン</title>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 7.5V6.108c0-1.135.845-2.098 1.976-2.192.353-.026.692-.026 1.032 0 1.13.094 1.976 1.057 1.976 2.192V7.5M8.25 7.5h7.5M8.25 7.5c0 1.135-.845 2.098-1.976 2.192a48.424 48.424 0 0 1-1.032 0C4.118 9.598 3.274 8.635 3.274 7.5c0-1.135.845-2.098 1.976-2.192a48.424 48.424 0 0 1 1.032 0c1.13.094 1.976 1.057 1.976 2.192ZM15.75 7.5c0 1.135.845 2.098 1.976 2.192a48.424 48.424 0 0 0 1.032 0c1.13-.094 1.976-1.057 1.976-2.192 0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.032 0c-1.13.094-1.976 1.057-1.976 2.192Zm0 0h-.001M8.25 15h7.5M8.25 15c0 1.135-.845 2.098-1.976 2.192a48.424 48.424 0 0 1-1.032 0C4.118 17.098 3.274 16.135 3.274 15c0-1.135.845-2.098 1.976-2.192a48.424 48.424 0 0 1 1.032 0c1.13.094 1.976 1.057 1.976 2.192Zm0 0h-.001M15.75 15c0 1.135.845 2.098 1.976 2.192a48.424 48.424 0 0 0 1.032 0c1.13-.094 1.976-1.057 1.976-2.192 0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.032 0c-1.13.094-1.976 1.057-1.976 2.192Zm0 0h-.001M12 9.75V14.25m0-4.5v4.5m0-4.5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Z" />
+                        </svg>
+                    </div>
+                    <div class="card-content">
+                        <p class="text-lg text-gray-700 leading-relaxed">私たちの体にとって、血液中のブドウ糖、つまり血糖値の濃度を適切に保つことは、生命を維持する上で最も基本的な機能の一つです。特に、<span class="highlight">私たちの脳はエネルギー源のほとんどをこのブドウ糖に依存</span>しており、少しでも血糖値が下がりすぎると意識を失ったり、深刻な脳へのダメージを受けたりする可能性があります。</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="icon-container mx-auto">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-red-500">
+                            <title>警告アイコン</title>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+                        </svg>
+                    </div>
+                    <div class="card-content">
+                         <p class="text-lg text-gray-700 leading-relaxed">逆に、高すぎる状態が続けば、長期的には様々な血管や臓器に障害を引き起こします。この血糖値の厳密なホメオスタシス（恒常性維持）を司っているのが、主に膵臓や副腎といった内分泌腺から分泌される<span class="highlight">ホルモンたち</span>です。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="section-title">血糖調節ホルモン：興味深い非対称性</h2>
+            <div class="text-center mb-6">
+                <p class="text-xl text-gray-800">この調節システムには、非常に興味深い非対称性があります。血糖値を低下させる働きを持つ主要なホルモンは、<span class="highlight text-2xl">インスリン、たった一つ</span>です。それに対し、血糖値を上昇させる働きを持つホルモンは<span class="danger text-2xl">複数存在</span>します。具体的には、グルカゴン、アドレナリン、コルチゾール、そして成長ホルモンなどです。血糖を下げるのは一人、上げるのはチーム。なぜ、このような数の違いがあるのでしょうか？</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="card border-t-4 border-emerald-500">
+                     <h3 class="text-2xl font-semibold text-emerald-700 mb-4 text-center">血糖値を下げるホルモン (1つ)</h3>
+                    <div class="flex flex-col items-center card-content">
+                        <div class="hormone-icon insulin-icon mb-3">インスリン</div>
+                        <p class="text-gray-700 text-center">主な役割は、食後に血糖値が急激に上昇した際に、その過剰なブドウ糖を速やかに細胞（特に筋肉や脂肪組織）に取り込ませ、グリコーゲンや脂肪として貯蔵することです。インスリンは、細胞の表面にグルコース輸送体（主にGLUT4）を移動させることで、細胞へのブドウ糖の取り込みを促進します。これはまさに、利用可能な時に効率よくエネルギーを蓄えるための「飽食」のシグナルであり、この単一の効率的なホルモンで十分対応できたのです。</p>
+                    </div>
+                </div>
+                <div class="card border-t-4 border-red-500">
+                    <h3 class="text-2xl font-semibold text-red-700 mb-4 text-center">血糖値を上げるホルモン (複数)</h3>
+                    <div class="card-content">
+                        <div class="grid grid-cols-2 sm:grid-cols-2 gap-4 justify-items-center">
+                            <div class="flex flex-col items-center">
+                                <div class="hormone-icon glucagon-icon mb-2">グルカゴン</div>
+                                <p class="text-sm text-center text-gray-600">膵臓</p>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div class="hormone-icon adrenaline-icon mb-2">アドレナリン</div>
+                                <p class="text-sm text-center text-gray-600">副腎</p>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div class="hormone-icon cortisol-icon mb-2">コルチゾール</div>
+                                <p class="text-sm text-center text-gray-600">副腎</p>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div class="hormone-icon growth-hormone-icon mb-2">成長ホルモン</div>
+                                <p class="text-sm text-center text-gray-600">下垂体</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 mt-4 text-center">これらのホルモンは、肝臓に働きかけてグリコーゲンを分解したり、アミノ酸などからブドウ糖を新たに作り出したり（<span class="highlight">糖新生</span>）することで、血中にブドウ糖を供給します。また、筋肉などの末梢組織でのブドウ糖の利用を抑え、脳にブドウ糖を温存する働き（<span class="highlight">グルコース節約効果</span>）も持っています。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="section-title">進化の背景：なぜ非対称なのか？</h2>
+            <div class="card">
+                <div class="flex flex-col md:flex-row items-center gap-6 card-content">
+                    <div class="icon-container mx-auto md:mx-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-orange-500">
+                           <title>食糧不足・飢餓のアイコン</title>
+                           <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125V6.375c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v.001c0 .621.504 1.125 1.125 1.125z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-lg text-gray-700 leading-relaxed">この非対称性の背景には、人類が長い時間をかけて進化してきた環境が関係しています。私たちの祖先は、現代のようにいつでも十分に食料があるわけではなく、<span class="highlight">食糧不足や飢餓に直面することが頻繁</span>にありました。このような環境では、血糖値が下がりすぎる「低血糖」は、脳へのエネルギー供給が途絶える、命に直結する即座の脅威でした。一方、高血糖は、低血糖に比べてすぐに生命に関わるような緊急事態ではありませんでした。</p>
+                        <p class="text-lg text-gray-700 leading-relaxed mt-2">したがって、進化の過程では、低血糖を回避し、血糖値を上昇させるための<span class="highlight">複数のバックアップ機能を持った強固なシステム</span>が、生存に圧倒的に有利に働いたと考えられます。血糖値を上げるホルモンが複数あることで、たとえ一つが十分に機能しなくても、他のホルモンが血糖上昇を助けることができます。これは、長時間の絶食、激しい運動、あるいは怪我や感染といった緊急事態の際に脳が必要とするグルコースを確実に供給するための<span class="highlight">多層的な防御機構</span>として機能してきました。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="section-title">現代社会とのミスマッチ：「倹約遺伝子」の誤算</h2>
+            <div class="grid md:grid-cols-2 gap-8 items-stretch">
+                <div class="card border-t-4 border-amber-500">
+                    <h3 class="text-xl font-semibold text-amber-700 mb-3 text-center">古代に適応した体（倹約遺伝子）</h3>
+                    <div class="icon-container mx-auto">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-yellow-700">
+                            <title>狩猟採集民・古代人のアイコン</title>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 12.75V15m0 0V12.75m0 2.25A2.25 2.25 0 1 0 12 9a2.25 2.25 0 000 6.75ZM15.75 8.25h1.5m-10.5 0h1.5M4.5 15.75l1.755-1.316M19.5 15.75l-1.755-1.316" />
+                        </svg>
+                    </div>
+                    <div class="card-content">
+                         <p class="text-gray-700 leading-relaxed">私たちは、飢餓の時代を生き抜くための「<span class="highlight">倹約遺伝子</span>」とも呼ばれる、効率的なエネルギー貯蔵や低血糖防御に有利な体質を受け継いできました。</p>
+                        <ul class="list-disc list-inside text-gray-700 space-y-1 mt-2">
+                            <li>効率的なエネルギー貯蔵</li>
+                            <li>強力な低血糖防御システム</li>
+                            <li>肝臓でのグリコーゲン分解・糖新生促進</li>
+                            <li>末梢組織でのブドウ糖利用抑制（グルコース節約効果）</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card border-t-4 border-purple-500">
+                    <h3 class="text-xl font-semibold text-purple-700 mb-3 text-center">現代のライフスタイル</h3>
+                     <div class="icon-container mx-auto">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-purple-700">
+                           <title>現代生活のアイコン</title>
+                           <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18a2.25 2.25 0 002.25 2.25h13.5A2.25 2.25 0 0021.75 18V3m-18 0h18M-1.622 7.5h27.244" />
+                           <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75V8.25m0 0v1.5m0-1.5H15m-3 0H9m6 3.75H9m3-3.75V6" />
+                           <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 12h9M7.5 15h9" />
+                        </svg>
+                    </div>
+                    <div class="card-content">
+                        <p class="text-gray-700 leading-relaxed">しかし、現代のライフスタイルは、この古代からの体の仕組みと大きなミスマッチを生んでいます。現代社会は、エネルギー密度の高い食べ物がいつでも手に入り、身体活動は減少し、そして慢性的なストレスに満ちています。</p>
+                        <ul class="list-disc list-inside text-gray-700 space-y-1 mt-2">
+                            <li><span class="danger">飽食</span>：高カロリー食が容易に入手可能</li>
+                            <li><span class="danger">運動不足</span>：身体活動の減少</li>
+                            <li><span class="danger">慢性ストレス</span>：常に緊張状態</li>
+                        </ul>
+                         <p class="text-gray-700 leading-relaxed mt-2">この<span class="danger">飽食、運動不足、慢性ストレス</span>といった現代の環境要因が、私たちの血糖調節システムに<span class="highlight">過剰な負担</span>をかけているのです。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="section-title">インスリン抵抗性とその影響</h2>
+            <div class="card">
+                <div class="card-content">
+                    <p class="text-lg text-gray-700 mb-2">特に問題となるのが、<span class="danger">インスリン抵抗性</span>です。慢性的なカロリー過剰や運動不足は、筋肉や脂肪組織のインスリンに対する感受性を低下させ、インスリンがうまく働けない状態を引き起こします。</p>
+                    <ul class="text-gray-700 detail-list mb-4">
+                        <li>運動不足は単にエネルギーを消費しないだけでなく、インスリンシグナル伝達を妨げる分子レベルの変化を引き起こすことが分かっています。</li>
+                        <li>さらに、慢性的なストレスによって分泌が亢進するコルチゾールも、強力にインスリン抵抗性を誘導します。</li>
+                    </ul>
+                    <div class="flex flex-col md:flex-row items-center justify-around gap-4 p-4 bg-gray-100 rounded-lg">
+                        <div class="text-center">
+                            <div class="icon-container mx-auto">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-yellow-600">
+                                    <title>インスリン抵抗性のアイコン</title>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5L13.5 7.5M13.5 10.5L16.5 7.5" />
+                                </svg>
+                            </div>
+                            <p class="font-semibold text-yellow-700">インスリン抵抗性</p>
+                            <p class="text-sm text-gray-600">インスリンの効きが悪くなる</p>
+                        </div>
+                        <div class="arrow hidden md:block">➡️</div>
+                        <div class="text-center md:hidden my-2 text-2xl text-gray-500">⬇️</div>
+                        <div class="text-center">
+                            <div class="icon-container mx-auto">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-red-600">
+                                    <title>疲弊した膵臓のアイコン</title>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75h4.5m-4.5 3h4.5m-4.5 3h4.5" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25l-1.5-1.5M16.5 8.25l1.5-1.5M7.5 15.75l-1.5 1.5M16.5 15.75l1.5 1.5" />
+                                </svg>
+                            </div>
+                            <p class="font-semibold text-red-700">膵臓β細胞の疲弊</p>
+                            <p class="text-sm text-gray-600">インスリンの効きが悪くなると、血糖値を正常に保つために、膵臓のβ細胞はインスリンをより多く分泌して補おうとします（<span class="highlight">高インスリン血症</span>）。しかし、この持続的な過剰なインスリン分泌は、やがてβ細胞を疲弊させ、機能障害や細胞死（<span class="highlight">アポトーシス</span>）につながります。</p>
+                        </div>
+                        <div class="arrow hidden md:block">➡️</div>
+                        <div class="text-center md:hidden my-2 text-2xl text-gray-500">⬇️</div>
+                        <div class="text-center">
+                            <div class="icon-container mx-auto">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-pink-600">
+                                    <title>慢性的な高血糖のアイコン</title>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.307a11.95 11.95 0 0 1 5.814-5.519l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h12A2.25 2.25 0 0 0 20.25 14.25V3" />
+                                </svg>
+                            </div>
+                            <p class="font-semibold text-pink-700">2型糖尿病・メタボリックシンドローム</p>
+                            <p class="text-sm text-gray-600">慢性的な高血糖状態へ。中心性肥満、高血圧、脂質異常症など。</p>
+                        </div>
+                    </div>
+                    <p class="mt-6 text-gray-700"> 加えて、現代社会特有の慢性的なストレスは、副腎皮質からのコルチゾール分泌や、副腎髄質からのアドレナリン分泌を継続的に刺激します。これは、あたかも体が常に軽い緊急事態にあるかのように、血糖値を上げるシステムが働き続ける状態を作り出します。その結果、古代には低血糖という急性的な脅威に対応するために存在した「多くは上昇させる」ホルモンシステムが、現代では慢性的に過剰に活性化され「一つは下降させる」インスリンシステムが抵抗性に加えてこの上昇シグナルに圧倒されてしまうのです。
+                    </p>
+                     <p class="mt-6 text-gray-700"> このように、飢餓に備えた古代の生理機能と、現代の環境要因との間の深刻なミスマッチこそが、インスリン抵抗性と相対的なインスリン不足を特徴とする<span class="danger">2型糖尿病</span>や<span class="danger">中心性肥満、高血圧、脂質異常症などを伴うメタボリックシンドローム</span>といった代謝性疾患が世界中で激増している主要な原因となっています。これらの疾患は、<span class="highlight">慢性的な低悪性度炎症</span>とも密接に関連しており、さらに多くの慢性疾患へと繋がる可能性があります。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title">解決への道：ライフスタイルの見直し</h2>
+            <div class="card bg-green-50 border-t-4 border-green-500">
+                <div class="card-content">
+                    <p class="text-lg text-gray-800 mb-6 text-center">血糖ホメオスタシスの進化的な背景とその現代における不協和を理解することは、これらの疾患を予防し、管理する上で極めて重要です。そして、その最も効果的な対策は、この環境的なミスマッチに直接働きかけることです。</p>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="solution-item p-4 rounded-lg shadow hover:shadow-md transition-shadow">
+                            <div class="icon-container mx-auto">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-green-600">
+                                    <title>食事改善のアイコン</title>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 10.5V2.25H13.5V10.5h8.25Z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 10.5V2.25H10.5V10.5H2.25Z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21V13.5H10.5V21H2.25Z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21V13.5H21.75V21H13.5Z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.25a.75.75 0 00-.75.75v3c0 .414.336.75.75.75h3a.75.75 0 00.75-.75v-3a.75.75 0 00-.75-.75h-3zM15.75 5.25a.75.75 0 00-.75.75v3c0 .414.336.75.75.75h3a.75.75 0 00.75-.75v-3a.75.75 0 00-.75-.75h-3zM5.25 15.75a.75.75 0 00-.75.75v3c0 .414.336.75.75.75h3a.75.75 0 00.75-.75v-3a.75.75 0 00-.75-.75h-3zM15.75 15.75a.75.75 0 00-.75.75v3c0 .414.336.75.75.75h3a.75.75 0 00.75-.75v-3a.75.75 0 00-.75-.75h-3z" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-semibold text-green-700 mb-2 text-center">食事内容の見直し</h3>
+                            <p class="text-gray-700 text-sm text-center">バランスの取れた食事、加工食品の制限。</p>
+                        </div>
+                        <div class="solution-item p-4 rounded-lg shadow hover:shadow-md transition-shadow">
+                            <div class="icon-container mx-auto">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-green-600">
+                                    <title>適度な運動習慣のアイコン</title>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12.75 3.75v16.5M4.125 12H20.25M4.125 12a7.875 7.875 0 0 1 0-7.5M20.25 12a7.875 7.875 0 0 0 0-7.5M4.125 12a7.875 7.875 0 0 0 0 7.5M20.25 12a7.875 7.875 0 0 1 0 7.5" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 12.75h7.5M12 3.75a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5zM12 15.75a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5z" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-semibold text-green-700 mb-2 text-center">適度な運動習慣</h3>
+                            <p class="text-gray-700 text-sm text-center">インスリン感受性の向上、エネルギー消費。</p>
+                        </div>
+                        <div class="solution-item p-4 rounded-lg shadow hover:shadow-md transition-shadow">
+                            <div class="icon-container mx-auto">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-green-600">
+                                   <title>ストレスの適切な管理のアイコン</title>
+                                   <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v18M3 12h18M9.75 3.75c0 .414.168.79.44 1.06l4.5 4.5a1.5 1.5 0 010 2.12l-4.5 4.5a1.5 1.5 0 01-.44 1.06M14.25 20.25c0-.414-.168-.79-.44-1.06l-4.5-4.5a1.5 1.5 0 000-2.12l4.5-4.5a1.5 1.5 0 00.44-1.06" />
+                                   <path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5a4.5 4.5 0 100 9 4.5 4.5 0 000-9z" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-semibold text-green-700 mb-2 text-center">ストレスの適切な管理</h3>
+                            <p class="text-gray-700 text-sm text-center">コルチゾールレベルの正常化。</p>
+                        </div>
+                    </div>
+                    <p class="mt-6 text-center text-xl font-semibold text-green-800">つまり、薬に頼る前に、食事内容の見直し、適度な運動習慣、そしてストレスの適切な管理といったライフスタイルへの介入こそが、代謝性疾患を克服するための鍵となるのです。</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="mt-12 p-6 bg-gray-800 text-gray-300 text-center">
+        <p>© <span id="year"></span> 血糖調節メカニズム解説. All rights reserved.</p>
+        <p class="text-sm">この情報は教育目的であり、医学的アドバイスに代わるものではありません。</p>
+    </footer>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+
+</body>
+</html>

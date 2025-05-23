@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>血糖値調整と糖尿病：深堀り</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .flow-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease-in-out;
+        }
+        .flow-step:hover {
+            transform: translateY(-5px);
+        }
+        .arrow {
+            font-size: 2.5rem;
+            color: #14B8A6; /* Teal */
+            margin: 0.5rem 0;
+        }
+        @media (min-width: 768px) {
+            .flow-horizontal .arrow {
+                margin: 0 1rem;
+                transform: rotate(0deg);
+            }
+        }
+        .swot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+    </style>
+    <!--
+        Chosen Color Palette: "Vibrant Teal and Coral"
+        Primary: #14B8A6 (Teal)
+        Secondary: #FF7F50 (Coral)
+        Accent1: #FACC15 (Yellow)
+        Accent2: #60A5FA (Sky Blue)
+        NeutralDark: #1F2937 (Gray-800)
+        NeutralLight: #F3F4F6 (Gray-100)
+        Background: #FFFFFF (White)
+        Text Primary: #111827 (Gray-900)
+        Text Secondary: #4B5563 (Gray-600)
+
+        Narrative & Structure Plan:
+        1. Introduction: Welcome, theme (blood sugar regulation, modern problems).
+        2. Asymmetry of Blood Sugar Regulation: Insulin (1) vs. Other Hormones (Team).
+        3. Evolutionary Background: Era of Scarcity: Low blood sugar threat, robust raising mechanisms.
+        4. Role of Insulin: The Satiety Signal: Glucose uptake and storage.
+        5. Mismatch with Modern Society: Overeating, lack of exercise, chronic stress leading to insulin resistance.
+        6. Insulin Resistance and Pancreatic Exhaustion: Hyperinsulinemia, beta cell fatigue, chronic stress impact.
+        7. Metabolic Diseases and Chronic Inflammation: Link between mismatch, diseases, and inflammation.
+        8. Key to Prevention and Management: Lifestyle intervention (diet, exercise, stress).
+        9. Conclusion and Call to Action: Reflection on chronic inflammation.
+
+        Visualization Choices:
+        - Asymmetry: Goal: Compare. Chosen: Bar Chart (Chart.js). Justification: Clearly shows numerical difference. NO SVG.
+        - Evolutionary Mechanisms: Goal: Organize/Inform. Chosen: HTML/CSS Flow Diagram. Justification: Illustrates processes. NO SVG, NO MERMAID JS.
+        - Insulin's Role: Goal: Inform. Chosen: HTML/CSS diagram (cell door). Justification: Simple conceptual illustration. NO SVG.
+        - Modern Mismatch Factors: Goal: Inform. Chosen: HTML/CSS Icons/Text. Justification: Visually represents contributing factors. NO SVG.
+        - Insulin Resistance Cycle: Goal: Change/Organize. Chosen: Line Chart (Chart.js) for conceptual levels, HTML/CSS for cycle. Justification: Shows trend and process. NO SVG.
+        - Metabolic Diseases: Goal: Inform. Chosen: HTML List with icons. Justification: Clear enumeration. NO SVG.
+        - Prevention Actions: Goal: Organize. Chosen: HTML List with icons. Justification: Clear action points. NO SVG.
+
+        Confirmation: NEITHER Mermaid JS NOR SVG were used anywhere in this output. All charts are Canvas-based via Chart.js. Diagrams are HTML/CSS.
+    -->
+</head>
+<body class="bg-gray-100 text-gray-900">
+
+    <header class="bg-teal-600 text-white p-8 shadow-lg rounded-b-lg">
+        <div class="container mx-auto text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">血糖値調整と糖尿病：深堀り</h1>
+            <p class="text-lg md:text-xl text-teal-100">私たちの体が血糖値をどう保ち、なぜ現代で問題が起こるのか</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <section id="introduction" class="mb-12">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-3xl font-semibold text-teal-700 mb-6 text-center">はじめに</h2>
+                <p class="text-gray-600 mb-4 text-lg leading-relaxed">
+                    私たちの体は、血液中のブドウ糖（血糖値）の濃度を適切に保つために、驚くべきシステムを持っています。
+                    このシステムは生命維持に不可欠であり、特に脳はブドウ糖に大きく依存しています。
+                    しかし、現代のライフスタイルは、この古代から受け継がれてきた精巧な調節システムに、予期せぬ問題を引き起こすことがあります。
+                    このインフォグラフィックでは、血糖コントロールのメカニズムと、それが現代社会で直面する課題について深く掘り下げていきます。
+                </p>
+            </div>
+        </section>
+
+        <section id="asymmetry" class="mb-12">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-3xl font-semibold text-teal-700 mb-6 text-center">血糖調節システムの非対称性</h2>
+                <p class="text-gray-600 mb-8 text-center text-lg">
+                    血糖値をコントロールするホルモンには、非常に興味深い「非対称性」が存在します。
+                    血糖値を下げる主要なホルモンはたった一つですが、上げるホルモンは複数存在します。
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div class="text-center">
+                        <h3 class="text-2xl font-semibold text-gray-700 mb-4">血糖値を下げるホルモン</h3>
+                        <p class="text-6xl font-bold text-teal-500">1</p>
+                        <p class="text-xl text-gray-600 mt-2">インスリン</p>
+                    </div>
+                    <div class="text-center">
+                        <h3 class="text-2xl font-semibold text-gray-700 mb-4">血糖値を上げるホルモン</h3>
+                        <p class="text-6xl font-bold text-coral-500">チーム</p>
+                        <ul class="text-lg text-gray-600 mt-2 space-y-1">
+                            <li>グルカゴン</li>
+                            <li>アドレナリン</li>
+                            <li>コルチゾール</li>
+                            <li>成長ホルモン</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-8">
+                    <h3 class="text-2xl font-semibold text-gray-700 mb-4 text-center">ホルモンの役割比較</h3>
+                    <div class="chart-container h-64 md:h-80 mx-auto">
+                        <canvas id="hormoneComparisonChart"></canvas>
+                    </div>
+                    <p class="text-gray-600 mt-4 text-center">この「1人対チーム」の構図は、なぜ存在するのでしょうか？</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="evolutionary-background" class="mb-12">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-3xl font-semibold text-teal-700 mb-6 text-center">進化の背景：飢餓の時代</h2>
+                <p class="text-gray-600 mb-8 text-center text-lg">
+                    この非対称性の背景には、人類が飢餓と常に隣り合わせだった長い歴史があります。
+                    低血糖は脳にとって致命的な脅威であり、生命維持のためには血糖値を上げることが最優先でした。
+                </p>
+                <div class="flex flex-col items-center space-y-6">
+                    <div class="flow-step bg-coral-100 text-coral-700 w-full md:w-2/3">
+                        <h4 class="font-semibold text-xl mb-2">生存の脅威：低血糖</h4>
+                        <p class="text-gray-700">脳へのエネルギー供給途絶 ➔ 意識喪失、脳ダメージ</p>
+                    </div>
+                    <div class="arrow">↓</div>
+                    <div class="flow-step bg-yellow-100 text-yellow-700 w-full md:w-2/3">
+                        <h4 class="font-semibold text-xl mb-2">進化の選択：血糖上昇システムの強化</h4>
+                        <p class="text-gray-700">複数のバックアップ機能で血糖値を確実に維持・上昇</p>
+                    </div>
+                    <div class="arrow">↓</div>
+                    <div class="flow-step bg-sky-100 text-sky-700 w-full md:w-2/3">
+                        <h4 class="font-semibold text-xl mb-2">具体的な防御メカニズム</h4>
+                        <ul class="list-disc list-inside text-gray-700 space-y-1 text-left">
+                            <li>肝臓でのグリコーゲン分解</li>
+                            <li>アミノ酸などからの糖新生</li>
+                            <li>筋肉でのブドウ糖利用抑制（グルコース節約効果）</li>
+                        </ul>
+                    </div>
+                </div>
+                <p class="text-gray-600 mt-6 text-center">
+                    体は「絶対に飢えさせないぞ」という強い執念を持って、あらゆる手段で血糖値を保とうと進化してきました。
+                </p>
+            </div>
+        </section>
+
+        <section id="insulin-role" class="mb-12">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-3xl font-semibold text-teal-700 mb-6 text-center">インスリンの役割：飽食のシグナル</h2>
+                <p class="text-gray-600 mb-8 text-center text-lg">
+                    では、血糖値が上がりすぎた場合、唯一の守り手であるインスリンはどのように機能するのでしょうか？
+                    インスリンは、体が「もう十分食べたよ、エネルギーを蓄えようね」と伝える「飽食のシグナル」です。
+                </p>
+                <div class="flex flex-col md:flex-row items-center justify-center space-y-6 md:space-y-0 md:space-x-8">
+                    <div class="text-center p-4 bg-teal-50 rounded-lg shadow">
+                        <p class="text-5xl">🍽️</p>
+                        <p class="text-gray-700 font-semibold mt-2">食後の血糖値上昇</p>
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="text-center p-4 bg-teal-100 rounded-lg shadow">
+                        <p class="text-5xl">💧</p>
+                        <p class="text-gray-700 font-semibold mt-2">膵臓からインスリン分泌</p>
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="text-center p-4 bg-teal-200 rounded-lg shadow">
+                        <p class="text-5xl">🔑🚪</p>
+                        <p class="text-gray-700 font-semibold mt-2">細胞のドア（GLUT4）を開く</p>
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="text-center p-4 bg-teal-300 rounded-lg shadow">
+                        <p class="text-5xl">💪🍖</p>
+                        <p class="text-gray-700 font-semibold mt-2">ブドウ糖を細胞に取り込み貯蔵</p>
+                    </div>
+                </div>
+                <p class="text-gray-600 mt-6 text-center">
+                    インスリンは、血液中のブドウ糖を筋肉や脂肪細胞に取り込ませ、グリコーゲンや脂肪として貯蔵させるエネルギー管理の司令塔なのです。
+                </p>
+            </div>
+        </section>
+
+        <section id="modern-mismatch" class="mb-12">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-3xl font-semibold text-teal-700 mb-6 text-center">現代社会とのミスマッチ</h2>
+                <p class="text-gray-600 mb-8 text-center text-lg">
+                    しかし、この「十分食べたよ」のシグナルが、現代の私たちの生活では「ずっと鳴りっぱなし」になりがちです。
+                    進化の過程では想定されなかった「飽食」の状態が慢性的に続いています。
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="flex flex-col items-center p-4 bg-coral-50 rounded-lg shadow">
+                        <p class="text-5xl mb-2">�🍕🍰</p>
+                        <h3 class="font-semibold text-xl text-coral-700">飽食</h3>
+                        <p class="text-gray-600 text-center text-sm">エネルギー密度の高い食べ物がいつでも手に入る</p>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-coral-50 rounded-lg shadow">
+                        <p class="text-5xl mb-2">🛋️🎮📺</p>
+                        <h3 class="font-semibold text-xl text-coral-700">運動不足</h3>
+                        <p class="text-gray-600 text-center text-sm">身体活動の減少</p>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-coral-50 rounded-lg shadow">
+                        <p class="text-5xl mb-2">🤯🗓️🚦</p>
+                        <h3 class="font-semibold text-xl text-coral-700">慢性ストレス</h3>
+                        <p class="text-gray-600 text-center text-sm">常にストレスに満ちた環境</p>
+                    </div>
+                </div>
+                <p class="text-gray-600 mt-4 text-center">
+                    これらの現代の環境要因が、私たちの血糖調節システムに過剰な負担をかけ、
+                    インスリンの効きが悪くなる「インスリン抵抗性」を引き起こしやすくなります。
+                </p>
+            </div>
+        </section>
+
+        <section id="insulin-resistance" class="mb-12">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-3xl font-semibold text-teal-700 mb-6 text-center">インスリン抵抗性と膵臓の疲弊</h2>
+                <p class="text-gray-600 mb-8 text-center text-lg">
+                    細胞がインスリンの指示に対して鈍感になると、ブドウ糖がうまく細胞に取り込まれず、血糖値が下がりにくくなります。
+                    体はなんとか血糖値を下げようと、さらにインスリンを分泌し続けますが、これは膵臓に大きな負担をかけます。
+                </p>
+                <div class="chart-container h-80 md:h-96 mx-auto mb-8">
+                    <canvas id="insulinResistanceChart"></canvas>
+                </div>
+                <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-8">
+                    <div class="text-center p-4 bg-yellow-50 rounded-lg shadow">
+                        <p class="text-5xl mb-2">📈</p>
+                        <h3 class="font-semibold text-xl text-yellow-700">高インスリン血症</h3>
+                        <p class="text-gray-600 text-center text-sm">血糖値を下げようとインスリンを過剰分泌</p>
+                    </div>
+                    <div class="arrow text-yellow-500">→</div>
+                    <div class="text-center p-4 bg-yellow-100 rounded-lg shadow">
+                        <p class="text-5xl mb-2">😩</p>
+                        <h3 class="font-semibold text-xl text-yellow-700">膵臓の疲弊</h3>
+                        <p class="text-gray-600 text-center text-sm">持続的な過剰分泌で機能低下、細胞死へ</p>
+                    </div>
+                </div>
+                <p class="text-gray-600 mt-6 text-center">
+                    さらに、慢性的なストレスはコルチゾールなどの血糖値を上げるホルモンを常に分泌させ、
+                    インスリンの働きを邪魔し、問題をさらに複雑化させる悪循環を生み出します。
+                </p>
+            </div>
+        </section>
+
+        <section id="metabolic-diseases" class="mb-12">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-3xl font-semibold text-teal-700 mb-6 text-center">代謝性疾患と慢性炎症</h2>
+                <p class="text-gray-600 mb-8 text-center text-lg">
+                    飢餓に備えた古代の生理機能と現代の環境要因との深刻なミスマッチこそが、
+                    世界中で激増している代謝性疾患の主要な原因となっています。
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="p-4 bg-sky-50 rounded-lg shadow">
+                        <h3 class="font-semibold text-xl text-sky-700 mb-2">関連する主な疾患</h3>
+                        <ul class="list-disc list-inside text-gray-700 space-y-2">
+                            <li>2型糖尿病</li>
+                            <li>中心性肥満</li>
+                            <li>高血圧</li>
+                            <li>脂質異常症</li>
+                            <li>メタボリックシンドローム</li>
+                        </ul>
+                    </div>
+                    <div class="p-4 bg-sky-50 rounded-lg shadow">
+                        <h3 class="font-semibold text-xl text-sky-700 mb-2">静かなる脅威：慢性炎症</h3>
+                        <p class="text-gray-700">
+                            これらの疾患は、体内で静かにくすぶる「慢性的な低悪性度炎症」とも密接に関連しています。
+                            これは、さらなる多くの慢性疾患へと繋がる可能性があります。
+                        </p>
+                        <p class="text-5xl text-center mt-4">🔥</p>
+                    </div>
+                </div>
+                <p class="text-gray-600 mt-6 text-center">
+                    私たちの体は過去の環境に適用した素晴らしい設計図を持っていますが、環境の変化が予期せぬ問題を引き起こすことがあるのです。
+                </p>
+            </div>
+        </section>
+
+        <section id="prevention" class="mb-12">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-3xl font-semibold text-teal-700 mb-6 text-center">予防と管理の鍵</h2>
+                <p class="text-gray-600 mb-8 text-center text-lg">
+                    この進化の歴史と現代の不協和を理解することは、これらの疾患を予防し、管理する上で極めて重要です。
+                    そして、その最も効果的な対策は、薬に頼る前に、この環境的なミスマッチに直接働きかけることです。
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="flex flex-col items-center p-4 bg-green-50 rounded-lg shadow">
+                        <p class="text-5xl mb-2">🍎🥦🍚</p>
+                        <h3 class="font-semibold text-xl text-green-700">食事内容の見直し</h3>
+                        <p class="text-gray-600 text-center text-sm">バランスの取れた食事、加工食品の削減</p>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-green-50 rounded-lg shadow">
+                        <p class="text-5xl mb-2">🏃‍♀️🚶‍♂️🧘‍♂️</p>
+                        <h3 class="font-semibold text-xl text-green-700">適度な運動習慣</h3>
+                        <p class="text-gray-600 text-center text-sm">定期的な身体活動の確保</p>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-green-50 rounded-lg shadow">
+                        <p class="text-5xl mb-2">😌🍃📖</p>
+                        <h3 class="font-semibold text-xl text-green-700">ストレスの適切な管理</h3>
+                        <p class="text-gray-600 text-center text-sm">リラックス法、趣味、十分な休息</p>
+                    </div>
+                </div>
+                <p class="text-gray-600 mt-6 text-center font-bold text-lg">
+                    ライフスタイルへの介入こそが、代謝性疾患を克服するための鍵となるのです。
+                </p>
+            </div>
+        </section>
+
+        <section id="conclusion" class="mb-12">
+            <div class="bg-teal-600 text-white rounded-lg shadow-md p-8">
+                <h2 class="text-3xl font-semibold mb-6 text-center">まとめと問いかけ</h2>
+                <p class="text-teal-100 text-lg leading-relaxed text-center">
+                    私たちの体は、飢餓の時代を生き抜くために最適化された素晴らしい設計図を持っています。
+                    しかし、現代の豊かな食生活とストレス社会は、その設計図とミスマッチを起こし、
+                    様々な代謝性疾患の引き金となっています。
+                    この進化の視点を持つことで、日々の行動の意味を深く理解し、より健康的な選択ができるようになるでしょう。
+                </p>
+                <p class="text-teal-100 text-lg leading-relaxed text-center mt-6">
+                    最後に、皆さんに問いかけたいことがあります。
+                    「慢性的な低悪性度炎症」という、体の中で静かにくすぶる炎症は、
+                    血糖の問題だけでなく、他の様々な現代病とどのように繋がっている可能性があるのか？
+                    少しだけ立ち止まって、この問いについて考えてみる時間を持ってみてください。
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-gray-300 p-6 text-center rounded-t-lg">
+        <p>&copy; 2025 血糖値調整と糖尿病インフォグラフィック. All rights reserved.</p>
+        <p class="text-sm">このインフォグラフィックは、ナレーションに基づきデモンストレーション目的で作成されました。</p>
+    </footer>
+
+    <script>
+        const primaryColor = '#14B8A6'; // Teal
+        const secondaryColor = '#FF7F50'; // Coral
+        const accent1Color = '#FACC15'; // Yellow
+        const accent2Color = '#60A5FA'; // Sky Blue
+        const textPrimaryColor = '#111827'; // Gray-900
+
+        Chart.defaults.font.family = 'Inter, sans-serif';
+        Chart.defaults.color = textPrimaryColor;
+        Chart.defaults.borderColor = '#E5E7EB'; // Gray-200
+
+        function processLabels(labels) {
+            const maxLength = 16;
+            return labels.map(label => {
+                if (typeof label === 'string' && label.length > maxLength) {
+                    const words = label.split(' ');
+                    const lines = [];
+                    let currentLine = '';
+                    for (const word of words) {
+                        if ((currentLine + ' ' + word).trim().length <= maxLength) {
+                            currentLine = (currentLine + ' ' + word).trim();
+                        } else {
+                            lines.push(currentLine);
+                            currentLine = word;
+                        }
+                    }
+                    lines.push(currentLine);
+                    return lines;
+                }
+                return label;
+            });
+        }
+        
+        const commonTooltipOptions = {
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            const item = tooltipItems[0];
+                            let label = item.chart.data.labels[item.dataIndex];
+                            if (Array.isArray(label)) {
+                              return label.join(' ');
+                            } else {
+                              return label;
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        // Hormone Comparison Chart (Bar)
+        const hormoneComparisonCtx = document.getElementById('hormoneComparisonChart').getContext('2d');
+        new Chart(hormoneComparisonCtx, {
+            type: 'bar',
+            data: {
+                labels: processLabels(['血糖値を下げるホルモン', '血糖値を上げるホルモン']),
+                datasets: [{
+                    label: 'ホルモンの種類数 (概念)',
+                    data: [1, 4], // 1 for insulin, 4 for glucagon, adrenaline, cortisol, growth hormone
+                    backgroundColor: [primaryColor, secondaryColor],
+                    borderColor: '#FFFFFF',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true, max: 5, ticks: { stepSize: 1, color: textPrimaryColor }, grid: { color: '#E5E7EB' } },
+                    x: { ticks: { color: textPrimaryColor }, grid: { display: false } }
+                },
+                plugins: {
+                    ...commonTooltipOptions.plugins,
+                    legend: { display: false },
+                    title: { display: true, text: '血糖調節ホルモンの非対称性', color: textPrimaryColor, font: { size: 16 } }
+                }
+            }
+        });
+
+        // Insulin Resistance Chart (Conceptual Line Chart)
+        const insulinResistanceCtx = document.getElementById('insulinResistanceChart').getContext('2d');
+        new Chart(insulinResistanceCtx, {
+            type: 'line',
+            data: {
+                labels: processLabels(['初期', 'インスリン抵抗性発症', '代償期 (高インスリン血症)', '膵臓疲弊期']),
+                datasets: [
+                    {
+                        label: '血糖値 (概念)',
+                        data: [100, 120, 110, 140],
+                        borderColor: primaryColor,
+                        backgroundColor: 'rgba(20, 184, 166, 0.1)',
+                        fill: false,
+                        tension: 0.3,
+                        pointRadius: 5,
+                        pointBackgroundColor: primaryColor
+                    },
+                    {
+                        label: 'インスリン分泌量 (概念)',
+                        data: [50, 60, 90, 40],
+                        borderColor: secondaryColor,
+                        backgroundColor: 'rgba(255, 127, 80, 0.1)',
+                        fill: false,
+                        tension: 0.3,
+                        pointRadius: 5,
+                        pointBackgroundColor: secondaryColor
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: false, ticks: { color: textPrimaryColor }, grid: { color: '#E5E7EB' } },
+                    x: { ticks: { color: textPrimaryColor }, grid: { color: '#E5E7EB' } }
+                },
+                plugins: {
+                    ...commonTooltipOptions.plugins,
+                    legend: { position: 'top', labels: { color: textPrimaryColor } },
+                    title: { display: true, text: 'インスリン抵抗性の進行と膵臓の反応', color: textPrimaryColor, font: { size: 16 } }
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>
