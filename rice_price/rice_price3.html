@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>米価高騰の要因徹底解説：流通構造の変化とコスト分析 (YouTube動画向け)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif, 'Noto Sans JP', sans-serif;
+            background-color: #F8FAFC; 
+            color: #1E293B; 
+            font-size: 18px; 
+            line-height: 1.7;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px; 
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px; 
+            max-height: 450px;
+        }
+        @media (min-width: 1024px) {
+            .chart-container {
+                height: 420px;
+                max-width: 750px;
+            }
+        }
+        .stat-card {
+            background-color: #FFFFFF; 
+            border-radius: 0.75rem; 
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.04); 
+            padding: 2rem; 
+            margin-bottom: 2.5rem; 
+        }
+        h1 {
+            color: #073B4C; 
+            font-weight: 800; 
+            font-size: 3.25rem; 
+            line-height: 1.2;
+        }
+        h2 {
+            color: #073B4C; 
+            font-weight: 700;
+            font-size: 2.5rem; 
+            margin-bottom: 1.5rem; 
+            border-bottom: 3px solid #118AB2;
+            padding-bottom: 0.5rem;
+        }
+        h3 {
+            color: #118AB2; 
+            font-weight: 700;
+            font-size: 1.85rem; 
+            margin-bottom: 1rem; 
+        }
+        h4 { 
+            font-size: 1.4rem; 
+            font-weight: 600;
+            color: #06D6A0;
+            margin-bottom: 0.5rem;
+        }
+        p, li, .text-sm, .text-xs, .stat-label { 
+            font-size: 1.15rem; 
+            line-height: 1.8;
+            color: #334155; 
+        }
+        .text-xs {
+             font-size: 0.95rem;
+        }
+        .big-stat {
+            font-size: 4rem; 
+            font-weight: 800; 
+            line-height: 1.1;
+        }
+        .stat-label { 
+            font-size: 1.1rem; 
+            color: #475569; 
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+        th, td {
+            padding: 1rem 1.25rem; 
+            text-align: left;
+            border-bottom: 1px solid #E2E8F0; 
+            font-size: 1.05rem; 
+        }
+        thead th {
+            background-color: #073B4C; 
+            color: #FFFFFF;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        tbody tr:nth-child(even) {
+            background-color: #F8FAFC;
+        }
+        tbody tr:hover {
+            background-color: #F1F5F9;
+        }
+        .accent-text-red { color: #FF6B6B; }
+        .accent-text-yellow { color: #FFD166; }
+        .accent-text-teal { color: #06D6A0; }
+        .accent-text-blue { color: #118AB2; }
+        .bg-main-accent { background-color: #073B4C; }
+        .text-main-accent { color: #073B4C; }
+
+        .flow-diagram-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 2rem;
+            background-color: #FFFFFF;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+        }
+        .flow-item {
+            background-color: #E0F2FE; 
+            color: #073B4C;
+            padding: 1.25rem 1.75rem; 
+            border-radius: 0.5rem;
+            text-align: center;
+            border: 2px solid #7DD3FC; 
+            width: 100%; 
+            max-width: 450px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+            font-size: 1.2rem; 
+        }
+        .flow-item strong {
+            color: #EF4444; 
+            font-weight: 700;
+        }
+        .flow-arrow {
+            font-size: 2.5rem; 
+            color: #38BDF8; 
+            margin: 0.75rem 0;
+        }
+        .flow-arrow-horizontal {
+            font-size: 2.5rem; 
+            color: #38BDF8;
+            margin: 0 1.25rem; 
+        }
+
+        @media (min-width: 1280px) { 
+            .flow-diagram-horizontal {
+                flex-direction: row;
+                justify-content: space-around; 
+                align-items: stretch; 
+            }
+            .flow-item {
+                width: auto;
+                min-width: 220px; 
+                flex: 1; 
+                margin: 0 0.75rem; 
+                display: flex; 
+                flex-direction: column; 
+                justify-content: center; 
+            }
+             .flow-arrow { 
+                display: block; 
+            }
+            .flow-arrow-horizontal-container { 
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex: 0 0 auto; 
+                padding-top: 0; 
+                align-self: center; 
+            }
+        }
+         @media (max-width: 1279px) { 
+            .flow-diagram-horizontal { 
+                flex-direction: column;
+            }
+            .flow-arrow-horizontal-container {
+                display: none; 
+            }
+            .flow-item {
+                margin-bottom: 1.5rem; 
+            }
+        }
+        .highlight-card {
+            background-color: #FFFBEB; /* Light yellow */
+            border: 1px solid #FDE68A; /* Yellow border */
+            color: #78350F; /* Dark yellow text */
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin-top: 1.5rem;
+        }
+    </style>
+</head>
+<body class="p-6 md:p-10 xl:p-12">
+    <!-- 
+        Infographic Plan Summary:
+        1.  Title & Hook: 米価高騰の現状と本インフォグラフィックの目的
+        2.  Section 1: 小売価格の衝撃的な上昇（エグゼクティブサマリーより）
+        3.  Section 2: 流通経路の変化と価格ポイント（表1, 表2のデータを視覚化）
+        4.  Section 3: 主要事業者の役割と「その他集荷業者」の特性
+        5.  Section 4: コストとマージンの推定フロー（表3の内容を簡略化して提示）
+        6.  Section 5: 価格高騰の要因解明（主要因と背景要因）
+        7.  Section 6: 結論
+
+        Color Palette Chosen: Energetic & Playful (Base)
+        - Background: #F8FAFC
+        - Card Background: #FFFFFF
+        - Main Text: #1E293B, #334155
+        - Headings Accent: #073B4C
+        - Chart Colors: #FF6B6B, #FFD166, #06D6A0, #118AB2
+
+        Confirmation: NEITHER Mermaid JS NOR SVG were used anywhere in this output.
+    -->
+
+    <div class="container mx-auto max-w-none px-4 sm:px-6 lg:px-8 xl:max-w-screen-xl 2xl:max-w-screen-2xl">
+        <header class="text-center mb-16 md:mb-24">
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-5">米価高騰の深層分析</h1>
+            <p class="text-2xl md:text-3xl lg:text-4xl text-slate-600">流通構造の変化がもたらすコストとマージンへの影響</p>
+        </header>
+
+        <section class="mb-16 md:mb-24 stat-card">
+            <h2 class="text-3xl md:text-4xl text-main-accent">はじめに：食卓を揺るがす米価高騰</h2>
+            <p class="text-slate-700 mb-6 text-xl md:text-2xl">近年、日本の主食である米の価格が著しく上昇し、私たちの家計に大きな影響を与えています。本インフォグラフィックでは、この価格高騰の背景にある流通構造の変化と、各段階でのコスト・マージン構造を分析し、その要因を明らかにします。</p>
+            <div class="text-center my-10">
+                <p class="stat-label mb-2">小売価格の前年同期比</p>
+                <div class="accent-text-red big-stat">
+                    +102.5%
+                </div>
+                <p class="stat-label mt-2">（5kgあたり税込4,268円）</p>
+            </div>
+            <p class="text-slate-700 text-lg md:text-xl">この驚異的な上昇率は、単一の要因ではなく、複雑な市場メカニズムの変化を示唆しています。特に、従来の流通チャネルから「集荷業者以外の業者等」（その他集荷業者）へのシフトが、価格形成に大きな影響を与えていると考えられます。</p>
+        </section>
+
+        <section class="mb-16 md:mb-24 stat-card">
+            <h2 class="text-3xl md:text-4xl text-main-accent">流通経路のシフトと価格変動</h2>
+            <p class="text-slate-700 mb-8 text-lg md:text-xl">米の流通は、従来の集荷業者中心のルートから、「その他集荷業者」が介在する新たなルートへと大きく変化しています。この変化が各段階の価格にどう影響しているのか見ていきましょう。</p>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12 items-start">
+                <div>
+                    <h3 class="text-2xl font-semibold mb-5 text-center">主要価格ポイント比較 (60kgあたり)</h3>
+                    <div class="chart-container h-[420px] md:h-[480px]">
+                        <canvas id="pricePointComparisonChart"></canvas>
+                    </div>
+                    <p class="mt-4 text-xs text-slate-500 text-center">※小売価格は税込5kg価格を60kgに換算。「その他集荷業者」価格は平均的な範囲。</p>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-semibold mb-5 text-center">取引量の変動 (前年比)</h3>
+                    <div class="chart-container h-[380px] md:h-[420px]">
+                        <canvas id="volumeChangeChart"></canvas>
+                    </div>
+                    <p class="mt-4 text-slate-700 text-md">集荷業者への出荷量が<strong class="accent-text-red">-31万トン</strong>減少した一方、「その他集荷業者」との取引量は<strong class="accent-text-teal">+44万トン</strong>と大幅に増加しています。</p>
+                </div>
+            </div>
+
+            <div class="highlight-card">
+                <h4 class="text-yellow-700">注目ポイント：</h4>
+                <ul class="list-disc list-inside mt-2 space-y-1">
+                    <li>生産者への支払価格：約20,000円/60kg (昨年産比 <strong class="accent-text-red">約+50%</strong>)</li>
+                    <li>集荷業者間の取引価格：24,597円/60kg (昨年産比 <strong class="accent-text-red">+61%</strong>)</li>
+                    <li>「その他集荷業者」から卸売業者等への価格：<strong class="accent-text-blue">45,000円～50,000円/60kg</strong>と、従来ルートより大幅高。</li>
+                </ul>
+                <p class="mt-3">この「その他集荷業者」経由の高価格な米が、市場全体の価格水準を押し上げている主要因の一つです。</p>
+            </div>
+        </section>
+
+        <section class="mb-16 md:mb-24 stat-card">
+            <h2 class="text-3xl md:text-4xl text-main-accent">新たな主役：「その他集荷業者」とは？</h2>
+            <p class="text-slate-700 mb-6 text-lg md:text-xl">価格高騰の鍵を握る「その他集荷業者」。彼らはどのような存在なのでしょうか。</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="p-6 bg-slate-50 rounded-lg border border-slate-200">
+                    <h3 class="text-2xl text-slate-700 mb-3">従来の集荷業者 (JA系統など)</h3>
+                    <p>多数の生産者から米を集荷し、初期処理後、卸売業者へ販売。伝統的に市場の中心的存在でしたが、近年は出荷量が減少傾向にあります（前年比-31万トン）。</p>
+                </div>
+                <div class="p-6 bg-sky-50 rounded-lg border border-sky-200">
+                    <h3 class="text-2xl text-sky-700 mb-3">その他集荷業者</h3>
+                    <p>JA系統に属さず、生産者から直接、しばしば<strong class="accent-text-red">高値で米を調達</strong>する事業者群。独立系ディーラーや民間企業などが想定されます。市場の需給変動に迅速に対応し、卸売業者へは<strong class="accent-text-blue">60kgあたり45,000円～50,000円</strong>という高価格で販売。取引量は急増しています（+44万トン）。</p>
+                </div>
+            </div>
+            <p class="mt-8 text-slate-700 text-lg md:text-xl">「その他集荷業者」は、生産者にとっては有利な販売先となる一方、サプライチェーン全体のコストを押し上げる要因となっています。卸売業者は、従来の仕入れ先からの供給減を補うため、これらの業者からの高価な調達を余儀なくされています。</p>
+        </section>
+
+        <section class="mb-16 md:mb-24 stat-card">
+            <h2 class="text-3xl md:text-4xl text-main-accent">価格はこうして積み上がる：コスト・マージン分析</h2>
+            <p class="text-slate-700 mb-8 text-lg md:text-xl">米が消費者に届くまでの各段階で、どのようにコストが加算されていくのか、推定値に基づいて見てみましょう。（数値は60kgあたり。仮定を含む）</p>
+            
+            <div class="overflow-x-auto">
+                <table class="min-w-full">
+                    <thead>
+                        <tr>
+                            <th>段階/事業者</th>
+                            <th>項目</th>
+                            <th>金額（円）</th>
+                            <th>備考</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td rowspan="2"><strong>生産者</strong></td>
+                            <td>販売価格（対伝統的集荷業者）</td>
+                            <td class="text-right">20,000</td>
+                            <td>資料[1]より</td>
+                        </tr>
+                        <tr>
+                            <td>販売価格（対「その他集荷業者」、仮定）</td>
+                            <td class="text-right">27,000</td>
+                            <td>20,000円の35%増しと仮定</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="3"><strong>伝統的集荷業者</strong></td>
+                            <td>生産者からの調達コスト</td>
+                            <td class="text-right">20,000</td>
+                            <td>資料[1]より</td>
+                        </tr>
+                        <tr>
+                            <td>卸売業者への販売価格</td>
+                            <td class="text-right">24,597</td>
+                            <td>資料[1]より</td>
+                        </tr>
+                        <tr>
+                            <td>粗利益（運営コスト等込）</td>
+                            <td class="text-right accent-text-teal">4,597</td>
+                            <td>差額</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="3"><strong>「その他集荷業者」</strong></td>
+                            <td>生産者からの調達コスト（仮定）</td>
+                            <td class="text-right">27,000</td>
+                            <td>上記仮定</td>
+                        </tr>
+                        <tr>
+                            <td>卸売業者への販売価格（平均）</td>
+                            <td class="text-right">47,500</td>
+                            <td>(4.5万+5万)/2 資料[1]</td>
+                        </tr>
+                        <tr>
+                            <td>粗利益（運営コスト等込、仮定）</td>
+                            <td class="text-right accent-text-red">20,500</td>
+                            <td>差額、運営コスト不明</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="4"><strong>卸売業者</strong></td>
+                            <td>平均調達コスト（加重平均、仮定）</td>
+                            <td class="text-right">31,468</td>
+                            <td>(24,597×0.7) + (47,500×0.3) と仮定</td>
+                        </tr>
+                        <tr>
+                            <td>運営コスト（精米・保管等、仮定）</td>
+                            <td class="text-right">4,000</td>
+                            <td>仮定値</td>
+                        </tr>
+                        <tr>
+                            <td>小売業者への販売価格（税抜、推定）</td>
+                            <td class="text-right">37,248</td>
+                            <td>小売価格から逆算（小売マージン20%と仮定）</td>
+                        </tr>
+                        <tr>
+                            <td>粗利益（純利益込、仮定）</td>
+                            <td class="text-right accent-text-yellow">1,780</td>
+                            <td>差額</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="3"><strong>小売業者</strong></td>
+                            <td>卸売業者からの調達コスト（税抜、推定）</td>
+                            <td class="text-right">37,248</td>
+                            <td>上記卸売業者の販売価格</td>
+                        </tr>
+                        <tr>
+                            <td>小売マージン・運営コスト（税抜、推定）</td>
+                            <td class="text-right">9,312</td>
+                            <td>小売価格(税抜)の20%と仮定</td>
+                        </tr>
+                        <tr>
+                            <td>消費者への販売価格（税込）</td>
+                            <td class="text-right accent-text-red">51,216</td>
+                            <td>4,268円/5kg × 12 資料[1]</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="mt-6 text-slate-600 text-md">注：表内の一部の数値は提供資料に記載がないため仮定値や推定値であり、実際の数値とは異なる可能性があります。</p>
+            <p class="mt-4 text-slate-700 text-lg md:text-xl">この試算から、「その他集荷業者」が大きな粗利益を得ている可能性が示唆されます。そして、この段階での大幅な価格上乗せが、最終的な小売価格高騰の主要なドライバーとなっていることが分かります。</p>
+        </section>
+
+        <section class="mb-16 md:mb-24 stat-card">
+            <h2 class="text-3xl md:text-4xl text-main-accent">なぜ米価は高騰したのか？要因の整理</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-2xl text-slate-700 mb-4">直接的な要因</h3>
+                    <ul class="list-disc list-inside space-y-3 text-slate-700">
+                        <li><strong class="accent-text-blue">供給チャネルのシフト：</strong>従来の集荷業者から「その他集荷業者」への流通量の移行。</li>
+                        <li><strong class="accent-text-red">「その他集荷業者」による高価格設定：</strong>生産者からの高値買い付けと、卸売業者へのさらに高い価格での販売。</li>
+                        <li><strong class="accent-text-yellow">小ロット取引の増加：</strong>卸売業者が不足分を小ロット・高価格で調達せざるを得ず、単位あたりのコストが増加。</li>
+                        <li><strong class="text-slate-600">連鎖的なコスト転嫁：</strong>サプライチェーンの各段階でコストが上乗せされ、最終的に消費者に転嫁。</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-2xl text-slate-700 mb-4">背景にある要因</h3>
+                    <ul class="list-disc list-inside space-y-3 text-slate-700">
+                        <li>生産コストの上昇（肥料、燃料費など）。</li>
+                        <li>低水準の民間在庫量。</li>
+                        <li>コロナ禍後の外食需要回復やインバウンド需要。</li>
+                        <li>物流コストの上昇（2024年問題など）。</li>
+                        <li>需給逼迫を反映したスポット市場価格の高騰。</li>
+                    </ul>
+                </div>
+            </div>
+            <p class="mt-8 text-slate-700 text-lg md:text-xl">これらの要因が複合的に絡み合い、記録的な米価高騰を引き起こしていると考えられます。</p>
+        </section>
+
+        <section class="bg-main-accent text-white p-10 md:p-12 rounded-lg shadow-xl">
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-8 text-center text-white">結論：構造変化が招いた価格高騰</h2>
+            <p class="text-xl mb-6 leading-relaxed text-white">今回の米価高騰は、需給バランスの変化と生産者の販売戦略の多様化を背景とした流通構造の転換が、各段階でのコストとマージンに影響を与え、最終製品価格に波及した結果です。</p>
+            <p class="text-xl mb-6 leading-relaxed text-white">特に「その他集荷業者」の台頭と彼らによる高価格戦略が、サプライチェーン全体のコストを押し上げる主要な力学として機能しています。卸売業者はこの新たな高コスト構造の中で、上昇したコストを価格転嫁せざるを得ない状況にあります。</p>
+            <p class="mt-8 text-2xl text-center font-semibold text-white">この状況は、米の安定供給と価格形成における従来の流通システムの課題、および新たなリスク要因を浮き彫りにしています。今後の市場動向と政策対応が注目されます。</p>
+        </section>
+
+        <footer class="text-center mt-16 md:mt-24 py-10 border-t border-slate-300">
+            <p class="text-md text-slate-500">&copy; <span id="currentYear"></span> 米価高騰要因の徹底解説インフォグラフィック (YouTube動画向け). <br class="sm:hidden">分析は提供された報告書に基づきます。</p>
+        </footer>
+    </div>
+
+    <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        function wrapLabels(labels, maxLength = 12) { 
+            return labels.map(label => {
+                if (typeof label === 'string' && label.length > maxLength) {
+                    const words = label.split(' ');
+                    const lines = [];
+                    let currentLine = '';
+                    for (const word of words) {
+                        if ((currentLine + word).length > maxLength && currentLine.length > 0) {
+                            lines.push(currentLine.trim());
+                            currentLine = word + ' ';
+                        } else {
+                            currentLine += word + ' ';
+                        }
+                    }
+                    lines.push(currentLine.trim());
+                    return lines;
+                }
+                return label;
+            });
+        }
+        
+        const tooltipTitleCallback = function(tooltipItems) {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+              return label.join(' ');
+            } else {
+              return label;
+            }
+        };
+
+        const commonChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        font: { size: 14, family: "'Noto Sans JP', sans-serif" }, 
+                        padding: 20 
+                    }
+                },
+                tooltip: {
+                    callbacks: { title: tooltipTitleCallback },
+                    bodyFont: { family: "'Noto Sans JP', sans-serif", size: 13 }, 
+                    titleFont: { family: "'Noto Sans JP', sans-serif", size: 15 }, 
+                    padding: 12,
+                    boxPadding: 4
+                }
+            },
+        };
+        
+        const energeticPlayfulPalette = {
+            red: '#FF6B6B',
+            yellow: '#FFD166',
+            teal: '#06D6A0',
+            blue: '#118AB2',
+            darkBlue: '#073B4C'
+        };
+
+        // Price Point Comparison Chart (Horizontal Bar)
+        const pricePointLabels = wrapLabels(['生産者支払価格', '集荷業者間 取引価格', 'その他集荷業者から卸へ (平均)', '小売価格 (60kg換算・税込)']);
+        const pricePointData = [20000, 24597, (45000 + 50000) / 2, 4268 * 12];
+        new Chart(document.getElementById('pricePointComparisonChart'), {
+            type: 'bar',
+            data: {
+                labels: pricePointLabels,
+                datasets: [{
+                    label: '価格 (円/60kg)',
+                    data: pricePointData,
+                    backgroundColor: [
+                        energeticPlayfulPalette.teal + 'CC', 
+                        energeticPlayfulPalette.yellow + 'CC',
+                        energeticPlayfulPalette.blue + 'CC',
+                        energeticPlayfulPalette.red + 'CC'
+                    ],
+                    borderColor: [
+                        energeticPlayfulPalette.teal,
+                        energeticPlayfulPalette.yellow,
+                        energeticPlayfulPalette.blue,
+                        energeticPlayfulPalette.red
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: { 
+                ...commonChartOptions, 
+                indexAxis: 'y',
+                scales: {
+                    x: { 
+                        beginAtZero: true,
+                        ticks: { 
+                            font: { size: 13, family: "'Noto Sans JP', sans-serif" }, 
+                            callback: function(value) { return value.toLocaleString('ja-JP') + '円'; }
+                        },
+                        grid: { color: '#E2E8F0' } 
+                    },
+                    y: { 
+                        ticks: { 
+                            font: { size: 13, family: "'Noto Sans JP', sans-serif" }
+                        },
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+
+        // Volume Change Chart (Vertical Bar)
+        const volumeChangeLabels = wrapLabels(['集荷業者への出荷量', 'その他集荷業者との取引量', '自家消費等']);
+        const volumeChangeData = [-31, 44, -5]; 
+        new Chart(document.getElementById('volumeChangeChart'), {
+            type: 'bar',
+            data: {
+                labels: volumeChangeLabels,
+                datasets: [{
+                    label: '取引量変化 (万トン)',
+                    data: volumeChangeData,
+                    backgroundColor: function(context) {
+                        const value = context.dataset.data[context.dataIndex];
+                        return value < 0 ? energeticPlayfulPalette.red + 'CC' : energeticPlayfulPalette.teal + 'CC';
+                    },
+                     borderColor: function(context) {
+                        const value = context.dataset.data[context.dataIndex];
+                        return value < 0 ? energeticPlayfulPalette.red : energeticPlayfulPalette.teal;
+                    },
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                ...commonChartOptions, 
+                scales: { 
+                    x: { 
+                        ticks: { 
+                            font: { size: 13, family: "'Noto Sans JP', sans-serif" }, 
+                            maxRotation: 20, 
+                            minRotation: 0
+                        },
+                        grid: { display: false }
+                    },
+                    y: { 
+                        beginAtZero: true,
+                        ticks: {
+                            font: { size: 13, family: "'Noto Sans JP', sans-serif" },
+                            callback: function(value) { return value.toLocaleString('ja-JP') + '万トン'; }
+                        },
+                        grid: { color: '#E2E8F0' },
+                        title: { display: true, text: '変化量 (万トン)', font: {size: 15, family: "'Noto Sans JP', sans-serif"}}
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
