@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日本の米市場インフォグラフィック：令和時代の動向 (ワイド版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Visualization Choices:
+    - Domestic Production (Table 4.1): Goal: Change -> Line Chart (Chart.js). Justification: Shows trend over time. NO SVG.
+    - Demand (Table 5.1): Goal: Change -> Line Chart (Chart.js). Justification: Shows trend over time. NO SVG.
+    - Per Capita Consumption (from Table 5.1 text): Goal: Inform -> Big Numbers with trend (HTML). Justification: Key demand driver. NO SVG.
+    - Private Inventory (Table 6.1): Goal: Compare/Change -> Stacked Bar Chart (Chart.js). Justification: Shows composition and trend. NO SVG.
+    - Government Reserve Rice (Table 6.2): Goal: Inform -> Donut Chart (Chart.js). Justification: Stable key figure. NO SVG.
+    - Future Demand/Inventory (Table 8.1): Goal: Change -> Line Chart (Chart.js). Justification: Projected trends. NO SVG.
+    - MA Rice Imports (Text): Goal: Inform -> Big Number + Unicode Icon (HTML). Justification: Key import figure. NO SVG.
+    -->
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #F0F4F8; /* Light Grayish Blue */
+            font-size: 18px; /* Base font size increased */
+        }
+        .main-container {
+            max-width: 1600px; /* Increased max-width for wider layout */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px; /* Increased max-width for charts */
+            margin-left: auto;
+            margin-right: auto;
+            height: 450px; /* Increased height for charts */
+            max-height: 550px; /* Increased max-height */
+        }
+        @media (min-width: 768px) { /* md */
+            .chart-container {
+                height: 500px; /* Adjusted for larger screens */
+            }
+        }
+        .stat-card {
+            background-color: #FFFFFF;
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-lg */
+            padding: 2rem; /* p-8, increased padding */
+            margin-bottom: 2rem; /* mb-8, increased margin */
+        }
+        .section-title {
+            font-size: 2.25rem; /* text-4xl, increased */
+            font-weight: 700; /* font-bold */
+            color: #073B4C; /* Energetic Dark Blue */
+            margin-bottom: 1.5rem; /* Increased margin */
+            text-align: center;
+        }
+        .chart-title {
+            font-size: 1.875rem; /* text-3xl, increased */
+            font-weight: 700;
+            color: #118AB2; /* Energetic Blue */
+            margin-bottom: 1rem; /* Increased margin */
+            text-align: center;
+        }
+        .chart-caption {
+            font-size: 1rem; /* text-base, increased */
+            color: #718096; /* Subtle Text Color */
+            text-align: center;
+            margin-top: 1rem; /* Increased margin */
+        }
+        .kome-icon {
+            font-size: 3.5rem; /* Increased icon size */
+            color: #FFD166; /* Sunglow Yellow */
+        }
+        .text-content {
+            font-size: 1.125rem; /* text-lg, for general paragraphs */
+            line-height: 1.75; /* leading-relaxed */
+        }
+        .key-trend-title {
+            font-size: 1.75rem; /* text-2xl equivalent, increased */
+            font-weight: 700;
+        }
+        .key-trend-icon {
+            font-size: 4rem; /* Increased icon size */
+        }
+        .data-point-large {
+            font-size: 2.5rem; /* Increased for big numbers */
+            font-weight: 700;
+        }
+        .data-point-medium {
+            font-size: 1.75rem; /* Increased for medium numbers */
+            font-weight: 700;
+        }
+        .list-item-text {
+            font-size: 1.125rem; /* text-lg for list items */
+        }
+
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <header class="bg-[#073B4C] text-white py-8 shadow-xl">
+        <div class="container mx-auto px-6 text-center main-container">
+            <h1 class="text-5xl font-bold">日本の米市場 <span class="kome-icon">🌾</span></h1>
+            <p class="text-2xl mt-3">令和時代の需給動向と将来展望</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-10 main-container">
+
+        <section id="introduction" class="mb-16">
+            <p class="text-xl text-center text-gray-700 leading-relaxed max-w-4xl mx-auto text-content">
+                本インフォグラフィックは、令和元年（2019年）以降の日本における米の需要、供給、在庫に関する主要な動向を視覚的に示したものです。データに基づき、国内生産、消費パターン、在庫状況、そして将来の見通しを概観します。日本の食文化と農業経済の根幹をなす米市場の現状をご理解いただく一助となれば幸いです。
+            </p>
+        </section>
+
+        <section id="key-trends" class="mb-16">
+            <h2 class="section-title">主要トレンド概観</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="stat-card text-center">
+                    <h3 class="key-trend-title text-[#FF6B6B]">需要の減少傾向</h3>
+                    <p class="text-gray-600 mt-3 text-content">人口減少と食生活の変化により、主食用米の国内需要は長期的に減少しています。</p>
+                    <span class="key-trend-icon mt-3">📉</span>
+                </div>
+                <div class="stat-card text-center">
+                    <h3 class="key-trend-title text-[#06D6A0]">生産量の調整</h3>
+                    <p class="text-gray-600 mt-3 text-content">需要動向に合わせ、主食用米の国内生産量は緩やかに調整されています。</p>
+                     <span class="key-trend-icon mt-3">🚜</span>
+                </div>
+                <div class="stat-card text-center">
+                    <h3 class="key-trend-title text-[#118AB2]">安定した政府備蓄</h3>
+                    <p class="text-gray-600 mt-3 text-content">食料安全保障のため、政府備蓄米は約100万トンレベルで安定的に維持されています。</p>
+                    <span class="key-trend-icon mt-3">🛡️</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="production" class="mb-16 stat-card">
+            <h2 class="section-title">国内生産の動向</h2>
+            <p class="text-center text-gray-700 mb-8 text-content">主食用米の国内生産量は、需要の減少傾向に応じて調整されつつも、作柄等により年ごとの変動が見られます。令和6年産は見込み値です。</p>
+            <div class="chart-container bg-white p-3 md:p-6 rounded-lg shadow-inner">
+                <canvas id="productionChart"></canvas>
+            </div>
+            <p class="chart-caption">出典：農林水産省「米穀の需給及び価格の安定に関する基本指針」等</p>
+        </section>
+
+        <section id="demand" class="mb-16 stat-card">
+            <h2 class="section-title">需要と消費の変動</h2>
+            <p class="text-center text-gray-700 mb-4 text-content">主食用米の年間需要量は、長期的に減少傾向にあります。人口減少と一人当たり消費量の低下が主な要因です。令和6/7年度以降は見通し値です。</p>
+            <div class="chart-container bg-white p-3 md:p-6 rounded-lg shadow-inner">
+                <canvas id="demandChart"></canvas>
+            </div>
+             <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 text-center">
+                <div>
+                    <h4 class="text-xl font-semibold text-[#073B4C]">一人当たり年間消費量 (見通し)</h4>
+                    <p class="data-point-medium text-[#FF6B6B] mt-1"><span id="perCapitaR67">54.4</span>kg (R6/7年度)</p>
+                    <p class="data-point-medium text-[#FF6B6B] mt-1"><span id="perCapitaR78">53.8</span>kg (R7/8年度)</p>
+                </div>
+                <div>
+                    <h4 class="text-xl font-semibold text-[#073B4C]">総人口 (見通し)</h4>
+                    <p class="data-point-medium text-[#118AB2] mt-1"><span id="populationR67">1億2378万</span>人 (R6/7年度)</p>
+                    <p class="data-point-medium text-[#118AB2] mt-1"><span id="populationR78">1億2320万</span>人 (R7/8年度)</p>
+                </div>
+            </div>
+            <p class="chart-caption">出典：農林水産省「米穀の需給及び価格の安定に関する基本指針」等</p>
+        </section>
+
+        <section id="inventory" class="mb-16">
+            <h2 class="section-title">在庫状況の分析</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                <div class="stat-card">
+                    <h3 class="chart-title">民間在庫量の推移 (各年6月末)</h3>
+                    <p class="text-center text-gray-700 mb-6 text-content">民間在庫は生産段階、出荷段階、販売段階に分かれ、市場の需給バランスを反映して変動します。</p>
+                    <div class="chart-container bg-white p-3 md:p-6 rounded-lg shadow-inner">
+                        <canvas id="privateInventoryChart"></canvas>
+                    </div>
+                    <p class="chart-caption">出典：農林水産省「米穀の需給及び価格の安定に関する基本指針」等</p>
+                </div>
+                <div class="stat-card">
+                    <h3 class="chart-title">政府備蓄米の状況 (各年6月末)</h3>
+                    <p class="text-center text-gray-700 mb-6 text-content">政府備蓄米は食料安全保障の観点から、約100万トンを目標に安定的に維持されています。</p>
+                    <div class="chart-container bg-white p-3 md:p-6 rounded-lg shadow-inner">
+                        <canvas id="governmentInventoryChart"></canvas>
+                    </div>
+                    <p class="chart-caption">出典：農林水産省「米穀の需給及び価格の安定に関する基本指針」等</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="trade" class="mb-16 stat-card">
+            <h2 class="section-title">米の輸出入概況</h2>
+            <p class="text-center text-gray-700 mb-8 text-content">日本の米輸入は主に国際協定に基づくもので、国内市場への影響を考慮して運用されています。輸出は限定的ですが、高品質な日本産米の海外展開も進められています。</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
+                <div class="p-6 bg-blue-50 rounded-xl">
+                    <h3 class="text-2xl font-semibold text-[#118AB2]">MA米輸入枠 🍚</h3>
+                    <p class="data-point-large text-[#073B4C] mt-2">約77<span class="text-xl">万トン/年</span></p>
+                    <p class="text-base text-gray-600 mt-1">(WTO協定に基づく)</p>
+                </div>
+                <div class="p-6 bg-green-50 rounded-xl">
+                    <h3 class="text-2xl font-semibold text-[#06D6A0]">CPTPP等輸入枠 🌏</h3>
+                    <p class="text-gray-700 mt-2 text-content">豪州等に対し国別枠を設定。令和6年度計画 約0.7万トン（豪州枠）。</p>
+                </div>
+            </div>
+             <p class="text-base text-gray-600 mt-6 text-center">輸入米の多くは加工用や飼料用に仕向けられ、主食用市場への影響は限定的です。</p>
+        </section>
+
+        <section id="outlook" class="mb-16 stat-card">
+            <h2 class="section-title">将来の見通し</h2>
+            <p class="text-center text-gray-700 mb-8 text-content">農林水産省の見通しによると、今後も需要の減少は続くと予測されています。生産量が一定と仮定した場合の期末民間在庫量の見通しは以下の通りです。</p>
+            <div class="chart-container bg-white p-3 md:p-6 rounded-lg shadow-inner">
+                <canvas id="futureInventoryOutlookChart"></canvas>
+            </div>
+            <p class="chart-caption">出典：農林水産省「米穀の需給及び価格の安定に関する基本指針」 (令和7年産生産量はR6年産同量と仮定)</p>
+        </section>
+
+        <section id="conclusion" class="mb-16 text-center">
+            <h2 class="section-title">まとめと今後の課題</h2>
+            <div class="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-xl">
+                <p class="text-gray-700 leading-relaxed mb-6 text-content">
+                    令和時代の日本の米市場は、国内生産の調整、持続的な需要減退、安定した政府備蓄、そして変動する民間在庫といった特徴が見られます。輸入米は管理された形で導入されています。
+                </p>
+                <h3 class="text-2xl font-semibold text-[#073B4C] mb-3">今後の主要課題：</h3>
+                <ul class="list-disc list-inside text-left text-gray-700 space-y-2">
+                    <li class="list-item-text">非主食用米（飼料用、米粉用、輸出用）の需要拡大と水田の有効活用。</li>
+                    <li class="list-item-text">農業構造の変革と米作地帯の地域社会の持続可能性確保。</li>
+                    <li class="list-item-text">国内政策と国際市場の動向との調和、食料安全保障の強化。</li>
+                </ul>
+                <p class="text-gray-700 leading-relaxed mt-6 text-content">
+                    これらの課題に対応するため、より精緻な需給予測、生産構造の転換支援、新たな需要創出策が求められています。
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-[#073B4C] text-white py-10 text-center">
+        <p class="text-lg">&copy; <span id="currentYear"></span> 日本の米市場インフォグラフィック. All rights reserved.</p>
+        <p class="text-base mt-1">データ出典：主に農林水産省公開資料</p>
+    </footer>
+
+    <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        const energeticRed = '#FF6B6B';
+        const energeticYellow = '#FFD166';
+        const energeticGreen = '#06D6A0';
+        const energeticBlue = '#118AB2';
+        const energeticDarkBlue = '#073B4C';
+        const textColor = '#2D3748';
+        const baseFontSize = 14; // Increased base font for charts
+
+        function wrapLabel(label, maxLength = 16) {
+            if (typeof label === 'string' && label.length > maxLength) {
+                const words = label.split(''); 
+                const lines = [];
+                let currentLine = '';
+                for (const char of words) {
+                    if ((currentLine + char).length > maxLength && currentLine.length > 0) {
+                        lines.push(currentLine);
+                        currentLine = char;
+                    } else {
+                        currentLine += char;
+                    }
+                }
+                if (currentLine.length > 0) lines.push(currentLine);
+                return lines.length > 0 ? lines : [label]; // Ensure it returns an array even if one line
+            }
+            return label;
+        }
+        
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(''); 
+            }
+            return label;
+        };
+
+        const commonChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    labels: {
+                        color: textColor,
+                        font: { size: baseFontSize + 2 } // e.g. 16
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: tooltipTitleCallback
+                    },
+                    titleFont: { size: baseFontSize + 2 }, // e.g. 16
+                    bodyFont: { size: baseFontSize }, // e.g. 14
+                    backgroundColor: 'rgba(0,0,0,0.8)',
+                    titleColor: '#FFFFFF',
+                    bodyColor: '#FFFFFF',
+                    padding: 10
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { color: textColor, font: { size: baseFontSize } }, // e.g. 14
+                    grid: { display: false }
+                },
+                y: {
+                    ticks: { color: textColor, font: { size: baseFontSize } }, // e.g. 14
+                    grid: { color: '#E2E8F0' },
+                    title: {
+                        display: true,
+                        text: '万トン',
+                        color: textColor,
+                        font: { size: baseFontSize + 1 } // e.g. 15
+                    }
+                }
+            }
+        };
+        
+        const doughnutChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { 
+                    position: 'top', 
+                    labels: { color: textColor, font: { size: baseFontSize + 2 } } // e.g. 16
+                },
+                tooltip: {
+                    callbacks: {
+                        title: tooltipTitleCallback,
+                        label: function(context) {
+                            let label = context.dataset.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.parsed !== null) {
+                                label += context.parsed + ' 万トン';
+                            }
+                            return label;
+                        }
+                    },
+                    titleFont: { size: baseFontSize + 2 },
+                    bodyFont: { size: baseFontSize },
+                    backgroundColor: 'rgba(0,0,0,0.8)',
+                    titleColor: '#FFFFFF',
+                    bodyColor: '#FFFFFF',
+                    padding: 10
+                },
+                title: {
+                    display: true,
+                    text: '目標備蓄水準: 約100万トン',
+                    color: textColor,
+                    font: { size: baseFontSize + 3 } // e.g. 17
+                }
+            }
+        };
+
+
+        // Production Chart
+        const productionData = {
+            labels: ["R1(2019)", "R2(2020)", "R3(2021)", "R4(2022)", "R5(2023)", "R6(2024見)"].map(l => wrapLabel(l)),
+            datasets: [{
+                label: '主食用米等生産量 (万トン)',
+                data: [734.6, 726.1, 700.7, 670.0, 661.0, 683.0],
+                borderColor: energeticGreen,
+                backgroundColor: energeticGreen + '33', 
+                tension: 0.1,
+                fill: true,
+                borderWidth: 2.5, // Slightly thicker line
+                pointRadius: 5, // Larger points
+                pointHoverRadius: 7
+            }]
+        };
+        new Chart(document.getElementById('productionChart'), {
+            type: 'line',
+            data: productionData,
+            options: commonChartOptions
+        });
+
+        // Demand Chart
+        const demandData = {
+            labels: ["R1/2", "R2/3", "R3/4", "R4/5", "R5/6", "R6/7見", "R7/8見"].map(l => wrapLabel(l)),
+            datasets: [{
+                label: '主食用米等需要量 (万トン)',
+                data: [714.4, 704.0, 701.5, 691.1, 705.0, 674.0, 663.0],
+                borderColor: energeticRed,
+                backgroundColor: energeticRed + '33',
+                tension: 0.1,
+                fill: true,
+                borderWidth: 2.5,
+                pointRadius: 5,
+                pointHoverRadius: 7
+            }]
+        };
+        new Chart(document.getElementById('demandChart'), {
+            type: 'line',
+            data: demandData,
+            options: commonChartOptions
+        });
+        
+        // Private Inventory Chart
+        const privateInventoryData = {
+            labels: ["R1(2019)", "R2(2020)", "R3(2021)", "R4(2022)", "R5(2023)", "R6(2024)"].map(l => wrapLabel(l)),
+            datasets: [
+                {
+                    label: '生産段階 (万トン)',
+                    data: [30, 30, 29, 27, 25, 22],
+                    backgroundColor: energeticYellow,
+                    borderColor: '#DAA520', // Darker yellow for border
+                    borderWidth: 1
+                },
+                {
+                    label: '出荷段階 (万トン)',
+                    data: [127, 124, 131, 133, 125, 98],
+                    backgroundColor: energeticBlue,
+                    borderColor: '#0077B6', // Darker blue for border
+                    borderWidth: 1
+                },
+                {
+                    label: '販売段階 (万トン)',
+                    data: [32, 35, 39, 40, 47, 31],
+                    backgroundColor: energeticDarkBlue + 'CC', 
+                    borderColor: energeticDarkBlue,
+                    borderWidth: 1
+                }
+            ]
+        };
+        new Chart(document.getElementById('privateInventoryChart'), {
+            type: 'bar',
+            data: privateInventoryData,
+            options: { ...commonChartOptions, scales: {...commonChartOptions.scales, x: {...commonChartOptions.scales.x, stacked: true}, y: {...commonChartOptions.scales.y, stacked: true, title: { ...commonChartOptions.scales.y.title}}} }
+        });
+
+        // Government Inventory Chart
+        const governmentInventoryData = {
+            labels: ['政府備蓄米 (万トン)', '目標余剰/変動枠 (万トン)'],
+            datasets: [{
+                label: '政府備蓄米在庫量',
+                data: [91, 9], 
+                backgroundColor: [energeticGreen, energeticYellow + '99'],
+                borderColor: ['#FFFFFF', '#FFFFFF'],
+                borderWidth: 3, // Thicker border
+                hoverOffset: 8
+            }]
+        };
+        new Chart(document.getElementById('governmentInventoryChart'), {
+            type: 'doughnut',
+            data: governmentInventoryData,
+            options: doughnutChartOptions
+        });
+        
+        // Future Inventory Outlook Chart
+        const futureInventoryData = {
+            labels: ["R6/7需要", "R7/8需要", "R7.6末在庫見", "R8.6末在庫見"].map(l => wrapLabel(l)),
+            datasets: [
+                {
+                    label: '需要量見通し (万トン)',
+                    data: [674, 663, null, null], 
+                    borderColor: energeticRed,
+                    backgroundColor: energeticRed + '33',
+                    type: 'line',
+                    yAxisID: 'yDemand',
+                    tension: 0.1,
+                    fill: true,
+                    borderWidth: 2.5,
+                    pointRadius: 5,
+                    pointHoverRadius: 7
+                },
+                {
+                    label: '期末民間在庫量見通し (万トン)',
+                    data: [null, null, 162, 182], 
+                    backgroundColor: energeticBlue + 'CC',
+                    borderColor: energeticBlue,
+                    borderWidth: 1,
+                    type: 'bar',
+                    yAxisID: 'yInventory',
+                }
+            ]
+        };
+        new Chart(document.getElementById('futureInventoryOutlookChart'), {
+            type: 'bar', 
+            data: futureInventoryData,
+            options: {
+                ...commonChartOptions,
+                plugins: {
+                    ...commonChartOptions.plugins,
+                    title: {
+                        display: true,
+                        text: '需要量と期末民間在庫量の将来見通し',
+                        color: textColor,
+                        font: { size: baseFontSize + 3 } // e.g. 17
+                    }
+                },
+                scales: {
+                    x: commonChartOptions.scales.x,
+                    yDemand: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        title: { display: true, text: '需要量 (万トン)', color: energeticRed, font: {size: baseFontSize + 1} },
+                        ticks: { color: energeticRed, font: {size: baseFontSize} },
+                        grid: { drawOnChartArea: false } 
+                    },
+                    yInventory: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        title: { display: true, text: '在庫量 (万トン)', color: energeticBlue, font: {size: baseFontSize + 1} },
+                        ticks: { color: energeticBlue, font: {size: baseFontSize} },
+                         grid: { display: false } 
+                    }
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>
