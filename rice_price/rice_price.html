@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日本の米市場インフォグラフィック：需給動向と価格変動 (YouTube動画向け)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif, 'Noto Sans JP', sans-serif;
+            background-color: #F0F4F8; /* Slightly lighter blueish gray */
+            color: #2D3748; /* Darker gray for better contrast */
+            font-size: 18px; /* Base font size increase */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px; /* Increased max-width for landscape */
+            margin-left: auto;
+            margin-right: auto;
+            height: 380px; /* Increased height */
+            max-height: 450px; /* Increased max-height */
+        }
+        @media (min-width: 1024px) { /* Adjust for larger screens */
+            .chart-container {
+                height: 420px;
+            }
+        }
+        .stat-card {
+            background-color: white;
+            border-radius: 0.75rem; /* Slightly more rounded */
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08), 0 6px 6px rgba(0,0,0,0.1); /* Softer shadow */
+            padding: 2rem; /* Increased padding */
+            margin-bottom: 2.5rem; /* Increased margin */
+        }
+        h1 {
+            color: #073B4C;
+            font-size: 3.5rem; /* Increased */
+            font-weight: 800; /* Bolder */
+        }
+        h2 {
+            color: #073B4C;
+            font-size: 2.5rem; /* Increased */
+            font-weight: 700;
+            margin-bottom: 1.5rem; /* Increased */
+        }
+        h3 {
+            color: #118AB2; /* Changed for better hierarchy */
+            font-size: 1.75rem; /* Increased */
+            font-weight: 600;
+            margin-bottom: 1rem; /* Increased */
+        }
+        h4 {
+            color: #06D6A0; /* Accent color for sub-subheadings */
+            font-size: 1.4rem; /* Increased */
+            font-weight: 600;
+        }
+        p, li, td, th, .text-sm {
+            font-size: 1.1rem; /* Increased base text size */
+            line-height: 1.7;
+            color: #4A5568; /* Slightly lighter text color */
+        }
+        .text-xs {
+            font-size: 0.9rem; /* Increased */
+        }
+
+        .accent-color-1 { color: #FF6B6B; }
+        .accent-color-2 { color: #FFD166; }
+        .accent-color-3 { color: #06D6A0; }
+        .accent-color-4 { color: #118AB2; }
+        .bg-accent-dark { background-color: #073B4C; }
+        .text-accent-dark { color: #073B4C; }
+
+        .flow-chart-container {
+            display: flex;
+            flex-direction: column; /* Default to column for smaller screens if needed */
+            align-items: center;
+            gap: 1.5rem; /* Increased gap */
+            padding: 1.5rem;
+            width: 100%;
+        }
+        .flow-chart-item {
+            background-color: #FFFFFF;
+            border: 3px solid #118AB2; /* Thicker border */
+            color: #073B4C;
+            padding: 1rem 2rem; /* Increased padding */
+            border-radius: 0.75rem; /* More rounded */
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            width: 100%; /* Full width for stacking */
+            max-width: 400px; /* Increased max-width */
+            font-size: 1.2rem; /* Increased font size */
+        }
+        .flow-chart-arrow {
+            font-size: 2.5rem; /* Increased arrow size */
+            color: #118AB2;
+            transform: rotate(90deg); /* Default for column layout */
+        }
+        
+        /* Forcing horizontal layout for YouTube (typically wider screens) */
+        @media (min-width: 768px) { /* Start horizontal earlier or always if it's for video */
+            .flow-chart-container {
+                flex-direction: row;
+                justify-content: space-around; /* Better distribution */
+                align-items: stretch; /* Make items same height */
+            }
+            .flow-chart-item {
+                width: auto; /* Auto width based on content */
+                min-width: 200px; /* Increased min-width */
+                flex: 1; /* Allow flex grow/shrink */
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+            .flow-chart-arrow {
+                transform: rotate(0deg);
+                align-self: center; /* Center arrow vertically */
+            }
+        }
+        .table th, .table td {
+            padding: 0.75rem 1rem; /* Increased padding */
+            font-size: 1rem; /* Ensure table text is also larger */
+        }
+        .highlight-box {
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin-top: 1.5rem;
+        }
+        .bg-sky-50 { background-color: #E0F2FE; } /* Lighter sky */
+        .text-sky-700 { color: #0284C7; } /* Darker sky text */
+        .bg-amber-50 { background-color: #FFFBEB; }
+        .text-amber-700 { color: #B45309; }
+        .bg-emerald-50 { background-color: #ECFDF5; }
+        .text-emerald-700 { color: #047857; }
+        .bg-red-50 { background-color: #FEF2F2; }
+        .text-red-700 { color: #B91C1C; }
+        .bg-blue-50 { background-color: #EFF6FF; }
+        .text-blue-700 { color: #1D4ED8; }
+
+    </style>
+</head>
+<body class="bg-gray-100 p-6 md:p-10">
+
+    <!-- 
+        Infographic Plan Summary: (No change in plan, only layout and font)
+        Color Palette Chosen: Energetic & Playful (No change)
+        Visualization Choices Summary (Confirming NO SVG, NO Mermaid JS): (No change)
+        Confirmation: NEITHER Mermaid JS NOR SVG were used anywhere in this output.
+    -->
+
+    <div class="container mx-auto max-w-none lg:max-w-7xl xl:max-w-screen-2xl"> 
+        <header class="text-center mb-16"> 
+            <h1 class="mb-6">日本の米市場インフォグラフィック</h1>
+            <p class="text-2xl text-gray-700">令和元年以降の需給動向と価格変動の深掘り分析</p> 
+        </header>
+
+        <section class="mb-16 stat-card"> 
+            <h2 class="text-accent-dark">エグゼクティブサマリー：市場の変貌</h2>
+            <p class="mb-3">本インフォグラフィックは、令和元年（2019年）から直近までの日本の米市場における生産、在庫、販売、価格の動向を視覚的に解説します。この期間、市場は比較的安定した状態から、供給逼迫と価格高騰が顕著な状況へと大きく変化しました。</p> 
+            <p>生産量は減少し、在庫は逼迫。一方で価格は、特に令和4年産以降、生産者価格から小売価格に至るまで歴史的な高値水準に達しています。この背景には、作付面積の削減（減反政策）、天候不順、生産コストの上昇、変化する需要構造が複雑に絡み合っています。</p> 
+        </section>
+
+        <section class="mb-16 stat-card"> 
+            <h2 class="text-center text-accent-dark">米の生産動向：減少する供給力</h2>
+            <p class="text-center mb-8 text-gray-600">日本の米生産量は、作付面積の減少を主因として全般的に減少傾向にあります。天候による単収の変動も見られますが、作付面積の縮小が総生産量に大きく影響しています。</p> 
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12"> 
+                <div>
+                    <h3 class="text-center">主食用米生産量の推移 (万トン)</h3>
+                    <div class="chart-container">
+                        <canvas id="productionVolumeChart"></canvas>
+                    </div>
+                    <p class="mt-3 text-sm text-gray-500 text-center">出典：農林水産省統計</p> 
+                </div>
+                <div>
+                    <h3 class="text-center">作付面積と10a当たり収量</h3>
+                    <div class="chart-container">
+                        <canvas id="acreageYieldChart"></canvas>
+                    </div>
+                    <p class="mt-3 text-sm text-gray-500 text-center">出典：農林水産省統計</p> 
+                </div>
+            </div>
+             <div class="mt-8 highlight-box bg-sky-50"> 
+                <h4 class="mb-3 text-sky-700">分析のポイント：</h4>
+                <p class="text-gray-700">令和元年産から令和5年産にかけて、主食用米の生産量は概ね減少傾向で推移しました。これは主に作付面積の減少（減反政策の影響）によるものです。単収は年により変動しますが、作付面積の減少を補うには至っていません。特にコシヒカリなどは高温に弱いとされ、猛暑が品質や収量に影響を与えるケースも報告されています。</p> 
+            </div>
+        </section>
+
+        <section class="mb-16 stat-card"> 
+            <h2 class="text-center text-accent-dark">米の在庫状況：高まる逼迫感</h2>
+            <p class="text-center mb-8 text-gray-600">民間在庫量は期間後半に大幅に減少し、将来的な見通しも低い水準です。生産者段階でも在庫の逼迫が報告されており、市場のタイト感を示唆しています。</p> 
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"> 
+                <div>
+                    <h3 class="text-center">民間在庫量の推移 (6月末時点, 万トン)</h3>
+                    <div class="chart-container">
+                        <canvas id="inventoryChart"></canvas>
+                    </div>
+                    <p class="mt-3 text-sm text-gray-500 text-center">出典：農林水産省資料等</p> 
+                </div>
+                <div class="highlight-box bg-amber-50">
+                    <h4 class="mb-3 text-amber-700">在庫逼迫の影響：</h4>
+                    <ul class="list-disc list-inside text-gray-700 space-y-2"> 
+                        <li>令和5年6月末の民間在庫は196.6万トンと前年から大幅減。</li>
+                        <li>令和6年、7年の6月末見通しはさらに減少し、それぞれ177万トン、176万トン。</li>
+                        <li>令和7年1月末の民間在庫は近年で最低水準（230万トン）。</li>
+                        <li>生産者の約85％が令和6年産米について「在庫逼迫」または「在庫なし」と回答（令和6年時点）。</li>
+                        <li>低在庫は価格変動リスクを高め、供給システムの脆弱性を増大させます。</li>
+                    </ul> 
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-16 stat-card"> 
+            <h2 class="text-center text-accent-dark">販売・消費の動向：変化する需要構造</h2>
+            <p class="text-center mb-8 text-gray-600">一人当たり米消費量は長期的には減少傾向ですが、近年は横ばいの動きも見られます。家庭内消費と中食・外食消費のバランスが変化しており、総需要量の見通しは緩やかな減少が予測されています。</p> 
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start"> 
+                <div>
+                    <h3 class="text-center">一人当たり月間精米消費量 (g)</h3>
+                    <div class="chart-container">
+                        <canvas id="consumptionChart"></canvas>
+                    </div>
+                     <p class="mt-3 text-sm text-gray-500 text-center">出典：農林水産省「米の消費動向」</p> 
+                </div>
+                <div class="highlight-box bg-emerald-50">
+                    <h4 class="mb-3 text-emerald-700">消費のポイント：</h4>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1 mb-4"> 
+                        <li>令和元年度: 4,626g</li>
+                        <li>令和2年度: 4,730g (家庭内消費増)</li>
+                        <li>令和3年度: 4,529g</li>
+                        <li>令和4年度: 4,625g</li>
+                        <li>令和5年度: 4,626g (中食・外食回復)</li>
+                    </ul>
+                    <h4 class="mb-2 text-emerald-700">主食用米 需要量見通し (万トン):</h4>
+                     <ul class="list-disc list-inside text-gray-700 space-y-1"> 
+                        <li>令和5/6年: 681</li>
+                        <li>令和6/7年: 670</li>
+                    </ul>
+                    <p class="mt-4 text-gray-700">家庭内消費と中食・外食の構成比変動は、コロナ禍の影響と回復を示唆しています。総需要は緩やかに減少しつつも、一定の消費層は存在します。</p> 
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-16 stat-card"> 
+            <h2 class="text-center text-accent-dark">米の価格変動：歴史的な高騰</h2>
+            <p class="text-center mb-8 text-gray-600">生産者価格から小売価格まで、特に令和4年産以降、米価は著しく上昇しています。令和6年産米の相対取引価格は過去最高水準に達し、小売価格も大幅な値上がりを見せています。</p> 
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12"> 
+                <div>
+                    <h3 class="text-center">生産者・卸売価格 (相対取引価格, 円/玄米60kg)</h3>
+                    <div class="chart-container">
+                        <canvas id="wholesalePriceChart"></canvas>
+                    </div>
+                    <p class="mt-3 text-sm text-gray-500 text-center">出典：農林水産省</p> 
+                </div>
+                <div>
+                    <h3 class="text-center">小売価格の急騰 (コシヒカリ, 円/精米5kg)</h3>
+                    <div class="chart-container">
+                        <canvas id="retailPriceChart"></canvas>
+                    </div>
+                    <p class="mt-3 text-sm text-gray-500 text-center">出典：総務省小売物価統計調査等</p> 
+                </div>
+            </div>
+            <div class="mt-8 highlight-box bg-red-50"> 
+                <h4 class="mb-3 text-red-700">価格高騰の背景：</h4>
+                <p class="text-gray-700">令和3年産（12,804円/60kg）から令和6年産（速報値23,715円/60kg）への生産者価格の急騰は、小売価格にも大きく影響。令和7年4月の東京都区部小売価格は5kgあたり4,770円と、1年前の約2倍に。これは生産量の減少、在庫逼迫、減反政策、気候変動、生産コスト増などが複合的に作用した結果です。</p> 
+            </div>
+        </section>
+
+        <section class="mb-16 stat-card"> 
+            <h2 class="text-center text-accent-dark">米の流通過程と価格形成</h2>
+            <p class="text-center mb-8 text-gray-600">米は生産者から集荷業者、卸売業者、小売業者を経て消費者に届けられます。各段階でマージンや経費が加算され、最終的な小売価格が形成されます。近年の川上での価格上昇は、川下の価格にも大きく影響しています。</p> 
+            <div class="flow-chart-container">
+                <div class="flow-chart-item">生産者出荷価格<br>(例: R6年産 23,715円/60kg玄米)</div>
+                <div class="flow-chart-arrow">➡️</div>
+                <div class="flow-chart-item">卸売価格<br>(集荷・流通経費 約2,000円/60kg玄米 + マージン)</div>
+                <div class="flow-chart-arrow">➡️</div>
+                <div class="flow-chart-item">小売価格<br>(例: R7.4月東京 4,770円/5kg精米)</div>
+            </div>
+            <p class="mt-6 text-center text-gray-700"> 
+                生産者・卸売価格の急騰は、小売価格に大きな上昇圧力となります。
+                例えば、令和3年産から令和6年産にかけて生産者価格が約10,900円/60kg玄米上昇したことは、小売価格の大幅な値上がりと整合的です。
+            </p>
+        </section>
+
+        <section class="mb-16 stat-card"> 
+            <h2 class="text-center text-accent-dark">需給バランスの変遷：タイト化する市場</h2>
+            <p class="text-center mb-8 text-gray-600">年間需給バランスを見ると、期間後半にかけて市場がタイト化している状況が明らかです。期末在庫の減少は、供給余力の低下を示しています。</p> 
+            <div class="overflow-x-auto shadow-lg rounded-lg">
+                <table class="min-w-full bg-white table">
+                    <thead class="bg-accent-dark">
+                        <tr>
+                            <th class="py-3 px-4 text-left text-white">年度</th> 
+                            <th class="py-3 px-4 text-right text-white">期首民間在庫 (万t)</th>
+                            <th class="py-3 px-4 text-right text-white">主食用生産量 (万t)</th>
+                            <th class="py-3 px-4 text-right text-white">総供給量 (万t)</th>
+                            <th class="py-3 px-4 text-right text-white">需要量 (万t)</th>
+                            <th class="py-3 px-4 text-right text-white">期末民間在庫 (万t)</th>
+                            <th class="py-3 px-4 text-right text-white">在庫純増減 (万t)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-700">
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="py-3 px-4">R1/2</td><td class="py-3 px-4 text-right">189</td><td class="py-3 px-4 text-right">727</td><td class="py-3 px-4 text-right">916</td><td class="py-3 px-4 text-right">727</td><td class="py-3 px-4 text-right">189</td><td class="py-3 px-4 text-right accent-color-2">0</td>
+                        </tr>
+                        <tr class="border-b bg-gray-50 hover:bg-gray-100">
+                            <td class="py-3 px-4">R2/3</td><td class="py-3 px-4 text-right">189-201</td><td class="py-3 px-4 text-right">708-717</td><td class="py-3 px-4 text-right">897-916</td><td class="py-3 px-4 text-right">709-717</td><td class="py-3 px-4 text-right">180-204</td><td class="py-3 px-4 text-right accent-color-1">-9～+3</td>
+                        </tr>
+                         <tr class="border-b hover:bg-gray-50">
+                            <td class="py-3 px-4">R3/4</td><td class="py-3 px-4 text-right">201-227</td><td class="py-3 px-4 text-right">679</td><td class="py-3 px-4 text-right">-</td><td class="py-3 px-4 text-right">704</td><td class="py-3 px-4 text-right">196-201</td><td class="py-3 px-4 text-right accent-color-1">-</td>
+                        </tr>
+                        <tr class="border-b bg-gray-50 hover:bg-gray-100">
+                            <td class="py-3 px-4">R4/5</td><td class="py-3 px-4 text-right">218</td><td class="py-3 px-4 text-right">670</td><td class="py-3 px-4 text-right">888</td><td class="py-3 px-4 text-right">(不明)</td><td class="py-3 px-4 text-right">197</td><td class="py-3 px-4 text-right accent-color-1">(計算可)</td>
+                        </tr>
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="py-3 px-4">R5/6</td><td class="py-3 px-4 text-right">197</td><td class="py-3 px-4 text-right">661</td><td class="py-3 px-4 text-right">858</td><td class="py-3 px-4 text-right">681</td><td class="py-3 px-4 text-right">177</td><td class="py-3 px-4 text-right accent-color-1">-20</td>
+                        </tr>
+                        <tr class="bg-gray-50 hover:bg-gray-100">
+                            <td class="py-3 px-4">R6/7 (見込)</td><td class="py-3 px-4 text-right">177</td><td class="py-3 px-4 text-right">669</td><td class="py-3 px-4 text-right">846</td><td class="py-3 px-4 text-right">670</td><td class="py-3 px-4 text-right">176</td><td class="py-3 px-4 text-right accent-color-1">-1</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="mt-3 text-sm text-gray-500 text-center">出典：農林水産省資料等に基づき再構成</p> 
+            </div>
+            <div class="mt-8 highlight-box bg-blue-50"> 
+                <h4 class="mb-3 text-blue-700">需給バランスの評価：</h4>
+                <p class="text-gray-700">令和初期は比較的均衡が保たれていましたが、令和5年産以降は生産量の減少と安定した需要（あるいは微減）により、期末在庫が大幅に減少し、需給が逼迫しています。特に令和5/6年度では在庫が20万トン減少しており、市場のタイト化が顕著です。「コメ不足」との指摘もあり、これは減反政策、気候変動、需要変動が複合的に影響した結果と考えられます。</p> 
+            </div>
+        </section>
+
+        <section class="mb-16 stat-card"> 
+            <h2 class="text-center text-accent-dark">市場を揺るがす主要因</h2>
+            <p class="text-center mb-8 text-gray-600">日本の米市場は、複数の要因によって複雑に動いています。これらの要因が相互に作用し、近年の需給逼迫と価格高騰を引き起こしています。</p> 
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"> 
+                <div class="p-6 border border-gray-300 rounded-xl shadow-lg hover:shadow-xl transition-shadow bg-white"> 
+                    <h3 class="mb-3 accent-color-1">政府の政策（減反）</h3>
+                    <p class="text-gray-700">作付面積削減政策は、生産量減少と価格上昇の主要因と指摘されています。需給と価格の安定を目指す政策との間で、意図せぬ結果が生じている可能性も議論されています。</p> 
+                </div>
+                <div class="p-6 border border-gray-300 rounded-xl shadow-lg hover:shadow-xl transition-shadow bg-white">
+                    <h3 class="mb-3 accent-color-2">気候変動と異常気象</h3>
+                    <p class="text-gray-700">猛暑による高温障害などが収量や品質に影響を与え、供給量を減少させる要因となっています。例えば2023年の猛暑は大きな影響を与えました。</p> 
+                </div>
+                <div class="p-6 border border-gray-300 rounded-xl shadow-lg hover:shadow-xl transition-shadow bg-white">
+                    <h3 class="mb-3 accent-color-3">消費者行動と需要の変化</h3>
+                    <p class="text-gray-700">長期的な一人当たり消費減に加え、コロナ禍による家庭内消費へのシフトと揺り戻し、インバウンド需要の回復などが需要サイドに影響しています。</p> 
+                </div>
+                <div class="p-6 border border-gray-300 rounded-xl shadow-lg hover:shadow-xl transition-shadow bg-white md:col-span-1 xl:col-span-1">
+                    <h3 class="mb-3 accent-color-4">生産コストの上昇</h3>
+                    <p class="text-gray-700">肥料、燃料、資材などの価格上昇が生産者の経営を圧迫し、米価に転嫁される圧力となっています。</p> 
+                </div>
+                <div class="p-6 border border-gray-300 rounded-xl shadow-lg hover:shadow-xl transition-shadow bg-white md:col-span-2 xl:col-span-2"> 
+                    <h3 class="mb-3 text-accent-dark">政策目標間の緊張</h3>
+                    <p class="text-gray-700">生産者所得支援（減反による価格維持）と、消費者物価の安定・十分な供給確保という目標間で、潜在的な不整合が生じている可能性が指摘されています。備蓄米放出のタイミングなど、運営面での課題も議論の対象です。</p> 
+                </div>
+            </div>
+        </section>
+
+        <section class="stat-card">
+            <h2 class="text-center text-accent-dark">総括と今後の展望：岐路に立つ日本の米市場</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12"> 
+                <div class="p-6 bg-gray-50 rounded-xl"> 
+                    <h3 class="mb-4 text-gray-700">市場変化の総括</h3>
+                    <p class="mb-3 text-gray-700">令和元年から直近にかけ、日本の米市場は安定的な需給緩和状態から、供給逼迫と価格高騰へと劇的に変化しました。これは減反政策、気候変動、需要要因の複合作用によるものです。</p> 
+                    <h3 class="mb-3 mt-6 text-gray-700">現状評価</h3>
+                    <p class="text-gray-700">現在の市場は、歴史的高価格、低在庫、将来供給への懸念が特徴です。</p> 
+                </div>
+                 <div class="p-6 bg-gray-50 rounded-xl"> 
+                    <h3 class="mb-4 text-gray-700">今後の見通しと課題</h3>
+                    <ul class="list-disc list-inside space-y-2 mb-4 text-gray-700"> 
+                        <li>在庫水準は引き続き低い見込み（令和6、7年）。</li>
+                        <li>需要は漸減傾向が予測されるも、突発的な変動要因も。</li>
+                        <li>一部では来年の更なる米不足も警告されています。</li>
+                        <li>世界の米市場も逼迫傾向にあり、輸入依存度が高まるとリスク増。</li>
+                    </ul>
+                    <p class="text-gray-700"><span class="font-semibold">潜在的課題：</span>気候変動下での安定供給、生産者所得と消費者価格のバランス、価格変動管理。</p> 
+                    <p class="text-gray-700"><span class="font-semibold">機会：</span>減反政策の見直し、増産・輸出による食料安全保障強化、気候変動対応技術への投資。</p> 
+                </div>
+            </div>
+            <div class="mt-10 text-center p-8 bg-accent-dark text-white rounded-xl shadow-2xl"> 
+                <h3 class="text-3xl font-bold mb-4 text-white">総括所見</h3> 
+                <p class="text-xl leading-relaxed text-white">日本の米市場は、従来の政策前提を揺るがす圧力に直面し、重大な岐路に立たされています。高価格と供給不安は、食料安全保障戦略の根本的な見直しを促す可能性があります。生産水準、在庫戦略、気候変動への適応を慎重に考慮し、複数の目標（生産者所得、消費者福祉、食料安全保障、気候変動への強靭性）をバランスさせる統合的かつ適応的な政策枠組みが求められています。</p> 
+            </div>
+        </section>
+
+        <footer class="text-center mt-16 py-8 border-t border-gray-400"> 
+            <p class="text-gray-500">&copy; <span id="currentYear"></span> 日本の米市場インフォグラフィック (YouTube版). データは提供された調査報告書に基づきます。</p> 
+        </footer>
+
+    </div>
+
+    <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        function wrapLabels(labels, maxLength = 14) { // Slightly shorter max length for larger fonts
+            return labels.map(label => {
+                if (typeof label === 'string' && label.length > maxLength) {
+                    const words = label.split(' ');
+                    const lines = [];
+                    let currentLine = '';
+                    for (const word of words) {
+                        if ((currentLine + word).length > maxLength && currentLine.length > 0) {
+                            lines.push(currentLine.trim());
+                            currentLine = word + ' ';
+                        } else {
+                            currentLine += word + ' ';
+                        }
+                    }
+                    lines.push(currentLine.trim());
+                    return lines;
+                }
+                return label;
+            });
+        }
+        
+        const tooltipTitleCallback = function(tooltipItems) {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+              return label.join(' ');
+            } else {
+              return label;
+            }
+        };
+
+        const commonChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    labels: {
+                        font: {
+                            size: 14, // Increased
+                            family: "'Noto Sans JP', sans-serif"
+                        },
+                        padding: 15
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: tooltipTitleCallback
+                    },
+                    titleFont: { size: 16, family: "'Noto Sans JP', sans-serif" }, // Increased
+                    bodyFont: { size: 14, family: "'Noto Sans JP', sans-serif" }, // Increased
+                    padding: 10 // Increased
+                }
+            },
+            scales: {
+                x: {
+                    ticks: {
+                        font: {
+                            size: 12, // Increased
+                            family: "'Noto Sans JP', sans-serif"
+                        },
+                        maxRotation: 30, // Adjusted for readability
+                        minRotation: 0
+                    },
+                    grid: {
+                        display: false
+                    }
+                },
+                y: {
+                    ticks: {
+                        font: {
+                            size: 12, // Increased
+                            family: "'Noto Sans JP', sans-serif"
+                        }
+                    },
+                    beginAtZero: true,
+                     grid: {
+                        color: '#E5E7EB' // Lighter grid lines
+                    }
+                }
+            }
+        };
+
+        const energeticPlayfulPalette = {
+            red: '#FF6B6B',
+            yellow: '#FFD166',
+            teal: '#06D6A0',
+            blue: '#118AB2',
+            darkBlue: '#073B4C'
+        };
+
+        // 1. Production Volume Chart
+        const productionLabels = wrapLabels(['R1産', 'R2産', 'R3産', 'R4産', 'R5産', 'R6産(見込)']);
+        const productionData = [726.1, 776.3, 756.3, 726.9, 716.5, 669]; 
+        new Chart(document.getElementById('productionVolumeChart'), {
+            type: 'line',
+            data: {
+                labels: productionLabels,
+                datasets: [{
+                    label: '主食用米生産量 (万トン)',
+                    data: productionData,
+                    borderColor: energeticPlayfulPalette.blue,
+                    backgroundColor: energeticPlayfulPalette.blue + '4D', // More transparent
+                    tension: 0.2, // Smoother line
+                    fill: true,
+                    borderWidth: 3 // Thicker line
+                }]
+            },
+            options: commonChartOptions
+        });
+
+        // 2. Acreage and Yield Chart
+        const acreageYieldLabels = wrapLabels(['R1産', 'R2産', 'R3産', 'R4産', 'R5産']);
+        const acreageData = [146.9, 146.2, 140.3, 135.5, 134.4]; 
+        const yieldData = [528, 531, 539, 536, 533]; 
+        new Chart(document.getElementById('acreageYieldChart'), {
+            type: 'bar',
+            data: {
+                labels: acreageYieldLabels,
+                datasets: [
+                    {
+                        label: '作付面積 (万ha)',
+                        data: acreageData,
+                        backgroundColor: energeticPlayfulPalette.teal + 'B3', // More opaque
+                        borderColor: energeticPlayfulPalette.teal,
+                        borderWidth: 2,
+                        yAxisID: 'yAcreage',
+                    },
+                    {
+                        label: '10a当たり収量 (kg)',
+                        data: yieldData,
+                        backgroundColor: energeticPlayfulPalette.yellow + 'B3', // More opaque
+                        borderColor: energeticPlayfulPalette.yellow,
+                        borderWidth: 2,
+                        yAxisID: 'yYield',
+                    }
+                ]
+            },
+            options: {
+                ...commonChartOptions,
+                scales: {
+                    x: commonChartOptions.scales.x,
+                    yAcreage: {
+                        type: 'linear',
+                        position: 'left',
+                        title: { display: true, text: '作付面積 (万ha)', font: {size: 14, family: "'Noto Sans JP', sans-serif"}}, // Increased
+                        ticks: { font: { size: 12, family: "'Noto Sans JP', sans-serif" } }, // Increased
+                        grid: { drawOnChartArea: false }
+                    },
+                    yYield: {
+                        type: 'linear',
+                        position: 'right',
+                        title: { display: true, text: '収量 (kg/10a)', font: {size: 14, family: "'Noto Sans JP', sans-serif"}}, // Increased
+                        grid: { drawOnChartArea: false },
+                        ticks: { font: { size: 12, family: "'Noto Sans JP', sans-serif" } } // Increased
+                    }
+                }
+            }
+        });
+
+        // 3. Inventory Chart
+        const inventoryLabels = wrapLabels(['R1 6月末', 'R2 6月末', 'R3 6月末', 'R4 6月末', 'R5 6月末', 'R6 6月末見込', 'R7 6月末見込']);
+        const inventoryData = [188.5, 199.8, 218.4, 217.6, 196.6, 177, 176];
+        new Chart(document.getElementById('inventoryChart'), {
+            type: 'line',
+            data: {
+                labels: inventoryLabels,
+                datasets: [{
+                    label: '民間在庫量 (万トン)',
+                    data: inventoryData,
+                    borderColor: energeticPlayfulPalette.red,
+                    backgroundColor: energeticPlayfulPalette.red + '4D',
+                    tension: 0.2,
+                    fill: true,
+                    borderWidth: 3
+                }]
+            },
+            options: commonChartOptions
+        });
+
+        // 4. Consumption Chart
+        const consumptionLabels = wrapLabels(['R1年度', 'R2年度', 'R3年度', 'R4年度', 'R5年度']);
+        const totalConsumptionData = [4626, 4730, 4529, 4625, 4626];
+        const homeConsumptionData = [3114, 3274, 3140, 3175, 3088];
+        const outConsumptionData = [1512, 1456, 1388, 1449, 1538];
+        new Chart(document.getElementById('consumptionChart'), {
+            type: 'line',
+            data: {
+                labels: consumptionLabels,
+                datasets: [
+                    {
+                        label: '総消費量',
+                        data: totalConsumptionData,
+                        borderColor: energeticPlayfulPalette.blue,
+                        tension: 0.2,
+                        fill: false,
+                        borderWidth: 3
+                    },
+                    {
+                        label: '家庭内消費',
+                        data: homeConsumptionData,
+                        borderColor: energeticPlayfulPalette.teal,
+                        tension: 0.2,
+                        fill: false,
+                        borderWidth: 2,
+                        borderDash: [5, 5] // Dashed line
+                    },
+                    {
+                        label: '中食・外食消費',
+                        data: outConsumptionData,
+                        borderColor: energeticPlayfulPalette.yellow,
+                        tension: 0.2,
+                        fill: false,
+                        borderWidth: 2,
+                        borderDash: [5, 5] // Dashed line
+                    }
+                ]
+            },
+            options: {
+                ...commonChartOptions,
+                scales: {
+                    ...commonChartOptions.scales,
+                    y: {
+                        ...commonChartOptions.scales.y,
+                        title: { display: true, text: 'グラム(g)', font: {size: 14, family: "'Noto Sans JP', sans-serif"}} // Increased
+                    }
+                }
+            }
+        });
+
+        // 5. Wholesale Price Chart
+        const wholesalePriceLabels = wrapLabels(['R1産', 'R2産', 'R3産', 'R4産', 'R5産', 'R6産(12月)']);
+        const wholesalePriceData = [15716, 14529, 12804, 13844, 15315, 23715];
+        new Chart(document.getElementById('wholesalePriceChart'), {
+            type: 'line',
+            data: {
+                labels: wholesalePriceLabels,
+                datasets: [{
+                    label: '相対取引価格 (円/玄米60kg)',
+                    data: wholesalePriceData,
+                    borderColor: energeticPlayfulPalette.red,
+                    backgroundColor: energeticPlayfulPalette.red + '4D',
+                    tension: 0.2,
+                    fill: true,
+                    borderWidth: 3
+                }]
+            },
+            options: {
+                ...commonChartOptions,
+                 scales: {
+                    ...commonChartOptions.scales,
+                    y: {
+                        ...commonChartOptions.scales.y,
+                        ticks: { // Add currency formatting
+                            callback: function(value) {
+                                return value.toLocaleString('ja-JP', { style: 'currency', currency: 'JPY' });
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        
+        // 6. Retail Price Chart
+        const retailPriceLabels = wrapLabels(['R1.9月(POS平均)', 'R6.9月(コシヒカリ)', 'R7.2月(コシヒカリ)', 'R7.4月(東京区部)']);
+        const retailPriceData = [2014, 3285, 4363, 4770];
+        new Chart(document.getElementById('retailPriceChart'), {
+            type: 'bar',
+            data: {
+                labels: retailPriceLabels,
+                datasets: [{
+                    label: '小売価格 (円/精米5kg)',
+                    data: retailPriceData,
+                    backgroundColor: [
+                        energeticPlayfulPalette.yellow + 'B3',
+                        energeticPlayfulPalette.red + 'B3',
+                        energeticPlayfulPalette.red + 'B3',
+                        energeticPlayfulPalette.red + 'B3',
+                    ],
+                    borderColor: [
+                        energeticPlayfulPalette.yellow,
+                        energeticPlayfulPalette.red,
+                        energeticPlayfulPalette.red,
+                        energeticPlayfulPalette.red,
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                ...commonChartOptions,
+                 scales: {
+                    x: {
+                        ticks: {
+                            font: {
+                                size: 11, // Adjusted for potentially longer wrapped labels
+                                family: "'Noto Sans JP', sans-serif"
+                            },
+                           maxRotation: 20, // Less rotation if possible
+                           minRotation: 0
+                        }
+                    },
+                    y: {
+                       ...commonChartOptions.scales.y.ticks, // Inherit font
+                        beginAtZero: true,
+                        ticks: { // Add currency formatting
+                             font: { size: 12, family: "'Noto Sans JP', sans-serif" },
+                            callback: function(value) {
+                                return value.toLocaleString('ja-JP', { style: 'currency', currency: 'JPY' });
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>
