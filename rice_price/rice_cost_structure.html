@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>米価のコスト構造分析 インフォグラフィック</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Light grayish blue background */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 720px; /* Increased max-width for landscape */
+            margin-left: auto;
+            margin-right: auto;
+            height: 380px; /* Increased base height */
+            max-height: 500px; /* Increased max height */
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 420px; /* Increased md height */
+            }
+        }
+        .section-title {
+            font-size: 2rem; /* Increased from 1.75rem */
+            font-weight: 700;
+            margin-bottom: 1.75rem; /* Increased margin */
+            color: #073B4C; /* Dark Blue from palette */
+            border-bottom: 3px solid #118AB2; /* Blue from palette */
+            padding-bottom: 0.75rem; /* Increased padding */
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem; /* 12px */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 2rem; /* Increased padding */
+            margin-bottom: 2.5rem; /* Increased margin */
+        }
+        .stat-value {
+            font-size: 3rem; /* Increased from 2.5rem */
+            font-weight: 800;
+            color: #FF6B6B; /* Red-Orange from palette */
+        }
+        .flowchart-step {
+            background-color: #E0F2FE;
+            border: 2px solid #118AB2;
+            color: #073B4C;
+            padding: 1.25rem; /* Increased padding */
+            border-radius: 0.5rem;
+            text-align: center;
+            min-height: 140px; /* Increased min-height */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .flowchart-arrow {
+            font-size: 2.25rem; /* Increased font size */
+            color: #118AB2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0.75rem 0;
+        }
+        .factor-icon {
+            font-size: 1.75rem; /* Increased from 1.5rem */
+            margin-right: 1rem; /* Increased margin */
+            width: 35px; 
+            text-align: center;
+        }
+        /* Energetic & Playful Palette */
+        .palette-red-orange { color: #FF6B6B; }
+        .palette-yellow { color: #FFD166; }
+        .palette-green { color: #06D6A0; }
+        .palette-blue { color: #118AB2; }
+        .palette-dark-blue { color: #073B4C; }
+
+        .bg-palette-red-orange { background-color: #FF6B6B; }
+        .bg-palette-yellow { background-color: #FFD166; }
+        .bg-palette-green { background-color: #06D6A0; }
+        .bg-palette-blue { background-color: #118AB2; }
+        .bg-palette-dark-blue { background-color: #073B4C; }
+        
+        .border-palette-red-orange { border-color: #FF6B6B; }
+        .border-palette-yellow { border-color: #FFD166; }
+        .border-palette-green { border-color: #06D6A0; }
+        .border-palette-blue { border-color: #118AB2; }
+        .border-palette-dark-blue { border-color: #073B4C; }
+
+        h3 {
+            font-size: 1.625rem; /* Increased from 1.25rem, approx text-2xl */
+            font-weight: 600;
+            color: #073B4C;
+            margin-bottom: 1rem; /* Increased margin */
+        }
+        p, li {
+            color: #334155; /* Slate 700 */
+            line-height: 1.7; /* Slightly increased line-height */
+            font-size: 1.125rem; /* text-lg, increased from base */
+        }
+        .flowchart-step p { /* Specific font size for flowchart text */
+            font-size: 1rem; /* text-base */
+        }
+        .flowchart-step h4 {
+            font-size: 1.25rem; /* text-xl */
+            margin-bottom: 0.5rem;
+        }
+        .conclusion-text {
+            color: #FFFFFF; 
+            font-size: 1.125rem; /* text-lg */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+        th, td {
+            border: 1px solid #e2e8f0; 
+            padding: 1rem; /* Increased padding */
+            font-size: 1rem; /* text-base */
+        }
+        th {
+            background-color: #f8fafc; 
+            color: #073B4C;
+            font-weight: 600;
+        }
+        .text-sm-custom { /* Custom class for smaller descriptive texts */
+            font-size: 0.95rem; /* Between text-sm and text-base */
+            color: #475569; /* Slate 600 */
+        }
+    </style>
+    <!--
+        Infographic Plan:
+        1. Title & Introduction: Overview of rice price structure analysis.
+        2. Rice Price Trends: Time-series line charts for producer and retail prices.
+        3. Rice Cost Structure: Donut chart for cost breakdown by stage.
+        4. Price Formation Process: HTML/CSS flowchart showing cost accumulation.
+        5. Key Factors Affecting Prices: Icon-based list for supply, demand, market/policy, and external factors.
+        6. Conclusion: Key insights.
+
+        Visualization Choices (Confirming NO SVG, NO MERMAID JS):
+        - Producer & Retail Price Trends (Table 1 & 2 data):
+            - Goal: Show change.
+            - Chosen Visualization: Line Chart (Chart.js - Canvas).
+            - Justification: Ideal for time-series trends.
+            - Library/Method: Chart.js.
+        - Rice Cost Structure (Table 3 data - simplified for donut):
+            - Goal: Compare composition.
+            - Chosen Visualization: Donut Chart (Chart.js - Canvas) for cost proportions.
+            - Justification: Clear visual for parts of a whole.
+            - Library/Method: Chart.js.
+        - Price Formation Process (Section 4.3):
+            - Goal: Organize and show process.
+            - Chosen Visualization: Flowchart using structured HTML/CSS with Tailwind.
+            - Justification: Required due to NO SVG/Mermaid constraint.
+            - Library/Method: HTML/CSS with Tailwind.
+        - Key Factors Affecting Prices (Section 5):
+            - Goal: Organize and inform.
+            - Chosen Visualization: Icon (Unicode/CSS) and text lists.
+            - Justification: Concise presentation of multiple factors.
+            - Library/Method: HTML/CSS with Tailwind.
+        - Key Metrics (e.g., R6 producer price, retail price hike %):
+            - Goal: Inform (single important data point).
+            - Chosen Visualization: Large bold text.
+            - Justification: Emphasizes key stats.
+            - Library/Method: HTML/CSS with Tailwind.
+
+        Color Palette Chosen: Energetic & Playful (#FF6B6B, #FFD166, #06D6A0, #118AB2, #073B4C)
+
+        Confirmation: NEITHER Mermaid JS NOR SVG were used anywhere in this output.
+    -->
+</head>
+<body class="bg-slate-100 text-slate-800">
+    <div class="container mx-auto p-6 md:p-10 max-w-7xl">
+
+        <header class="text-center mb-16">
+            <h1 class="text-5xl font-bold palette-dark-blue mb-6">我が国の米価コスト構造分析</h1>
+            <p class="text-2xl text-slate-600">令和元年以降の動向と主要因のインフォグラフィック</p>
+        </header>
+
+        <section id="introduction" class="card">
+            <h2 class="section-title">はじめに</h2>
+            <p>本インフォグラフィックは、我が国の米の価格が生産者から消費者に届くまでに、どのように形成され、どのような要因に影響を受けるのかを視覚的に解説します。令和元年（2019年）から直近までの米価（生産価格、卸売価格、小売価格）の時系列データとコスト構造の分析に基づき、複雑な米価エコシステムを分かりやすく提示することを目的としています。</p>
+            <p class="mt-3">近年の米価は、生産コストの上昇、気候変動、国内外の需給バランス、政府の政策など、多様な要因によって大きく変動しています。このインフォグラフィックを通じて、米価の現状と課題についての理解を深める一助となれば幸いです。</p>
+        </section>
+
+        <section id="price-trends" class="card">
+            <h2 class="section-title">米価の動向：生産者価格と小売価格の推移</h2>
+            <p>米の価格は、生産者が出荷する段階から、卸売業者を経て、最終的に消費者が小売店で購入するまでに変動します。ここでは、生産者価格（相対取引価格）と小売価格（コシヒカリ5kg、東京都区部）の近年の推移を見ていきましょう。</p>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 mt-8">
+                <div>
+                    <h3>生産者価格（相対取引価格、全国平均）</h3>
+                    <p class="text-sm-custom mb-3">玄米60kgあたりの年産平均価格</p>
+                    <div class="chart-container h-96 md:h-[480px]">
+                        <canvas id="producerPriceChart"></canvas>
+                    </div>
+                    <p class="mt-6 text-base">生産者価格は令和3年産で一度下落しましたが、その後上昇に転じ、特に令和6年産は高水準で推移しています。これは生産コストの増加や天候不順などが影響していると考えられます。</p>
+                </div>
+                <div>
+                    <h3>小売価格（コシヒカリ5kg、東京都区部）</h3>
+                    <p class="text-sm-custom mb-3">各年12月時点（令和6年は9月・12月も表示）</p>
+                    <div class="chart-container h-96 md:h-[480px]">
+                        <canvas id="retailPriceChart"></canvas>
+                    </div>
+                    <p class="mt-6 text-base">小売価格は、令和4年後半から顕著な上昇を見せ、特に令和5年、令和6年にかけて大幅に値上がりしています。例えば、令和6年12月のコシヒカリ5kgの価格は前年同月比で約68%上昇しました。</p>
+                </div>
+            </div>
+             <div class="mt-10 p-8 bg-palette-blue text-white rounded-lg shadow-xl">
+                <h3 class="text-3xl font-semibold mb-4 text-white">注目ポイント：令和6年の価格高騰</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                        <p class="text-xl">生産者価格 (令和6年産10月まで平均):</p>
+                        <p class="stat-value text-white">23,191円<span class="text-2xl">/玄米60kg</span></p>
+                    </div>
+                    <div>
+                        <p class="text-xl">小売価格 (コシヒカリ5kg、東京、令和6年12月):</p>
+                        <p class="stat-value text-white">4,018円</p>
+                        <p class="text-lg">(前年同月比 <span class="font-bold text-yellow-300">+68.4%</span>)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="cost-structure" class="card">
+            <h2 class="section-title">米のコスト構造：何にどれだけかかっている？</h2>
+            <p>米が消費者の食卓に届くまでには、生産コストの他に、集荷、卸売、小売の各段階で様々な費用が発生します。農林水産省の調査事例（北海道・東北産うるち米、玄米1kgあたり）を参考に、最終小売価格に占める各段階のコスト割合を見てみましょう。</p>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center mt-8">
+                <div class="chart-container h-[480px] md:h-[550px] max-w-lg">
+                    <canvas id="costStructureChart"></canvas>
+                </div>
+                <div>
+                    <h3 class="mb-4">コスト内訳のポイント</h3>
+                    <ul class="list-disc list-inside space-y-3">
+                        <li><strong class="palette-dark-blue">生産コストが約6割:</strong> 種苗、肥料、農薬、機械、労働費など、生産段階での費用が最も大きな割合を占めます。</li>
+                        <li><strong class="palette-dark-blue">流通コストも重要:</strong> 集荷・卸売・小売の各段階で、運賃、保管料、人件費、精米・包装費などが加算されます。</li>
+                        <li><strong class="palette-dark-blue">マージンも含まれる:</strong> 各流通事業者の利益（マージン）も価格に反映されますが、生産段階では赤字となるケースも報告されており、厳しい経営環境が伺えます。</li>
+                        <li><strong class="palette-dark-blue">卸売マージンの変動:</strong> 通常取引と政府備蓄米の取引など、状況によって卸売マージンは大きく変動する可能性があります。</li>
+                    </ul>
+                    <p class="mt-6 text-sm-custom">このグラフは一事例であり、産地や銘柄、時期によって実際のコスト構造は異なります。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="price-formation" class="card">
+            <h2 class="section-title">価格形成プロセス：米の値段はどう決まる？</h2>
+            <p>米の価格は、生産者から消費者へと渡る各段階で、コストとマージンが積み上げられて形成されます。以下は、農林水産省の調査事例に基づく価格形成の概略フローです（玄米1kgあたり）。</p>
+            
+            <div class="mt-8 space-y-6 md:space-y-0 md:grid md:grid-cols-5 md:gap-x-3 items-stretch">
+                <div class="flowchart-step">
+                    <h4 class="font-semibold">1. 生産</h4>
+                    <p>コスト: 173.8円</p>
+                    <p>(生産者販売価格)</p>
+                </div>
+                <div class="flowchart-arrow self-center hidden md:flex">➔</div>
+                <div class="flowchart-step">
+                    <h4 class="font-semibold">2. 集荷</h4>
+                    <p>(地域JA等 + 県経済連等)</p>
+                    <p>コスト計: 22.9円</p>
+                    <p>マージン計: 12.1円</p>
+                    <p class="font-medium">販売価格: 約228.8円</p>
+                </div>
+                <div class="flowchart-arrow self-center hidden md:flex">➔</div>
+                <div class="flowchart-step">
+                    <h4 class="font-semibold">3. 卸売</h4>
+                    <p>コスト: 32.1円</p>
+                    <p>マージン: 23.0円</p>
+                    <p class="font-medium">販売価格: 約285.8円</p>
+                </div>
+                 <div class="flowchart-arrow self-center hidden md:flex md:col-start-2">➔</div>
+                 <div class="md:col-start-3 flowchart-arrow self-center hidden md:flex">➔</div>
+                <div class="md:col-start-4 flowchart-arrow self-center hidden md:flex">➔</div>
+                <div class="flowchart-step md:col-start-5">
+                    <h4 class="font-semibold">4. 小売</h4>
+                    <p>コスト: 57.1円</p>
+                    <p>マージン: 6.5円</p>
+                    <p class="font-medium">最終小売価格 (精米0.9kg): 約353.6円</p>
+                </div>
+            </div>
+            <div class="mt-6 md:hidden space-y-4">
+                <div class="flowchart-arrow">↓</div>
+                <div class="flowchart-step">
+                    <h4 class="font-semibold">2. 集荷</h4>
+                     <p>(地域JA等 + 県経済連等)</p>
+                    <p>コスト計: 22.9円</p>
+                    <p>マージン計: 12.1円</p>
+                    <p class="font-medium">販売価格: 約228.8円</p>
+                </div>
+                <div class="flowchart-arrow">↓</div>
+                <div class="flowchart-step">
+                    <h4 class="font-semibold">3. 卸売</h4>
+                    <p>コスト: 32.1円</p>
+                    <p>マージン: 23.0円</p>
+                    <p class="font-medium">販売価格: 約285.8円</p>
+                </div>
+                <div class="flowchart-arrow">↓</div>
+                 <div class="flowchart-step">
+                    <h4 class="font-semibold">4. 小売</h4>
+                    <p>コスト: 57.1円</p>
+                    <p>マージン: 6.5円</p>
+                    <p class="font-medium">最終小売価格 (精米0.9kg): 約353.6円</p>
+                </div>
+            </div>
+            <p class="mt-8">一般的には、JAを通じて出荷する場合、生産者は収穫前に「概算金」を受け取り、後に「相対取引価格」に基づいて精算されます。平時には小売価格から逆算して流通段階の価格や概算金が決まる傾向も指摘されていますが、近年のようにコストプッシュ要因が強い場合は、生産コストの上昇が順次価格に転嫁される動きも見られます。</p>
+        </section>
+
+        <section id="key-factors" class="card">
+            <h2 class="section-title">米価変動のカラクリ：影響を与える主な要因</h2>
+            <p>米の価格は、様々な要因によって複雑に変動します。主な影響要因を整理してみましょう。</p>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-10 gap-y-8 mt-8">
+                <div>
+                    <h3 class="palette-green flex items-center"><span class="factor-icon">🌾</span>供給側の要因</h3>
+                    <ul class="list-none space-y-3 pl-12">
+                        <li><strong>生産量:</strong> 作付面積や天候による単収の変動が直接影響。</li>
+                        <li><strong>気候変動:</strong> 猛暑や豪雨による品質低下や収量減。</li>
+                        <li><strong>生産コスト:</strong> 肥料、燃料、資材価格の高騰。</li>
+                        <li><strong>労働力問題:</strong> 農業従事者の高齢化、後継者不足。</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="palette-yellow flex items-center"><span class="factor-icon">🛒</span>需要側の要因</h3>
+                    <ul class="list-none space-y-3 pl-12">
+                        <li><strong>国内消費量:</strong> 長期的な一人当たり消費量の減少傾向。</li>
+                        <li><strong>近年の需要動向:</strong> インバウンド回復、他食品値上がりによる相対的な割安感。</li>
+                        <li><strong>業務用需要:</strong> 外食・中食産業の動向。</li>
+                        <li><strong>一時的需要:</strong> 自然災害時の買いだめなど。</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="palette-blue flex items-center"><span class="factor-icon">🏛️</span>市場構造・政策要因</h3>
+                    <ul class="list-none space-y-3 pl-12">
+                        <li><strong>在庫水準:</strong> 民間在庫や政府備蓄米の量。</li>
+                        <li><strong>政府備蓄米:</strong> 買入・放出のタイミングや量。</li>
+                        <li><strong>JAグループの役割:</strong> 集荷・販売シェアと価格戦略。</li>
+                        <li><strong>米の相対価格:</strong> 他の食料品との価格バランス。</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="palette-red-orange flex items-center"><span class="factor-icon">🌍</span>外部ショック・その他</h3>
+                    <ul class="list-none space-y-3 pl-12">
+                        <li><strong>国際商品価格:</strong> 原油、穀物相場が間接的に影響。</li>
+                        <li><strong>物流・エネルギーコスト:</strong> 輸送費、電気代の上昇。</li>
+                        <li><strong>消費者行動:</strong> パニック時の買いだめなど。</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="conclusion" class="card bg-palette-dark-blue">
+            <h2 class="section-title text-white border-palette-blue">結論：米価エコシステムの洞察</h2>
+            <p class="conclusion-text">米の価格は、生産から消費に至る各段階でのコスト積み上げと、国内外の多様な要因が複雑に絡み合って形成されています。生産コストが大きな割合を占める一方で、生産現場の厳しい経営実態も明らかになっています。</p>
+            <p class="mt-3 conclusion-text">近年の価格高騰は、生産コストの上昇、気候変動による不作懸念、堅調な需要などが複合的に作用した結果と考えられます。この動的な米価エコシステムを理解することは、今後の食料安全保障や農業政策を考える上で非常に重要です。</p>
+            <p class="mt-6 font-semibold palette-yellow text-lg">今後の展望として、気候変動への適応、持続可能な生産体制の構築、そして消費者理解の促進が、安定的な米供給と価格形成の鍵となるでしょう。</p>
+        </section>
+
+        <footer class="text-center mt-16 py-8 border-t border-slate-300">
+            <p class="text-base text-slate-500">&copy; <span id="currentYear"></span> 米価分析インフォグラフィック. 提示されたデータは公表情報に基づきますが、最新情報と異なる場合があります。</p>
+        </footer>
+
+    </div>
+
+    <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+        
+        const baseFontSize = 14; // Base font size for chart elements
+
+        const commonChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        title: tooltipTitleCallback
+                    },
+                    titleFont: { size: baseFontSize + 2 },
+                    bodyFont: { size: baseFontSize }
+                },
+                legend: {
+                    labels: {
+                        color: '#073B4C',
+                        font: { size: baseFontSize }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { 
+                        color: '#073B4C',
+                        font: { size: baseFontSize - 2 } 
+                    },
+                    grid: { display: false },
+                    title: {
+                        display: true,
+                        font: { size: baseFontSize },
+                        color: '#073B4C'
+                    }
+                },
+                y: {
+                    ticks: { 
+                        color: '#073B4C',
+                        font: { size: baseFontSize - 2 } 
+                    },
+                    grid: { color: '#D1D5DB' },
+                    title: {
+                        display: true,
+                        font: { size: baseFontSize },
+                        color: '#073B4C'
+                    }
+                }
+            }
+        };
+        
+        function wrapLabel(label, maxLength = 16) {
+            if (typeof label !== 'string' || label.length <= maxLength) {
+                return label;
+            }
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + word).length > maxLength && currentLine.length > 0) {
+                    lines.push(currentLine.trim());
+                    currentLine = '';
+                }
+                currentLine += word + ' ';
+            }
+            if (currentLine.trim().length > 0) {
+                lines.push(currentLine.trim());
+            }
+            return lines.length > 0 ? lines : [label];
+        }
+
+        const producerPriceCtx = document.getElementById('producerPriceChart').getContext('2d');
+        new Chart(producerPriceCtx, {
+            type: 'line',
+            data: {
+                labels: ['令和元年産', '令和2年産', '令和3年産', '令和4年産', '令和5年産', wrapLabel('令和6年産 (10月まで平均)')],
+                datasets: [{
+                    label: '生産者価格 (円/玄米60kg)',
+                    data: [15620, 14520, 12860, 13849, 15738, 23191],
+                    borderColor: '#FF6B6B', 
+                    backgroundColor: 'rgba(255, 107, 107, 0.1)',
+                    tension: 0.1,
+                    fill: true,
+                }]
+            },
+            options: {
+                ...commonChartOptions,
+                scales: {
+                    ...commonChartOptions.scales,
+                    y: {
+                        ...commonChartOptions.scales.y,
+                        title: { ...commonChartOptions.scales.y.title, text: '価格 (円/玄米60kg)'}
+                    }
+                }
+            }
+        });
+
+        const retailPriceCtx = document.getElementById('retailPriceChart').getContext('2d');
+        new Chart(retailPriceCtx, {
+            type: 'bar',
+            data: {
+                labels: [wrapLabel('令和元年 12月'), wrapLabel('令和2年 12月'), wrapLabel('令和3年 12月'), wrapLabel('令和4年 12月'), wrapLabel('令和5年 12月'), wrapLabel('令和6年 9月'), wrapLabel('令和6年 12月')],
+                datasets: [{
+                    label: '小売価格 (コシヒカリ5kg, 円)',
+                    data: [2421, 2429, 2318, 2284, 2422, 3285, 4018],
+                    backgroundColor: '#118AB2', 
+                    borderColor: '#073B4C', 
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                ...commonChartOptions,
+                 scales: {
+                    ...commonChartOptions.scales,
+                    y: {
+                        ...commonChartOptions.scales.y,
+                        title: { ...commonChartOptions.scales.y.title, text: '価格 (円/5kg)'}
+                    }
+                }
+            }
+        });
+
+        const costStructureCtx = document.getElementById('costStructureChart').getContext('2d');
+        new Chart(costStructureCtx, {
+            type: 'doughnut',
+            data: {
+                labels: [wrapLabel('生産コスト (60.8%)'), wrapLabel('集荷コスト (8.0%)'), wrapLabel('卸売コスト (11.2%)'), wrapLabel('小売コスト (20.0%)')],
+                datasets: [{
+                    label: 'コスト割合',
+                    data: [173.8, 22.9, 32.1, 57.1], 
+                    backgroundColor: ['#FF6B6B', '#FFD166', '#06D6A0', '#118AB2'],
+                    borderColor: '#FFFFFF', 
+                    borderWidth: 3 /* Increased border for better separation */
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            title: tooltipTitleCallback,
+                            label: function(context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed !== null) {
+                                    label += context.parsed.toFixed(1) + '円';
+                                }
+                                return label;
+                            }
+                        },
+                        titleFont: { size: baseFontSize + 1 },
+                        bodyFont: { size: baseFontSize -1 }
+                    },
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#073B4C',
+                             padding: 25, /* Increased padding */
+                             font: { size: baseFontSize -1 }
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: '米のコスト構造割合（農林水産省調査事例より）',
+                        color: '#073B4C',
+                        font: { size: baseFontSize + 2, weight: 'bold' },
+                        padding: { top:15, bottom: 25} /* Increased padding */
+                    }
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>
