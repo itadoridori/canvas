@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日本の米市場トレンド インフォグラフィック</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #f0f4f8; /* Light grayish blue background */
+            font-size: 18px; /* Base font size increased for YouTube layout */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px; /* Increased max-width */
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px; /* Increased height */
+            max-height: 450px; /* Increased max-height */
+        }
+        .large-chart-container { /* For combined chart */
+            position: relative;
+            width: 100%;
+            max-width: 900px; /* Increased max-width */
+            margin-left: auto;
+            margin-right: auto;
+            height: 500px; /* Increased height */
+            max-height: 600px; /* Increased max-height */
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px; /* Further increase for md screens */
+            }
+            .large-chart-container {
+                height: 550px; /* Further increase for md screens */
+            }
+        }
+        .section-title {
+            color: #FF8C00; /* Energetic & Playful - Orange */
+        }
+        .stat-value {
+            color: #008080; /* Energetic & Playful - Teal */
+            font-weight: bold;
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.5rem; /* rounded-lg */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
+            padding: 2rem; /* Increased padding p-8 equivalent */
+            margin-bottom: 2rem; /* Increased margin mb-8 equivalent */
+        }
+        .primary-bg { background-color: #FF8C00; } /* Orange */
+        .secondary-bg { background-color: #FFD700; } /* Yellow */
+        .accent-bg-1 { background-color: #008080; } /* Teal */
+        .accent-bg-2 { background-color: #FF69B4; } /* Pink */
+        .accent-bg-3 { background-color: #ADD8E6; } /* Light Blue */
+
+        .primary-text { color: #FF8C00; }
+        .secondary-text { color: #FFD700; }
+        .accent-text-1 { color: #008080; }
+        .accent-text-2 { color: #FF69B4; }
+        .accent-text-3 { color: #ADD8E6; }
+
+        .sd-diagram {
+            width: 100%;
+            max-width: 500px; /* Increased max-width */
+            height: 375px; /* Increased height proportionally */
+            border-left: 3px solid #333; /* Thicker border */
+            border-bottom: 3px solid #333; /* Thicker border */
+            position: relative;
+            margin: 3rem auto; /* Increased margin */
+        }
+        .sd-diagram::before {
+            content: '価格(P)';
+            position: absolute;
+            top: -30px; /* Adjusted position */
+            left: -45px; /* Adjusted position */
+            font-size: 1rem; /* Increased font size */
+        }
+        .sd-diagram::after {
+            content: '数量(Q)';
+            position: absolute;
+            bottom: -30px; /* Adjusted position */
+            right: -45px; /* Adjusted position */
+            font-size: 1rem; /* Increased font size */
+        }
+        .demand-curve, .supply-curve {
+            position: absolute;
+            background-color: #FF8C00; 
+            height: 3px; /* Thicker lines */
+            transform-origin: left;
+        }
+        .supply-curve {
+            background-color: #008080; 
+        }
+        .demand-curve {
+            width: 80%;
+            top: 20%;
+            left: 5%;
+            transform: rotate(-15deg);
+        }
+        .supply-curve {
+            width: 80%;
+            bottom: 25%;
+            left: 5%;
+            transform: rotate(15deg);
+        }
+        .equilibrium-point {
+            position: absolute;
+            width: 12px; /* Larger point */
+            height: 12px; /* Larger point */
+            background-color: #FF69B4; 
+            border-radius: 50%;
+            top: 43%; 
+            left: 48%; 
+        }
+        .equilibrium-point::after {
+            content: '均衡点 E';
+            position: absolute;
+            top: -25px; /* Adjusted position */
+            left: 20px; /* Adjusted position */
+            font-size: 0.9rem; /* Increased font size */
+            color: #FF69B4;
+        }
+        .icon-style {
+            font-size: 3rem; /* Increased icon size */
+            margin-bottom: 0.75rem; /* Adjusted margin */
+            color: #FF8C00; 
+        }
+
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 p-6 md:p-12">
+    <!-- 
+        Chosen Color Palette: Energetic & Playful
+        Orange: #FF8C00
+        Yellow: #FFD700
+        Teal: #008080
+        Pink: #FF69B4
+        Light Blue: #ADD8E6
+    -->
+    <!-- 
+        Narrative Plan Summary (Revised):
+        1. Header: Title & Lead
+        2. Section 1: Basic Rice Price Structure (Cost Donut Chart)
+        3. Section 2: Demand Trends (Per Capita Consumption Line Chart, Total Demand Big Numbers & Text linking to price pressure)
+        4. Section 3: Supply Trends & Adjustments (Harvest Volume Bar Chart, Weather Impact Text & Text linking to price pressure)
+        5. Section 4: Rice Price and Supply/Demand Correlation (Combined Line Chart for Price, Demand Volume, Supply Volume - Reiwa Era)
+        6. Section 5: Core Price Determination Mechanism (HTML/CSS S&D Diagram - Emphasized)
+        7. Section 6: Other Influencing Factors (Cards/List for Policy, Weather, International Markets)
+        8. Conclusion: Summary
+        9. Footer: Sources
+    -->
+    <!-- 
+        Visualization Choices Summary (Revised - Confirming NO SVG, NO MERMAID JS):
+        - Cost Structure: Donut Chart (Chart.js Canvas) - Goal: Inform/Compare.
+        - Per Capita Consumption: Line Chart (Chart.js Canvas) - Goal: Change.
+        - Total Demand: Big Numbers (HTML Text) - Goal: Inform.
+        - Harvest Volume: Bar Chart (Chart.js Canvas) - Goal: Compare/Change.
+        - Weather Impact: Text + Unicode Icon (HTML) - Goal: Inform.
+        - Price, Demand & Supply Correlation: Combined Line Chart (Chart.js Canvas) - Goal: Relationships/Change. Justification: Shows interrelation of key variables over time. (Replaces inventory charts and standalone price chart).
+        - S&D Diagram: Structured HTML/CSS with Tailwind - Goal: Organize/Relationships.
+        - Other Factors: HTML/CSS Cards/List + Unicode Icons - Goal: Organize.
+        - NEITHER Mermaid JS NOR SVG were used anywhere in this output.
+    -->
+
+    <header class="text-center mb-16">
+        <h1 class="text-5xl md:text-6xl font-bold primary-text mb-6">日本の米価格</h1>
+        <h2 class="text-3xl md:text-4xl font-bold accent-text-1 mb-8">需給バランスと市場動向の徹底解説</h2>
+        <p class="text-xl md:text-2xl text-gray-700 max-w-5xl mx-auto">
+            日本の主食である米。その価格がどのように決まるのか、最新のデータとトレンドを基に、需要と供給の視点から詳細に分析します。
+        </p>
+    </header>
+
+    <main class="space-y-16">
+        <section class="card">
+            <h3 class="text-3xl font-bold section-title mb-8 text-center">1. 米価格の基本構造</h3>
+            <p class="text-xl text-gray-700 mb-8 text-center">
+                米の小売価格は、生産コスト、流通コスト、そして各段階でのマージンから成り立っています。特に生産コストが大きな割合を占めています。
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+                <div>
+                    <h4 class="text-2xl font-semibold accent-text-1 mb-3">コスト構造の内訳</h4>
+                    <p class="text-lg text-gray-600 mb-5">
+                        最終小売価格のうち、約6割が生産コスト（種子、肥料、農薬、機械、人件費など）で占められています。残りが流通コストやマージンとなります。
+                        生産者が赤字となるケースもあり、コストの価格転嫁が常に容易ではない状況も示唆されています。
+                    </p>
+                </div>
+                <div class="chart-container h-72 md:h-96">
+                    <canvas id="costStructureChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h3 class="text-3xl font-bold section-title mb-8 text-center">2. 需要の動向 (令和時代)</h3>
+            <p class="text-xl text-gray-700 mb-8 text-center">
+                国内の米の需要は、人口減少や食生活の多様化により、令和に入っても長期的に減少傾向が続いています。この需要の変動は、価格形成における重要な要素の一つです。
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+                <div class="chart-container">
+                    <canvas id="consumptionTrendChartReiwa"></canvas>
+                </div>
+                <div>
+                    <h4 class="text-2xl font-semibold accent-text-1 mb-3">一人当たり年間米消費量の推移 (令和)</h4>
+                    <p class="text-lg text-gray-600 mb-5">
+                        令和元年度(2019年度)の54.6kgから、令和4年度(2022年度)には50.9kgへと減少しています。1962年度のピーク時(118.3kg)と比較すると大幅な減少です。
+                    </p>
+                    <h4 class="text-2xl font-semibold accent-text-1 mb-3 mt-8">主食用米の総需要量 (実績)</h4>
+                    <div class="space-y-3">
+                        <p class="text-xl"><span class="font-bold">令和元年(2019年):</span> <span class="stat-value text-3xl">714</span> 万トン</p>
+                        <p class="text-xl"><span class="font-bold">令和4年(2022年):</span> <span class="stat-value text-3xl">670</span> 万トン</p>
+                    </div>
+                    <p class="text-lg text-gray-600 mt-5">
+                        総需要量の減少は、他の条件が一定であれば価格に対する下方圧力となりますが、供給量とのバランスで実際の価格は変動します。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h3 class="text-3xl font-bold section-title mb-8 text-center">3. 供給の動向と調整 (令和時代)</h3>
+            <p class="text-xl text-gray-700 mb-8 text-center">
+                需要の減少に対応し、主食用米の作付面積や生産量は政策的に調整されてきました。天候による供給変動リスクも価格に影響を与える主要因です。
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+                 <div>
+                    <h4 class="text-2xl font-semibold accent-text-1 mb-3">主食用米収穫量の変化 (令和)</h4>
+                    <p class="text-lg text-gray-600 mb-5">
+                        令和元年から令和5年にかけて、主食用米の収穫量も年によって変動が見られます。豊作や不作は、市場価格に直接的な影響を及ぼします。
+                    </p>
+                     <h4 class="text-2xl font-semibold accent-text-1 mb-3 mt-8">天候の影響</h4>
+                    <div class="flex items-start space-x-3 text-lg text-gray-600">
+                        <span class="icon-style mt-1">🌦️</span>
+                        <p>供給量は天候（猛暑、冷害、水害など）によって年ごとに大きく変動するリスクを常に抱えています。例えば、2023年の記録的な猛暑は作柄に影響を与え、一部地域で品質低下や収量減を引き起こし、価格上昇の一因となりました。</p>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="harvestVolumeChartReiwa"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h3 class="text-3xl font-bold section-title mb-8 text-center">4. 米価と需給量の相関分析 (令和時代)</h3>
+            <p class="text-xl text-gray-700 mb-8 text-center">
+                米の価格は、需要量と供給量のバランスに敏感に反応します。以下のグラフは、令和時代における価格、総需要量、そして供給量（収穫量）の推移を示しており、これらの相関関係を視覚的に捉えることができます。
+            </p>
+            <div class="large-chart-container">
+                <canvas id="priceDemandSupplyChartReiwa"></canvas>
+            </div>
+            <p class="text-lg text-gray-600 mt-8 text-center">
+                一般的に、供給量が需要量を上回る（またはそのように予測される）と価格は下落圧力を受け、逆に供給量が需要量に対して不足する（またはその懸念がある）と価格は上昇圧力を受けます。
+                令和3年産のように供給量が需要量に近接、あるいは下回った場合に価格が相対的に低くなったのは、前年からの持ち越し在庫など他の要因も影響している複雑な市場状況を示唆しています。一方で、令和5年産のように供給が絞られ需要とのバランスが変化すると価格が上昇する傾向も見られます。
+            </p>
+        </section>
+
+        <section class="card">
+            <h3 class="text-3xl font-bold section-title mb-8 text-center">5. 価格決定の核心メカニズム</h3>
+            <p class="text-xl text-gray-700 mb-8 text-center">
+                経済学の基本原則に基づき、米の価格も需要曲線と供給曲線が交差する均衡点で決定されます。この均衡点は、市場参加者の行動や外部環境の変化に応じて常に変動します。
+            </p>
+            <div class="sd-diagram">
+                <div class="demand-curve"><span class="absolute -top-6 right-0 text-base text-gray-700">需要曲線 (D)</span></div>
+                <div class="supply-curve"><span class="absolute -bottom-6 right-0 text-base text-gray-700">供給曲線 (S)</span></div>
+                <div class="equilibrium-point"></div>
+            </div>
+            <p class="text-lg text-gray-600 mt-10 text-center">
+                この図は、需要量と供給量が一致する点で価格が決まる概念を示しています。実際の市場では、天候による供給変動、消費者の嗜好変化による需要変動、政府の政策などがこれらの曲線に影響を与え、均衡価格を動かします。
+            </p>
+        </section>
+
+        <section class="card">
+            <h3 class="text-3xl font-bold section-title mb-8 text-center">6. 価格に影響を与えるその他の要因</h3>
+            <p class="text-xl text-gray-700 mb-8 text-center">
+                需給バランス以外にも、米価に影響を及ぼす様々な要因が存在します。
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="p-6 rounded-lg shadow-lg bg-white border border-gray-200 text-center">
+                    <div class="icon-style">🏛️</div>
+                    <h4 class="text-xl font-semibold accent-text-1 mb-2">政府の政策</h4>
+                    <p class="text-base text-gray-600">生産調整（転作支援など）や備蓄米の市場操作（放出・買入）は、市場の供給量を直接的にコントロールし、価格の安定または変動に影響を与えます。</p>
+                </div>
+                <div class="p-6 rounded-lg shadow-lg bg-white border border-gray-200 text-center">
+                    <div class="icon-style">🌍</div>
+                    <h4 class="text-xl font-semibold accent-text-1 mb-2">国際市況と為替</h4>
+                    <p class="text-base text-gray-600">小麦などの国際的な穀物価格の変動や為替レートの変動は、輸入飼料や肥料価格を通じて生産コストに影響し、間接的に国内の米価にも影響を与えることがあります。</p>
+                </div>
+                <div class="p-6 rounded-lg shadow-lg bg-white border border-gray-200 text-center">
+                    <div class="icon-style">🌾</div>
+                    <h4 class="text-xl font-semibold accent-text-1 mb-2">生産コストの変動</h4>
+                    <p class="text-base text-gray-600">肥料価格、燃料費、農業機械のコスト、人件費などの生産コストの変動は、生産者の経営状況や供給意欲に影響し、結果として供給価格に反映されることがあります。</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="text-center py-10">
+            <h3 class="text-4xl font-bold primary-text mb-6">結論</h3>
+            <p class="text-xl md:text-2xl text-gray-700 max-w-5xl mx-auto">
+                日本の米価格は、生産コストを基礎としつつ、長期的には国内需要の減少傾向とそれに応じた政策的な生産調整が基調となります。短期的には、天候による供給量の変動が豊作・不作を生み出し、これが市場の需給バランスを大きく左右し価格に反映されます。
+                令和時代においても、これらの要因が複雑に絡み合い、米価を形成していることを理解することが、市場動向を把握する上で極めて重要です。
+            </p>
+        </section>
+    </main>
+
+    <footer class="text-center mt-16 py-10 border-t border-gray-300">
+        <p class="text-base text-gray-600 mb-3">
+            資料出所: 農林水産省「食料需給表」、「米の相対取引価格・数量」、「米穀の需給及び価格の安定に関する基本指針」、「米をめぐる状況について」、その他公開情報に基づき作成。
+            本インフォグラフィックは教育および情報提供を目的としています。
+        </p>
+        <p class="text-base text-gray-500">インフォグラフィック作成: Canvas Infographics (AI)</p>
+    </footer>
+
+    <script>
+        Chart.defaults.font.size = 14; 
+
+        // Ensure plugins object and nested font objects exist before setting size
+        Chart.defaults.plugins = Chart.defaults.plugins || {};
+
+        Chart.defaults.plugins.title = Chart.defaults.plugins.title || {};
+        Chart.defaults.plugins.title.font = Chart.defaults.plugins.title.font || {};
+        Chart.defaults.plugins.title.font.size = 18;
+
+        Chart.defaults.plugins.legend = Chart.defaults.plugins.legend || {};
+        Chart.defaults.plugins.legend.labels = Chart.defaults.plugins.legend.labels || {};
+        Chart.defaults.plugins.legend.labels.font = Chart.defaults.plugins.legend.labels.font || {};
+        Chart.defaults.plugins.legend.labels.font.size = 16; // Consistent with per-chart settings
+
+        const chartJsTooltipCallbacks = {
+            title: function(tooltipItems) {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                  return label.join(' ');
+                } else {
+                  return label;
+                }
+            }
+        };
+
+        function wrapLabel(str, maxWidth) {
+            if (typeof str !== 'string') return [String(str)]; 
+            if (str.length <= maxWidth) return str;
+            const words = str.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + word).length > maxWidth && currentLine.length > 0) {
+                    lines.push(currentLine.trim());
+                    currentLine = '';
+                }
+                currentLine += word + ' ';
+            }
+            if (currentLine.trim().length > 0) {
+                lines.push(currentLine.trim());
+            }
+            return lines.length > 0 ? lines : (str.length > 0 ? [str] : []);
+        }
+        
+        const labelMaxWidth = 16; 
+        const reiwaYears = ['令和元年 (2019)', '令和2年 (2020)', '令和3年 (2021)', '令和4年 (2022)', '令和5年 (2023)'];
+
+        // Chart 1: Cost Structure
+        const costCtx = document.getElementById('costStructureChart').getContext('2d');
+        new Chart(costCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['生産コスト (約60%)', '流通コスト・その他マージン (約40%)'].map(label => wrapLabel(label, labelMaxWidth)),
+                datasets: [{
+                    data: [60, 40],
+                    backgroundColor: ['#FF8C00', '#008080'], 
+                    borderColor: ['#FFFFFF', '#FFFFFF'],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { 
+                        position: 'bottom',
+                        labels: { font: { size: 16 } } 
+                    },
+                    tooltip: { 
+                        callbacks: chartJsTooltipCallbacks,
+                        titleFont: { size: 16 }, 
+                        bodyFont: { size: 14 } 
+                    }
+                }
+            }
+        });
+
+        // Chart 2: Consumption Trend (Reiwa Era)
+        const perCapitaConsumptionData = [54.6, 53.0, 51.5, 50.9, 50.0]; 
+        const consumptionCtxReiwa = document.getElementById('consumptionTrendChartReiwa').getContext('2d');
+        new Chart(consumptionCtxReiwa, {
+            type: 'line',
+            data: {
+                labels: reiwaYears.map(label => wrapLabel(label, labelMaxWidth)),
+                datasets: [{
+                    label: '一人当たり年間米消費量 (kg)',
+                    data: perCapitaConsumptionData,
+                    borderColor: '#FF69B4', 
+                    backgroundColor: 'rgba(255, 105, 180, 0.1)', 
+                    fill: true,
+                    tension: 0.1,
+                    borderWidth: 3 
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: { 
+                    y: { 
+                        beginAtZero: false, 
+                        title: { display: true, text: '消費量 (kg)', font: { size: 16 } }, 
+                        ticks: { font: { size: 14 } } 
+                    },
+                    x: {
+                        ticks: { font: { size: 14 } } 
+                    }
+                },
+                plugins: {
+                    legend: { 
+                        display: true, 
+                        position: 'top',
+                        labels: { font: { size: 16 } } 
+                    },
+                    tooltip: { 
+                        callbacks: chartJsTooltipCallbacks,
+                        titleFont: { size: 16 }, 
+                        bodyFont: { size: 14 }
+                    }
+                }
+            }
+        });
+
+        // Chart 3: Harvest Volume (Reiwa Era)
+        const harvestVolumeData = [726, 696, 670, 675, 662]; 
+        const harvestCtxReiwa = document.getElementById('harvestVolumeChartReiwa').getContext('2d');
+        new Chart(harvestCtxReiwa, {
+            type: 'bar',
+            data: {
+                labels: reiwaYears.map(year => wrapLabel(year.replace(')','産)'), labelMaxWidth)), 
+                datasets: [{
+                    label: '主食用米収穫量 (万トン)',
+                    data: harvestVolumeData,
+                    backgroundColor: ['#FFD700', '#ADD8E6', '#FF8C00', '#008080', '#FF69B4'], 
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: { 
+                    y: { 
+                        beginAtZero: false, 
+                        title: { display: true, text: '収穫量 (万トン)', font: {size: 16} },
+                        ticks: { font: { size: 14 } } 
+                    },
+                    x: {
+                        ticks: { font: { size: 14 } }
+                    }
+                },
+                plugins: {
+                    legend: { 
+                        display: true, 
+                        position: 'top',
+                        labels: { font: { size: 16 } }
+                    },
+                    tooltip: { 
+                        callbacks: chartJsTooltipCallbacks,
+                        titleFont: { size: 16 }, 
+                        bodyFont: { size: 14 }
+                    }
+                }
+            }
+        });
+        
+        // Section 4: Combined Price, Demand, Supply Chart
+        const priceDataReiwa = [15716, 14529, 12804, 13844, 15247]; 
+        const totalDemandDataReiwa = [714, 695, 679, 670, 660]; 
+        const priceDemandSupplyCtx = document.getElementById('priceDemandSupplyChartReiwa').getContext('2d');
+        new Chart(priceDemandSupplyCtx, {
+            type: 'line',
+            data: {
+                labels: reiwaYears.map(label => wrapLabel(label, labelMaxWidth)),
+                datasets: [
+                    {
+                        label: '相対取引平均価格 (円/60kg)',
+                        data: priceDataReiwa,
+                        borderColor: '#FF8C00', 
+                        backgroundColor: 'rgba(255, 140, 0, 0.1)',
+                        yAxisID: 'yPrice',
+                        tension: 0.1,
+                        borderWidth: 3 
+                    },
+                    {
+                        label: '総需要量 (万トン)',
+                        data: totalDemandDataReiwa,
+                        borderColor: '#FF69B4', 
+                        backgroundColor: 'rgba(255, 105, 180, 0.1)',
+                        yAxisID: 'yVolume',
+                        tension: 0.1,
+                        borderWidth: 3
+                    },
+                    {
+                        label: '供給量(収穫量) (万トン)',
+                        data: harvestVolumeData, 
+                        borderColor: '#008080', 
+                        backgroundColor: 'rgba(0, 128, 128, 0.1)',
+                        yAxisID: 'yVolume',
+                        tension: 0.1,
+                        borderWidth: 3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                scales: {
+                    x: { 
+                        title: { display: true, text: '年度', font: {size: 16}},
+                        ticks: { font: {size: 14}}
+                    },
+                    yPrice: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        title: {
+                            display: true,
+                            text: '価格 (円/60kg)',
+                            color: '#FF8C00',
+                            font: {size: 16}
+                        },
+                        grid: {
+                            drawOnChartArea: false, 
+                        },
+                        ticks: { font: {size: 14}}
+                    },
+                    yVolume: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        title: {
+                            display: true,
+                            text: '数量 (万トン)',
+                            color: '#008080',
+                            font: {size: 16}
+                        },
+                         min: Math.min(...totalDemandDataReiwa, ...harvestVolumeData) - 20, 
+                         max: Math.max(...totalDemandDataReiwa, ...harvestVolumeData) + 20,
+                         ticks: { font: {size: 14}}
+                    }
+                },
+                plugins: {
+                    legend: { 
+                        position: 'bottom',
+                        labels: { font: {size: 16}}
+                    },
+                    tooltip: { 
+                        callbacks: chartJsTooltipCallbacks,
+                        mode: 'index',
+                        intersect: false,
+                        titleFont: {size: 16},
+                        bodyFont: {size: 14}
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
