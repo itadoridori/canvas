@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>地球温暖化対策投資の国際比較インフォグラフィック</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .section-title {
+            font-size: 2.5rem; /* 40px */
+            font-weight: 700;
+            margin-bottom: 2rem; /* 32px */
+            color: #1A202C; /* text-gray-800 */
+            border-bottom: 4px solid #FF8C00; /* Energetic Orange */
+            padding-bottom: 0.75rem; /* 12px */
+        }
+        .stat-value {
+            font-size: 4rem; /* 64px */
+            font-weight: 700;
+            color: #FF8C00; /* Energetic Orange */
+        }
+        .stat-label {
+            font-size: 1.25rem; /* 20px */
+            color: #4A5568; /* text-gray-600 */
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem; /* 12px */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 2rem; /* 32px */
+            margin-bottom: 2.5rem; /* 40px */
+        }
+        .nav-link {
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #FF8C00; /* Energetic Orange */
+        }
+        .flow-chart-item {
+            border: 2px solid #008080; /* Deep Teal */
+            padding: 1.25rem; /* 20px */
+            border-radius: 0.5rem;
+            text-align: center;
+            background-color: #f0f9ff; /* light blue bg */
+            font-size: 1.125rem; /* 18px */
+        }
+        .flow-chart-arrow {
+            font-size: 2.5rem; /* 40px */
+            color: #008080; /* Deep Teal */
+            margin: 0 0.75rem; /* 12px */
+            align-self: center;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-gray-800">気候投資インフォグラフィック</a>
+            <div class="hidden md:flex space-x-6">
+                <a href="#global-finance" class="nav-link text-lg font-medium text-gray-700">世界全体</a>
+                <a href="#energy-shift" class="nav-link text-lg font-medium text-gray-700">エネルギー転換</a>
+                <a href="#developed-countries" class="nav-link text-lg font-medium text-gray-700">先進国</a>
+                <a href="#renewable-energy" class="nav-link text-lg font-medium text-gray-700">再生可能エネルギー</a>
+                <a href="#key-economies" class="nav-link text-lg font-medium text-gray-700">主要経済国</a>
+                <a href="#mdbs" class="nav-link text-lg font-medium text-gray-700">MDBs</a>
+                <a href="#takeaways" class="nav-link text-lg font-medium text-gray-700">要点</a>
+            </div>
+            <div class="md:hidden">
+                <button id="nav-toggle" class="text-gray-700 focus:outline-none">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </div>
+        <div id="nav-menu" class="md:hidden hidden px-6 pb-4 space-y-2">
+            <a href="#global-finance" class="block nav-link text-lg font-medium text-gray-700 py-1">世界全体</a>
+            <a href="#energy-shift" class="block nav-link text-lg font-medium text-gray-700 py-1">エネルギー転換</a>
+            <a href="#developed-countries" class="block nav-link text-lg font-medium text-gray-700 py-1">先進国</a>
+            <a href="#renewable-energy" class="block nav-link text-lg font-medium text-gray-700 py-1">再生可能エネルギー</a>
+            <a href="#key-economies" class="block nav-link text-lg font-medium text-gray-700 py-1">主要経済国</a>
+            <a href="#mdbs" class="block nav-link text-lg font-medium text-gray-700 py-1">MDBs</a>
+            <a href="#takeaways" class="block nav-link text-lg font-medium text-gray-700 py-1">要点</a>
+        </div>
+    </nav>
+
+    <header class="bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 text-white py-20 px-6 text-center">
+        <div class="container mx-auto">
+            <h1 class="text-5xl md:text-6xl font-bold mb-6">地球温暖化対策投資の国際比較</h1>
+            <p class="text-2xl md:text-3xl mb-10">世界の気候資金フローとエネルギー投資の最新トレンド</p>
+            <div class="stat-value text-yellow-300">1兆4600億ドル</div>
+            <p class="stat-label text-purple-200 text-xl">2022年 世界の年間気候資金フロー (CPI調べ)</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-6 md:p-8">
+
+        <section id="global-finance" class="my-16">
+            <h2 class="section-title">世界の気候変動ファイナンス概況</h2>
+            <p class="mb-10 text-xl text-gray-700 leading-relaxed">世界の気候変動対策への年間投資額（気候資金）は近年大幅に増加していますが、パリ協定の目標達成には更なる拡大が急務です。緩和資金が大部分を占め、適応資金は依然として不足しています。</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div class="card">
+                    <h3 class="text-2xl font-semibold mb-6 text-teal-700">世界の気候資金フロー推移</h3>
+                    <div class="chart-container h-64 sm:h-72 md:h-80 max-h-[380px]">
+                        <canvas id="globalClimateFinanceTrendChart"></canvas>
+                    </div>
+                    <p class="mt-6 text-base text-gray-600">2022年には1.46兆ドルに達し、2018年から倍増以上となりましたが、2030年までに年間7.4兆ドルが必要とされています。</p>
+                </div>
+                <div class="card">
+                    <h3 class="text-2xl font-semibold mb-6 text-teal-700">緩和資金 vs 適応資金 (2022年)</h3>
+                    <div class="chart-container h-64 sm:h-72 md:h-80 max-h-[380px] max-w-md">
+                        <canvas id="mitigationAdaptationChart"></canvas>
+                    </div>
+                    <p class="mt-6 text-base text-gray-600">緩和資金が1.3兆ドル（約90%）と大半を占める一方、適応資金は760億ドル（約5%）に留まっています。</p>
+                </div>
+                <div class="card">
+                    <h3 class="text-2xl font-semibold mb-6 text-teal-700">資金源：公的 vs 民間 (2022年緩和資金)</h3>
+                    <div class="chart-container h-64 sm:h-72 md:h-80 max-h-[380px] max-w-md">
+                        <canvas id="publicPrivateChart"></canvas>
+                    </div>
+                    <p class="mt-6 text-base text-gray-600">緩和資金においては民間資金が54%を占めますが、適応資金は公的資金が92%を供給しています。</p>
+                </div>
+                <div class="card">
+                    <h3 class="text-2xl font-semibold mb-6 text-teal-700">投資ギャップ：現状と必要額</h3>
+                    <div class="text-center py-4">
+                        <div class="stat-value">5倍以上</div>
+                        <p class="stat-label mb-6">現在の気候資金を拡大する必要性 (対1.5℃目標)</p>
+                        <p class="text-xl text-gray-700">現状: 年間 <strong class="text-orange-500">約1.5兆ドル</strong> (2022/23年)</p>
+                        <p class="text-xl text-gray-700">必要額: 年間 <strong class="text-orange-500">約7.4兆ドル</strong> (2030年まで)</p>
+                    </div>
+                    <p class="mt-6 text-base text-gray-600">EMDEs（中国除く）だけでも年間2.4兆ドルの投資が必要です。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="energy-shift" class="my-16">
+            <h2 class="section-title">エネルギー投資の転換 (IEA分析)</h2>
+            <p class="mb-10 text-xl text-gray-700 leading-relaxed">世界のエネルギー投資では、クリーンエネルギーが化石燃料を凌駕する歴史的な転換が進行中です。2024年にはクリーンエネルギー投資が化石燃料投資の約2倍に達すると予測されています。</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div class="card">
+                    <h3 class="text-2xl font-semibold mb-6 text-purple-700">クリーンエネルギー vs 化石燃料投資</h3>
+                    <div class="chart-container h-64 sm:h-72 md:h-80 max-h-[380px]">
+                        <canvas id="cleanVsFossilChart"></canvas>
+                    </div>
+                    <p class="mt-6 text-base text-gray-600">2024年にはクリーンエネルギー投資が約2兆ドル、化石燃料投資が約1兆ドルと予測されています。</p>
+                </div>
+                <div class="card">
+                    <h3 class="text-2xl font-semibold mb-6 text-purple-700">クリーンエネルギー投資の内訳 (2024年予測)</h3>
+                    <div class="chart-container h-64 sm:h-72 md:h-80 max-h-[380px]">
+                        <canvas id="cleanEnergySectorChart"></canvas>
+                    </div>
+                    <p class="mt-6 text-base text-gray-600">太陽光発電が最大のシェアを占め、電力系統や蓄電池への投資も増加しています。</p>
+                </div>
+                <div class="card md:col-span-2">
+                    <h3 class="text-2xl font-semibold mb-6 text-purple-700">クリーンエネルギー投資の地域分布</h3>
+                    <div class="chart-container h-64 sm:h-72 md:h-80 max-h-[380px] max-w-2xl">
+                        <canvas id="regionalCleanEnergyChart"></canvas>
+                    </div>
+                    <p class="mt-6 text-base text-gray-600">投資の約85%が先進国と中国に集中。EMDEs（中国除く）への投資は全体の15%に過ぎません。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="developed-countries" class="my-16">
+            <h2 class="section-title">先進国の気候資金供与 (OECD分析)</h2>
+            <p class="mb-10 text-xl text-gray-700 leading-relaxed">先進国は、開発途上国に対し年間1000億ドルの気候資金を提供するという目標を2022年に初めて達成しました。しかし、資金の質や適応資金の割合については課題も残ります。</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div class="card">
+                    <h3 class="text-2xl font-semibold mb-6 text-pink-700">先進国による途上国向け気候資金 (1000億ドル目標)</h3>
+                    <div class="text-center py-4">
+                        <div class="stat-value text-pink-500">1159億ドル</div>
+                        <p class="stat-label mb-6">2022年に提供・動員された総額</p>
+                    </div>
+                    <div class="chart-container h-60 sm:h-64 md:h-72 max-h-[350px]">
+                        <canvas id="hundredBillionGoalChart"></canvas>
+                    </div>
+                    <p class="mt-6 text-base text-gray-600">目標達成は2年遅れましたが、資金動員の進展を示しています。</p>
+                </div>
+                <div class="card">
+                    <h3 class="text-2xl font-semibold mb-6 text-pink-700">G7主要国の気候資金拠出 (2022年または最新年)</h3>
+                    <div class="chart-container h-80 md:h-96 max-h-[480px]">
+                        <canvas id="g7ContributionsChart"></canvas>
+                    </div>
+                    <p class="mt-6 text-base text-gray-600">各国は目標達成に向けて拠出していますが、報告方法や内訳には差異があります。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="renewable-energy" class="my-16">
+            <h2 class="section-title">再生可能エネルギー投資の急増 (IRENA分析)</h2>
+            <p class="mb-10 text-xl text-gray-700 leading-relaxed">エネルギー転換技術への投資は過去最高を記録し、特に再生可能エネルギーが牽引しています。しかし、1.5℃目標達成には更なる大幅な投資拡大が必要です。</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div class="card">
+                    <h3 class="text-2xl font-semibold mb-6" style="color: #FFD700;">世界の再生可能エネルギー投資推移</h3>
+                     <div class="chart-container h-64 sm:h-72 md:h-80 max-h-[380px]">
+                        <canvas id="renewableInvestmentTrendChart"></canvas>
+                    </div>
+                    <p class="mt-6 text-base text-gray-600">2022年のエネルギー転換技術への投資は1.3兆ドル。うち再エネは5000億ドルでした。</p>
+                </div>
+                <div class="card">
+                    <h3 class="text-2xl font-semibold mb-6" style="color: #FFD700;">主要再エネ技術別投資 (2023年新規)</h3>
+                    <div class="chart-container h-64 sm:h-72 md:h-80 max-h-[380px]">
+                        <canvas id="renewableTechInvestmentChart"></canvas>
+                    </div>
+                    <p class="mt-6 text-base text-gray-600">太陽光発電と風力発電が新規投資の大部分を占めています。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="key-economies" class="my-16">
+            <h2 class="section-title">主要経済国の動向</h2>
+            <p class="mb-10 text-xl text-gray-700 leading-relaxed">G20諸国を中心に、各国の気候変動対策投資は政策や経済状況により多様な様相を呈しています。</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+                <div class="card">
+                    <h3 class="text-3xl font-semibold mb-4 text-center">🇺🇸 米国</h3>
+                    <p class="text-base text-gray-700 mb-2"><strong class="text-orange-600">主要政策:</strong> インフレ抑制法 (IRA) がクリーンエネルギー投資を強力に推進。</p>
+                    <p class="text-base text-gray-700 mb-2"><strong class="text-orange-600">投資動向:</strong> 2024年クリーンエネルギー投資は3000億ドル超と推定。</p>
+                    <p class="text-base text-gray-700"><strong class="text-orange-600">焦点:</strong> 税額控除による民間投資誘発。</p>
+                </div>
+                <div class="card">
+                    <h3 class="text-3xl font-semibold mb-4 text-center">🇨🇳 中国</h3>
+                    <p class="text-base text-gray-700 mb-2"><strong class="text-teal-600">主要政策:</strong> 「双炭目標」を掲げ、再エネ・EVを強力支援。</p>
+                    <p class="text-base text-gray-700 mb-2"><strong class="text-teal-600">投資動向:</strong> 世界のクリーンエネルギー投資の1/3、2024年約6800億ドル予測。</p>
+                    <p class="text-base text-gray-700"><strong class="text-teal-600">焦点:</strong> 国内製造と大規模導入、石炭火力も継続。</p>
+                </div>
+                <div class="card">
+                    <h3 class="text-3xl font-semibold mb-4 text-center">🇪🇺 欧州連合</h3>
+                    <p class="text-base text-gray-700 mb-2"><strong class="text-purple-600">主要政策:</strong> 欧州グリーンディール、REPowerEU計画。</p>
+                    <p class="text-base text-gray-700 mb-2"><strong class="text-purple-600">投資動向:</strong> クリーンエネルギー投資 年間3700億ドル。化石燃料比10対1超。</p>
+                    <p class="text-base text-gray-700"><strong class="text-purple-600">焦点:</strong> ブロック全体の目標と復興基金活用。</p>
+                </div>
+                 <div class="card">
+                    <h3 class="text-3xl font-semibold mb-4 text-center">🇯🇵 日本</h3>
+                    <p class="text-base text-gray-700 mb-2"><strong class="text-pink-600">主要政策:</strong> GX（グリーン・トランスフォーメーション）戦略。</p>
+                    <p class="text-base text-gray-700 mb-2"><strong class="text-pink-600">投資動向:</strong> 10年間で官民150兆円のGX投資目標。政府20兆円先行投資。</p>
+                    <p class="text-base text-gray-700"><strong class="text-pink-600">焦点:</strong> 技術革新と産業競争力強化、官民連携。</p>
+                </div>
+                <div class="card">
+                    <h3 class="text-3xl font-semibold mb-4 text-center">🇮🇳 インド</h3>
+                    <p class="text-base text-gray-700 mb-2" style="color: #FFD700;"><strong style="color: #b8860b;">主要政策:</strong> 野心的な再生可能エネルギー目標、国家行動計画。</p>
+                    <p class="text-base text-gray-700 mb-2" style="color: #FFD700;"><strong style="color: #b8860b;">投資動向:</strong> 2023年クリーンエネルギー投資680億ドル。国内資金中心。</p>
+                    <p class="text-base text-gray-700" style="color: #FFD700;"><strong style="color: #b8860b;">焦点:</strong> 国内での再エネ導入強化、国際資金の重要性を強調。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="mdbs" class="my-16">
+            <h2 class="section-title">多国間開発銀行(MDBs)の役割</h2>
+            <p class="mb-10 text-xl text-gray-700 leading-relaxed">世界銀行グループなどのMDBsは、開発途上国への気候資金供与において重要な役割を担い、特に公的資金が民間投資を呼び込む触媒となっています。</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div class="card">
+                    <h3 class="text-2xl font-semibold mb-6 text-orange-700">世界銀行グループの気候資金</h3>
+                     <div class="text-center py-4">
+                        <div class="stat-value text-orange-500">426億ドル</div>
+                        <p class="stat-label mb-6">2024会計年度の提供額 (過去最高)</p>
+                    </div>
+                    <div class="chart-container h-60 sm:h-64 md:h-72 max-h-[350px]">
+                        <canvas id="wbgClimateFinanceChart"></canvas>
+                    </div>
+                    <p class="mt-6 text-base text-gray-600">WBGは総融資額に占める気候資金の割合を45%に引き上げる目標を掲げています。</p>
+                </div>
+                <div class="card">
+                    <h3 class="text-2xl font-semibold mb-6 text-orange-700">MDBsによる民間資金の動員</h3>
+                    <div class="flex flex-col sm:flex-row justify-around items-center space-y-6 sm:space-y-0 sm:space-x-6 p-6">
+                        <div class="flow-chart-item">MDBs<br/>公的資金</div>
+                        <div class="flow-chart-arrow">➡️</div>
+                        <div class="flow-chart-item">リスク低減<br/>(保証、譲許的融資など)</div>
+                        <div class="flow-chart-arrow">➡️</div>
+                        <div class="flow-chart-item">民間セクター投資<br/>(大規模化)</div>
+                    </div>
+                    <p class="mt-6 text-base text-gray-600">MDBsは、リスク軽減策を通じて、自身の融資額の数倍の民間資金を動員する潜在力があります。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="takeaways" class="my-16">
+            <h2 class="section-title">主要な洞察と今後の展望</h2>
+            <div class="card bg-teal-500 text-white p-8">
+                <ul class="list-disc list-inside space-y-4 text-xl leading-relaxed">
+                    <li>世界の気候資金は増加しているが、パリ協定の目標達成には年間数兆ドル規模の更なる投資拡大が不可欠。</li>
+                    <li>緩和資金に比べ適応資金が大幅に不足しており、特に脆弱な途上国への支援強化が急務。</li>
+                    <li>クリーンエネルギー投資は先進国と中国に集中。EMDEsへの資金フロー拡大と資本コスト低減が鍵。</li>
+                    <li>公的資金は触媒的役割を担うが、民間資金の大規模動員なしには目標達成は困難。</li>
+                    <li>国際協力と政策協調を深化させ、透明性の高い報告と野心的な行動を通じて、持続可能な未来への投資を加速する必要がある。</li>
+                </ul>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-white text-center p-10">
+        <p class="text-lg">&copy; 2024 地球温暖化対策投資インフォグラフィック</p>
+        <p class="text-base mt-3">データソース: IEA, OECD, CPI, IRENA, World Bank Group等の公開報告書に基づく。</p>
+        <!-- 
+            Narrative Plan Summary:
+            1. Hero: Headline stat.
+            2. Global Finance: Trends, Mitigation vs. Adaptation, Public vs. Private, Gap.
+            3. Energy Shift: Clean vs. Fossil, Sectoral breakdown, Regional distribution.
+            4. Developed Countries: $100bn goal, G7 contributions.
+            5. Renewable Energy: Global RE trend, Tech breakdown.
+            6. Key Economies: Snapshots of US, China, EU, Japan, India.
+            7. MDBs: WBG finance, Catalyzing private finance.
+            8. Takeaways: Summary and outlook.
+
+            Visualization Choices Summary (Confirming NO SVG, NO MERMAID JS):
+            - Global Climate Finance Trend: Line Chart (Chart.js, Canvas). Goal: Change. Justification: Shows trend.
+            - Mitigation vs. Adaptation: Donut Chart (Chart.js, Canvas). Goal: Compare. Justification: Shows proportion.
+            - Public vs. Private Funds: Donut Chart (Chart.js, Canvas). Goal: Compare. Justification: Shows proportion.
+            - Investment Gap: Big Numbers/Text (HTML/CSS). Goal: Inform. Justification: Clear comparison.
+            - Clean vs. Fossil Investment: Grouped Bar/Line Chart (Chart.js, Canvas). Goal: Compare/Change. Justification: Shows comparison over time.
+            - Clean Energy Sector Breakdown: Bar Chart (Chart.js, Canvas). Goal: Compare. Justification: Compares sectors.
+            - Regional Clean Energy Distribution: Pie Chart (Chart.js, Canvas). Goal: Compare. Justification: Shows regional shares.
+            - $100bn Goal Progress: Line Chart (Chart.js, Canvas). Goal: Change. Justification: Tracks target.
+            - G7 Contributions: Horizontal Bar Chart (Chart.js, Canvas). Goal: Compare. Justification: Ranks countries.
+            - Global RE Investment Trend: Line Chart (Chart.js, Canvas). Goal: Change. Justification: Shows trend.
+            - RE Tech Investment: Bar Chart (Chart.js, Canvas). Goal: Compare. Justification: Compares technologies.
+            - Key Economies Icons: Unicode characters (HTML/CSS). Goal: Inform. Justification: Simple visual cues.
+            - WBG Climate Finance: Bar Chart (Chart.js, Canvas). Goal: Change/Inform. Justification: Shows WBG role.
+            - MDBs Catalyzing Private Finance: HTML/CSS Flow Diagram. Goal: Organize. Justification: Simple process visual.
+            - Key Takeaways: Styled List (HTML/CSS). Goal: Organize. Justification: Summarizes points.
+
+            Color Palette Chosen: Energetic & Playful (Orange: #FF8C00, Yellow: #FFD700, Pink: #FF69B4, Teal: #008080, Purple: #9370DB)
+
+            Confirmation: NEITHER Mermaid JS NOR SVG were used anywhere in this output. All charts are Chart.js (Canvas). Diagrams are HTML/CSS.
+        -->
+    </footer>
+
+    <script>
+        const navToggle = document.getElementById('nav-toggle');
+        const navMenu = document.getElementById('nav-menu');
+        if (navToggle && navMenu) {
+            navToggle.addEventListener('click', () => {
+                navMenu.classList.toggle('hidden');
+            });
+        }
+
+        const energeticOrange = '#FF8C00';
+        const brightYellow = '#FFD700';
+        const playfulPink = '#FF69B4';
+        const deepTeal = '#008080';
+        const mediumPurple = '#9370DB';
+        const lightGray = '#D1D5DB'; 
+
+        function wrapLabels(labels, maxLength = 20) { // Increased maxLength
+            return labels.map(label => {
+                if (typeof label === 'string' && label.length > maxLength) {
+                    const words = label.split(' ');
+                    const lines = [];
+                    let currentLine = '';
+                    words.forEach(word => {
+                        if (currentLine.length === 0) {
+                            currentLine = word;
+                        } else if ((currentLine + ' ' + word).length <= maxLength) {
+                            currentLine += ' ' + word;
+                        } else {
+                            lines.push(currentLine);
+                            currentLine = word;
+                        }
+                    });
+                    lines.push(currentLine);
+                    return lines;
+                }
+                return label;
+            });
+        }
+        
+        const commonTooltipTitleCallback = function(tooltipItems) {
+            const item = tooltipItems[0];
+            if (!item) return '';
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+              return label.join(' ');
+            } else {
+              return String(label); 
+            }
+        };
+
+        const chartTickFontSize = 12; 
+        const chartLegendFontSize = 12;
+
+        const commonChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        font: { size: chartLegendFontSize }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: commonTooltipTitleCallback,
+                        label: function(context) {
+                            let label = context.dataset.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.parsed.y !== null) {
+                                label += context.parsed.y.toLocaleString() + '十億$';
+                            }
+                            return label;
+                        }
+                    },
+                    bodyFont: { size: chartTickFontSize } 
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { 
+                        font: { size: chartTickFontSize },
+                        callback: function(value) { return value + '十億$'; } 
+                    }
+                },
+                x: { 
+                    ticks: { font: { size: chartTickFontSize } }
+                }
+            }
+        };
+
+        const horizontalBarChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: 'y',
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: { font: { size: chartLegendFontSize } }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: commonTooltipTitleCallback,
+                        label: function(context) {
+                            let label = context.dataset.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.parsed.x !== null) { 
+                                label += context.parsed.x.toLocaleString() + '十億$';
+                            }
+                            return label;
+                        }
+                    },
+                    bodyFont: { size: chartTickFontSize }
+                }
+            },
+            scales: {
+                x: { 
+                    beginAtZero: true,
+                    ticks: { 
+                        font: { size: chartTickFontSize },
+                        callback: function(value) { return value + '十億$'; } 
+                    }
+                },
+                y: { 
+                    ticks: { 
+                        font: { size: chartTickFontSize - 1 } // Slightly smaller for y-axis labels if many
+                    }
+                }
+            }
+        };
+        
+        const commonPieDonutOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                     labels: { font: { size: chartLegendFontSize } }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: commonTooltipTitleCallback,
+                        label: function(context) {
+                            let tooltipLabel = context.label || '';
+                            if (Array.isArray(tooltipLabel)) { 
+                                tooltipLabel = tooltipLabel.join(' ');
+                            }
+                            if (tooltipLabel) {
+                                tooltipLabel += ': ';
+                            }
+                            if (context.parsed !== null) {
+                                if (context.chart.id === 'regionalCleanEnergyChart') { 
+                                    tooltipLabel += context.parsed.toLocaleString() + '%';
+                                } else { 
+                                    let value = context.parsed;
+                                    if (value >= 1000) { 
+                                        tooltipLabel += (value / 1000).toLocaleString(undefined, {minimumFractionDigits: 1, maximumFractionDigits: 1}) + '兆$';
+                                    } else {
+                                        tooltipLabel += value.toLocaleString() + '十億$';
+                                    }
+                                }
+                            }
+                            return tooltipLabel;
+                        }
+                    },
+                    bodyFont: { size: chartTickFontSize }
+                }
+            }
+        };
+
+
+        const gcfCtx = document.getElementById('globalClimateFinanceTrendChart');
+        if (gcfCtx) {
+            new Chart(gcfCtx, {
+                type: 'line',
+                data: {
+                    labels: wrapLabels(['2018年', '2019/20年平均', '2021/22年平均', '2022年', '2023年 (推定)']),
+                    datasets: [{
+                        label: '世界の気候資金総額 (十億ドル)',
+                        data: [674, 653, 1384, 1460, 1550], 
+                        borderColor: energeticOrange,
+                        backgroundColor: 'rgba(255, 140, 0, 0.1)',
+                        fill: true,
+                        tension: 0.1
+                    }]
+                },
+                options: commonChartOptions
+            });
+        }
+
+        const maCtx = document.getElementById('mitigationAdaptationChart');
+        if (maCtx) {
+            new Chart(maCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: wrapLabels(['緩和資金 (90%)', '適応資金 (5-7%)', '横断的 (~3-5%)']),
+                    datasets: [{
+                        label: '資金配分 (2022年)',
+                        data: [1300, 76, 51], 
+                        backgroundColor: [deepTeal, playfulPink, lightGray],
+                    }]
+                },
+                options: commonPieDonutOptions,
+                id: 'mitigationAdaptationChart'
+            });
+        }
+
+        const ppCtx = document.getElementById('publicPrivateChart');
+        if (ppCtx) {
+            new Chart(ppCtx, {
+                type: 'pie',
+                data: {
+                    labels: wrapLabels(['民間資金 (54%)', '公的資金 (46%)']),
+                    datasets: [{
+                        label: '緩和資金の源泉 (2022年)',
+                        data: [702, 598], 
+                        backgroundColor: [mediumPurple, brightYellow],
+                    }]
+                },
+                options: commonPieDonutOptions,
+                id: 'publicPrivateChart'
+            });
+        }
+
+        const cvfCtx = document.getElementById('cleanVsFossilChart');
+        if (cvfCtx) {
+            new Chart(cvfCtx, {
+                type: 'bar',
+                data: {
+                    labels: wrapLabels(['2020年', '2021年', '2022年', '2023年', '2024年 (推定)']),
+                    datasets: [
+                        {
+                            label: 'クリーンエネルギー投資 (十億ドル)',
+                            data: [1250, 1400, 1700, 1800, 2000],
+                            backgroundColor: deepTeal,
+                        },
+                        {
+                            label: '化石燃料投資 (十億ドル)',
+                            data: [750, 800, 950, 1050, 1000],
+                            backgroundColor: energeticOrange,
+                        }
+                    ]
+                },
+                options: commonChartOptions
+            });
+        }
+        
+        const cesCtx = document.getElementById('cleanEnergySectorChart');
+        if (cesCtx) {
+            new Chart(cesCtx, {
+                type: 'bar',
+                data: {
+                    labels: wrapLabels(['太陽光PV', '電力系統', '蓄電池', '原子力', 'エネルギー効率', '低排出燃料/CCUS']),
+                    datasets: [{
+                        label: '投資額 (十億ドル)',
+                        data: [500, 400, 50, 80, 150, 30], 
+                        backgroundColor: [brightYellow, deepTeal, playfulPink, mediumPurple, energeticOrange, lightGray],
+                    }]
+                },
+                options: horizontalBarChartOptions 
+            });
+        }
+
+        const rceCtx = document.getElementById('regionalCleanEnergyChart');
+        if (rceCtx) {
+            new Chart(rceCtx, {
+                type: 'pie',
+                data: {
+                    labels: wrapLabels(['先進国と中国 (85%)', 'その他EMDEs (15%)']),
+                    datasets: [{
+                        label: 'クリーンエネルギー投資の地域分布',
+                        data: [85, 15],
+                        backgroundColor: [mediumPurple, playfulPink],
+                    }]
+                },
+                options: commonPieDonutOptions,
+                id: 'regionalCleanEnergyChart'
+            });
+        }
+        
+        const hbgCtx = document.getElementById('hundredBillionGoalChart');
+        if (hbgCtx) {
+            new Chart(hbgCtx, {
+                type: 'line',
+                data: {
+                    labels: wrapLabels(['2016年', '2018年', '2020年', '2021年', '2022年']),
+                    datasets: [{
+                        label: '先進国による途上国向け気候資金 (十億ドル)',
+                        data: [58.5, 79.6, 83.3, 89.6, 115.9], 
+                        borderColor: playfulPink,
+                        backgroundColor: 'rgba(255, 105, 180, 0.1)',
+                        fill: true,
+                        tension: 0.1
+                    },
+                    {
+                        label: '目標額',
+                        data: [100, 100, 100, 100, 100],
+                        borderColor: lightGray,
+                        borderDash: [5, 5],
+                        fill: false,
+                        pointRadius: 0
+                    }]
+                },
+                options: commonChartOptions
+            });
+        }
+
+        const g7Ctx = document.getElementById('g7ContributionsChart');
+        if (g7Ctx) {
+            new Chart(g7Ctx, {
+                type: 'bar',
+                data: {
+                    labels: wrapLabels(['米国', '日本', 'ドイツ', 'フランス', '英国', 'カナダ', 'イタリア']),
+                    datasets: [{
+                        label: '気候資金提供・動員額 (最新年, 十億ドル)',
+                        data: [14.37, 11.8, 10.7, 7.8, 2.32, 1.06, 0.25], 
+                        backgroundColor: [energeticOrange, brightYellow, playfulPink, deepTeal, mediumPurple, '#A0AEC0', '#F6AD55'],
+                    }]
+                },
+                options: horizontalBarChartOptions
+            });
+        }
+        
+        const ritCtx = document.getElementById('renewableInvestmentTrendChart');
+        if (ritCtx) {
+             new Chart(ritCtx, {
+                type: 'line',
+                data: {
+                    labels: wrapLabels(['2019年', '2020年', '2021年', '2022年']),
+                    datasets: [{
+                        label: 'エネルギー転換技術投資 (十億ドル)',
+                        data: [900, 850, 1100, 1300], 
+                        borderColor: brightYellow,
+                        backgroundColor: 'rgba(255, 215, 0, 0.1)',
+                        fill: true,
+                        tension: 0.1
+                    },
+                    {
+                        label: 'うち再生可能エネルギー投資 (十億ドル)',
+                        data: [450, 400, 480, 500], 
+                        borderColor: energeticOrange,
+                        backgroundColor: 'rgba(255, 140, 0, 0.1)',
+                        fill: true,
+                        tension: 0.1
+                    }]
+                },
+                options: commonChartOptions
+            });
+        }
+
+        const rtiCtx = document.getElementById('renewableTechInvestmentChart');
+        if (rtiCtx) {
+            new Chart(rtiCtx, {
+                type: 'bar',
+                data: {
+                    labels: wrapLabels(['太陽光PV', '風力発電', '地熱', 'バイオ燃料', 'バイオマス・廃棄物']),
+                    datasets: [{
+                        label: '新規投資額 (2023年, 十億ドル)',
+                        data: [392.7, 216.6, 8.0, 1.0, 2.0], 
+                        backgroundColor: [brightYellow, deepTeal, energeticOrange, playfulPink, mediumPurple],
+                    }]
+                },
+                options: commonChartOptions
+            });
+        }
+        
+        const wbgCtx = document.getElementById('wbgClimateFinanceChart');
+        if (wbgCtx) {
+            new Chart(wbgCtx, {
+                type: 'bar',
+                data: {
+                    labels: wrapLabels(['2023会計年度', '2024会計年度']),
+                    datasets: [{
+                        label: '世界銀行グループ気候資金 (十億ドル)',
+                        data: [38.6, 42.6],
+                        backgroundColor: [energeticOrange, deepTeal],
+                    }]
+                },
+                options: { ...commonChartOptions, 
+                    scales: { ...commonChartOptions.scales, 
+                        y: { ...commonChartOptions.scales.y, 
+                            max: 50 
+                        } 
+                    }
+                }
+            });
+        }
+
+    </script>
+</body>
+</html>

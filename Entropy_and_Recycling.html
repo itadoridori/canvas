@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>インフォグラフィック：エントロピーと資源循環</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #F0F4F8; /* Light, neutral blue/gray background */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .material-card {
+            background-color: white;
+            border-radius: 0.5rem; /* rounded-lg */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
+            padding: 1.5rem; /* p-6 */
+            margin-bottom: 1.5rem; /* mb-6 */
+        }
+        .text-dark-navy { color: #073B4C; }
+        .text-medium-gray { color: #334155; } /* Base text color */
+        .bg-coral { background-color: #FF6B6B; }
+        .text-coral { color: #FF6B6B; }
+        .border-coral { border-color: #FF6B6B; }
+        .bg-yellow { background-color: #FFD166; }
+        .text-yellow { color: #FFD166; }
+        .border-yellow { border-color: #FFD166; }
+        .bg-green { background-color: #06D6A0; }
+        .text-green { color: #06D6A0; }
+        .border-green { border-color: #06D6A0; }
+        .bg-blue { background-color: #118AB2; }
+        .text-blue { color: #118AB2; }
+        .border-blue { border-color: #118AB2; }
+
+        .flow-arrow {
+            font-size: 2em; /* Increased arrow size */
+            color: #073B4C;
+            margin: 0 0.75em; /* Adjusted margin for bigger arrow */
+        }
+        .entropy-box {
+            border: 2px solid;
+            padding: 1rem; /* Increased padding */
+            border-radius: 0.375rem;
+            text-align: center;
+            min-height: 100px; /* Increased min-height */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .pyramid-level {
+            padding: 1rem 2rem; /* Increased padding */
+            margin: 0.3rem auto; /* Adjusted margin */
+            text-align: center;
+            color: white;
+            font-weight: bold;
+            border-radius: 0.375rem;
+        }
+    </style>
+</head>
+<body class="text-medium-gray text-base md:text-lg">
+    <!--
+    Infographic Plan:
+    Overall Theme: Exploring the "scientific irrationality" of recycling through the lens of entropy, based on the provided Japanese research report.
+
+    Narrative Structure:
+    1. Title & Introduction: The paradox of recycling and the role of entropy.
+    2. What is Entropy?: Defining entropy and the Second Law of Thermodynamics ($\Delta S \geq 0$).
+    3. The Price of Order: How manufacturing creates local order at the cost of greater overall entropy.
+    4. Thermodynamic Reality of Recycling:
+        - Energy Consumption: Recycling still requires significant energy.
+        - Material Degradation: Perfect recycling is impossible due to material decay.
+        - Earth's Material Balance: Earth is closed to matter, accumulating "material entropy."
+    5. "Scientifically Irrational" but Relatively Beneficial: The waste hierarchy (3Rs) and how recycling can be a "less bad" option.
+    6. Conclusion: Coexisting with entropy's laws, emphasizing reduction.
+
+    Color Palette Selection: "Energetic & Playful"
+    - #FF6B6B (Vibrant Red/Coral) - Used for accents, highlights
+    - #FFD166 (Vibrant Yellow) - Used for accents
+    - #06D6A0 (Vibrant Green/Teal) - Used for positive aspects, recycling efficiency
+    - #118AB2 (Vibrant Blue) - Used for primary information, stability
+    - #073B4C (Dark Teal/Navy) - Used for text, dark backgrounds/elements
+    - Backgrounds: #FFFFFF (cards), #F0F4F8 (body background)
+
+    Visualization Choices & Justifications (NO SVG, NO MERMAID JS):
+    - Section 2: Entropy Concept (Order to Disorder)
+        - Goal: Inform
+        - Chosen Visualization: HTML/CSS styled `div` elements in a simple before/after representation.
+        - Justification: Simple visual representation of increasing disorder. Method: HTML, CSS (Tailwind).
+        - NO SVG: Confirmed.
+    - Section 3: Price of Order (Manufacturing Flow)
+        - Goal: Organize (Process Flow)
+        - Chosen Visualization: HTML/CSS flow diagram using flexbox/grid, borders, Unicode arrows (➡️).
+        - Justification: To show the transformation of raw materials to products and the associated entropy generation, drawing from Table 1's concepts. Method: HTML, CSS (Tailwind).
+        - NO SVG: Confirmed.
+    - Section 4a: Energy Comparison (Virgin vs. Recycling)
+        - Goal: Compare
+        - Chosen Visualization: Chart.js Bar Chart (Canvas). Data from Table 2 (energy saving percentages).
+        - Justification: Effective for comparing energy savings across different materials. Method: Chart.js (Canvas).
+        - NO SVG: Confirmed.
+    - Section 4b: Material Degradation
+        - Goal: Change (over "cycles") / Inform
+        - Chosen Visualization: HTML/CSS diagram (e.g., series of bars or icons showing decreasing quality/quantity).
+        - Justification: Visually represent the concept of material decay with each recycling attempt. Method: HTML, CSS (Tailwind).
+        - NO SVG: Confirmed.
+    - Section 4c: Earth's Material Balance
+        - Goal: Organize (System Diagram) / Inform
+        - Chosen Visualization: HTML/CSS diagram (circle for Earth, arrows for energy, internal accumulation for material entropy).
+        - Justification: Illustrate the concept of Earth as open for energy but closed for matter. Method: HTML, CSS (Tailwind).
+        - NO SVG: Confirmed.
+    - Section 5: Waste Hierarchy (3Rs)
+        - Goal: Organize (Hierarchy)
+        - Chosen Visualization: HTML/CSS Pyramid Diagram using styled `div`s.
+        - Justification: Standard and clear way to represent the 3Rs hierarchy. Method: HTML, CSS (Tailwind).
+        - NO SVG: Confirmed.
+
+    Confirmation: NEITHER Mermaid JS NOR SVG were used anywhere in this output.
+    All diagrams and visualizations are implemented using HTML, CSS (Tailwind), Chart.js (Canvas), and Unicode characters.
+    -->
+
+    <div class="container mx-auto p-4 md:p-8 max-w-5xl">
+        <header class="text-center mb-12">
+            <h1 class="text-5xl md:text-6xl font-bold text-dark-navy mb-4">エントロピーと資源循環</h1>
+            <p class="text-2xl md:text-3xl text-blue">なぜリサイクルは「科学的に不合理」と言われるのか？</p>
+        </header>
+
+        <section class="material-card">
+            <h2 class="text-3xl font-bold text-dark-navy mb-4">はじめに：リサイクルのパラドックス</h2>
+            <p class="mb-4 text-lg">私たちは日々「リサイクルは良いことだ」と教えられ、実践しています。しかし、熱力学の基本法則である「エントロピー増大の法則」の観点から見ると、ゴミの再利用や再生は、実は「科学的に不合理」な側面を持っています。これは、リサイクルの実践的な利点を否定するものではありません。むしろ、完全な物質循環という理想を達成することの根本的な難しさを示しています。</p>
+            <p class="text-lg">このインフォグラフィックでは、エントロピーとは何か、そしてそれが私たちの世界の物質循環、特にリサイクル活動にどのような影響を与えているのかを、分かりやすく解説します。</p>
+        </section>
+
+        <section class="material-card">
+            <h2 class="text-3xl font-bold text-dark-navy mb-4">エントロピーとは？ <span class="text-xl text-blue">熱力学第二法則の核心</span></h2>
+            <p class="mb-4 text-lg">エントロピー（$S$）とは、物質やエネルギーの「無秩序さ」や「乱雑さ」の度合いを示す尺度です。熱力学第二法則によれば、自然に起こる全ての変化（プロセス）においては、宇宙全体のエントロピーは増大する方向にしか進みません（$\Delta S \geq 0$）。つまり、秩序ある状態は自然に無秩序な状態へと移行し、一度無秩序になったものが自然に元の秩序ある状態に戻ることはありません。これは「時間の矢」とも呼ばれ、元に戻せない不可逆的な変化を示します。</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                <div>
+                    <h3 class="text-2xl font-semibold text-dark-navy mb-3 text-center">秩序ある状態 (低エントロピー)</h3>
+                    <div class="flex justify-center items-center p-6 border-2 border-blue rounded-lg h-40">
+                        <div class="grid grid-cols-3 gap-2">
+                            <div class="w-8 h-8 bg-blue rounded"></div>
+                            <div class="w-8 h-8 bg-blue rounded"></div>
+                            <div class="w-8 h-8 bg-blue rounded"></div>
+                            <div class="w-8 h-8 bg-blue rounded"></div>
+                            <div class="w-8 h-8 bg-blue rounded"></div>
+                            <div class="w-8 h-8 bg-blue rounded"></div>
+                        </div>
+                    </div>
+                    <p class="text-center text-base mt-2">例：整列した分子</p>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-semibold text-dark-navy mb-3 text-center">無秩序な状態 (高エントロピー)</h3>
+                    <div class="flex justify-center items-center p-6 border-2 border-coral rounded-lg h-40 relative">
+                        <div class="w-8 h-8 bg-coral rounded absolute" style="top: 15%; left: 25%;"></div>
+                        <div class="w-8 h-8 bg-coral rounded absolute" style="top: 55%; left: 65%;"></div>
+                        <div class="w-8 h-8 bg-coral rounded absolute" style="top: 25%; left: 75%;"></div>
+                        <div class="w-8 h-8 bg-coral rounded absolute" style="top: 70%; left: 20%;"></div>
+                        <div class="w-8 h-8 bg-coral rounded absolute" style="top: 35%; left: 35%;"></div>
+                        <div class="w-8 h-8 bg-coral rounded absolute" style="top: 60%; left: 45%;"></div>
+                    </div>
+                     <p class="text-center text-base mt-2">例：拡散した分子 (インクが水に広がるように)</p>
+                </div>
+            </div>
+            <p class="mt-6 text-lg">エネルギーも同様で、集中していて使いやすい「質の高い」エネルギー（低エントロピー）は、使われると分散して使いにくい「質の低い」エネルギー（高エントロピーの熱）へと変化し、元には戻りません。</p>
+        </section>
+
+        <section class="material-card">
+            <h2 class="text-3xl font-bold text-dark-navy mb-4">「秩序」の対価 <span class="text-xl text-blue">製造とエントロピーの増大</span></h2>
+            <p class="mb-4 text-lg">製品を作るということは、比較的無秩序な原材料（鉱石、原油など）から、高度に秩序化された構造物（自動車、スマートフォンなど）を生み出すことです。これは、製品自体のエントロピーを局所的に下げる行為です。しかし、熱力学第二法則により、この「秩序の創造」はタダでは行えません。必ずエネルギーの消費が伴い、その結果として、製品の周囲の環境を含めた宇宙全体のエントロピーは、製品の局所的なエントロピー減少分をはるかに上回る量で増大します。</p>
+            <p class="mb-6 text-lg">「モノを作ること（低エントロピー）を創るとはどこかへエントロピーを放出すること」なのです。</p>
+            <div class="overflow-x-auto p-2">
+                <div class="flex flex-col md:flex-row items-center justify-around space-y-6 md:space-y-0 md:space-x-4 text-base">
+                    <div class="entropy-box border-yellow w-full md:w-1/4">
+                        <p class="font-semibold text-lg">天然資源</p>
+                        <p>(比較的低いエントロピー)</p>
+                        <p class="text-sm mt-1">例: 鉱石、原油</p>
+                    </div>
+                    <div class="flow-arrow">➡️</div>
+                    <div class="entropy-box border-coral w-full md:w-2/4">
+                        <p class="font-semibold text-lg">製造プロセス</p>
+                        <p class="text-sm text-coral">(エネルギー投入 <span class="font-bold">必須</span>)</p>
+                        <p class="text-sm mt-1">採掘、精製、加工、組立</p>
+                        <p class="font-bold text-coral mt-2 text-base">結果: 周囲環境のエントロピーが<span class="underline">大幅に増大</span> (廃熱、廃棄物)</p>
+                    </div>
+                     <div class="flow-arrow">➡️</div>
+                    <div class="entropy-box border-green w-full md:w-1/4">
+                        <p class="font-semibold text-lg">完成品</p>
+                        <p>(局所的に低いエントロピー)</p>
+                        <p class="text-sm mt-1">例: スマートフォン</p>
+                    </div>
+                </div>
+            </div>
+             <p class="mt-6 text-base text-center">このプロセス全体で見ると、宇宙の総エントロピーは必ず増加します。</p>
+        </section>
+
+        <section class="material-card">
+            <h2 class="text-3xl font-bold text-dark-navy mb-4">リサイクルの熱力学的現実</h2>
+            <p class="mb-6 text-lg">リサイクルは、廃棄された製品（高エントロピー）を集め、再び有用な資源（局所的には低エントロピー）に戻そうとする試みです。しかし、これもまたエントロピーの法則から逃れることはできません。</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-2xl font-semibold text-dark-navy mb-3">1. エネルギー消費とエントロピー増大</h3>
+                    <p class="mb-4 text-lg">リサイクルには、収集、選別、洗浄、再処理（溶解、再成形など）のために多くのエネルギーが必要です。このエネルギー消費は、必然的に周囲の環境を含めた宇宙全体のエントロピーを増大させます。物理学者の槌田敦氏は「リサイクルは余計に資源を消費し、余計に廃棄物を発生することになります」と指摘しています。</p>
+                    <p class="mb-4 font-semibold text-blue text-lg">リサイクルによるエネルギー節約率（バージン原料からの製造と比較）:</p>
+                    <div class="chart-container h-[350px] sm:h-[400px] md:h-[450px] max-h-[500px]">
+                        <canvas id="recyclingEnergyChart"></canvas>
+                    </div>
+                    <p class="text-sm mt-3 text-center">注: 節約率が高くても、リサイクルプロセス自体がエネルギーを消費し、エントロピーを増大させる事実は変わりません。</p>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-semibold text-dark-navy mb-3">2. 物質の劣化と限界</h3>
+                    <p class="mb-4 text-lg">物質はリサイクルされるたびに品質が劣化する傾向があります（例：紙の繊維は短くなる、プラスチックの分子鎖は切れる）。不純物も蓄積しやすくなります。そのため、無限に同じ品質でリサイクルし続けることは不可能です。経済学者ニコラス・ジョージェスク＝レーゲンは「完全なリサイクルは不可能」と主張しました。</p>
+                    <div class="space-y-4">
+                        <div class="p-4 border border-yellow rounded-lg">
+                            <p class="font-semibold text-xl">紙のリサイクル 📜</p>
+                            <div class="flex items-center space-x-2 mt-2">
+                                <span class="text-3xl">📄</span> <span class="flow-arrow text-xl">➡️</span>
+                                <span class="text-3xl opacity-75">📄</span> <span class="flow-arrow text-xl">➡️</span>
+                                <span class="text-3xl opacity-50">📄</span> <span class="flow-arrow text-xl">➡️</span>
+                                <span class="text-3xl opacity-25">📄</span>
+                            </div>
+                            <p class="text-base mt-2">繊維が短くなり、品質が低下。リサイクル回数に限界。</p>
+                        </div>
+                        <div class="p-4 border border-blue rounded-lg">
+                            <p class="font-semibold text-xl">プラスチックのリサイクル ♻️</p>
+                             <div class="flex items-center space-x-2 mt-2">
+                                <div class="w-6 h-6 bg-blue rounded-full"></div> <span class="flow-arrow text-xl">➡️</span>
+                                <div class="w-6 h-6 bg-blue rounded-full opacity-75"></div> <span class="flow-arrow text-xl">➡️</span>
+                                <div class="w-6 h-6 bg-blue rounded-full opacity-50"></div>
+                            </div>
+                            <p class="text-base mt-2">分子構造が変化し、強度が低下。汚染にも敏感。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-10">
+                <h3 class="text-2xl font-semibold text-dark-navy mb-3">3. 地球の物質収支：「物質エントロピー」の蓄積</h3>
+                <p class="mb-4 text-lg">地球は、エネルギーに関しては太陽から光エネルギーを受け取り、宇宙へ熱エネルギーを放射する「開放系」です。しかし、物質に関しては、宇宙とのやり取りはごく僅かで、実質的に「閉鎖系」です。そのため、人間活動によって生み出された「物質エントロピー」（分散し、混合し、劣化した物質＝廃棄物）は、熱エントロピーのように宇宙へ捨てることができず、地球上に蓄積し続けます。「宇宙に廃棄できるのは「熱」だけで、重力に捕らえられている「物質のエントロピー」は廃棄することができません。」</p>
+                <div class="flex flex-col items-center p-6 border-2 border-green rounded-lg">
+                    <div class="text-5xl mb-3">🌍</div>
+                    <p class="font-bold text-2xl text-dark-navy">地球</p>
+                    <div class="flex justify-around w-full mt-4 text-center text-base">
+                        <div>
+                            <p class="text-yellow text-lg">⬇️ 太陽エネルギー (低エントロピー)</p>
+                            <p class="text-sm">入力</p>
+                        </div>
+                        <div>
+                            <p class="text-coral text-lg">⬆️ 熱放射 (高エントロピー)</p>
+                            <p class="text-sm">出力</p>
+                        </div>
+                    </div>
+                    <div class="mt-6 p-4 bg-gray-100 rounded w-full md:w-3/4">
+                        <p class="text-center font-semibold text-coral text-xl">物質エントロピー (廃棄物・汚染)</p>
+                        <p class="text-center text-base">地球内部に蓄積・循環 (完全な排出は不可)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="material-card">
+            <h2 class="text-3xl font-bold text-dark-navy mb-4">「科学的に不合理」でも… <span class="text-xl text-blue">相対的な便益と優先順位</span></h2>
+            <p class="mb-6 text-lg">リサイクルが熱力学的に完全な解決策でないとしても、それが全く無意味というわけではありません。重要なのは「相対的な比較」と「優先順位」です。多くの場合、リサイクルは、新たな天然資源（バージン原料）から製品を製造するよりも、エネルギー消費が少なく、環境負荷も小さいことがあります（先のグラフ参照）。つまり、エントロピー増大の「速度を遅らせる」効果は期待できるのです。</p>
+            <p class="mb-6 text-lg">ここで重要になるのが、「廃棄物階層（3R）」の考え方です。</p>
+            <div class="w-full max-w-lg mx-auto"> <div class="pyramid-level bg-green text-xl" style="width: 85%;">リデュース (Reduce) - 発生抑制</div>
+                <div class="pyramid-level bg-blue text-xl" style="width: 70%;">リユース (Reuse) - 再使用</div>
+                <div class="pyramid-level bg-yellow text-dark-navy text-xl" style="width: 55%;">リサイクル (Recycle) - 再資源化</div>
+                <p class="text-center text-base mt-3">この階層は熱力学的にも理にかなっています。</p>
+            </div>
+            <ul class="list-disc list-inside mt-6 space-y-3 text-lg">
+                <li><strong>リデュース (Reduce):</strong> そもそも製品の生産・消費を減らすことが最も効果的です。「余計なものは作らない」ことで、エントロピー増大の根本を断ちます。</li>
+                <li><strong>リユース (Reuse):</strong> 製品をそのままの形で再使用することは、分解して再資源化するリサイクルよりも一般的にエネルギー消費が少なく、エントロピー生成も抑えられます。</li>
+                <li><strong>リサイクル (Recycle):</strong> 上記2つが難しい場合の選択肢。不完全ではあるものの、適切に行えば、バージン原料の使用を減らし、埋め立てや単純焼却よりはマシな場合があります。</li>
+            </ul>
+        </section>
+
+        <section class="material-card">
+            <h2 class="text-3xl font-bold text-dark-navy mb-4">結論：エントロピーの法則と共存する道</h2>
+            <p class="mb-6 text-lg">廃棄物の再利用やリサイクルが、宇宙全体の総エントロピーを増加させることなく物質を永遠に元の状態に戻せる、という夢のような閉ループシステムを期待するならば、それは「科学的に不合理」です。熱力学第二法則がそれを許しません。物質の収集、輸送、処理、再形成には必ずエネルギーが必要で、その使用は必然的に廃熱と無秩序（エントロピー）を生み出します。</p>
+            <p class="mb-6 text-lg">しかし、この熱力学的な限界を認識することは、リサイクル活動を放棄すべきだという意味ではありません。むしろ、その役割をより現実的に捉え、過度な期待をせず、他の選択肢（特にリデュースとリユース）の重要性を再認識するべきです。</p>
+            <p class="font-semibold text-blue mb-3 text-xl">私たちが目指すべき方向性：</p>
+            <ul class="list-disc list-inside space-y-2 text-lg">
+                <li>全体の消費量を減らす（リデュース）。</li>
+                <li>製品を長く使い、修理して使う文化を育む（リユース）。</li>
+                <li>どうしても避けられない廃棄物については、最もエネルギー効率が良く、環境負荷の少ない方法で処理・再資源化する（賢明なリサイクル）。</li>
+                <li>そもそも「余計なものは作らない、買わない」という意識を社会全体で共有する。</li>
+            </ul>
+            <p class="mt-6 text-lg">エントロピーの法則は厳然として存在します。私たちは、この宇宙の基本法則を理解し尊重した上で、持続可能な社会のあり方を模索していく必要があります。それは、技術的な解決策だけに頼るのではなく、私たちのライフスタイルや社会システムそのものを見直すことを含んでいます。</p>
+        </section>
+
+        <footer class="text-center mt-12 py-8 border-t border-gray-300">
+            <p class="text-base text-gray-600">&copy; <span id="year"></span> エントロピー・インフォグラフィックプロジェクト. All rights reserved.</p>
+            <p class="text-sm text-gray-500 mt-1">このインフォグラフィックは提供された調査報告書に基づいて作成されました。</p>
+        </footer>
+    </div>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        function wrapLabel(str, maxWidth) {
+            if (typeof str !== 'string' || str.length <= maxWidth) {
+                return str;
+            }
+            const parts = [];
+            let currentLine = "";
+            for (let i = 0; i < str.length; i++) {
+                currentLine += str[i];
+                if (currentLine.length >= maxWidth && i < str.length -1) {
+                    parts.push(currentLine);
+                    currentLine = "";
+                }
+            }
+            if (currentLine) {
+                parts.push(currentLine);
+            }
+            return parts;
+        }
+        
+        const originalLabels = ['アルミニウム', '鉄鋼', 'ガラス', '紙', 'PETプラスチック', 'HDPEプラスチック'];
+        const processedLabels = originalLabels.map(label => wrapLabel(label, 16));
+
+        const recyclingEnergyCtx = document.getElementById('recyclingEnergyChart').getContext('2d');
+        new Chart(recyclingEnergyCtx, {
+            type: 'bar',
+            data: {
+                labels: processedLabels,
+                datasets: [{
+                    label: 'リサイクルによるエネルギー節約率 (%)',
+                    data: [96, 55, 25, 50, 50, 75], 
+                    backgroundColor: [
+                        '#06D6A0', '#118AB2', '#FFD166',
+                        '#06D6A0', '#118AB2', '#FFD166'
+                    ],
+                    borderColor: [
+                        '#073B4C', '#073B4C', '#073B4C',
+                        '#073B4C', '#073B4C', '#073B4C'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        title: {
+                            display: true,
+                            text: '節約率 (%)',
+                            color: '#073B4C',
+                            font: { size: 16 } /* Increased font size */
+                        },
+                        ticks: { 
+                            color: '#334155',
+                            font: { size: 14 } /* Increased font size */
+                        }
+                    },
+                    x: {
+                        ticks: { 
+                            color: '#334155',
+                            font: { size: 14 } /* Increased font size */
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: { 
+                            color: '#073B4C',
+                            font: { size: 14 } /* Increased font size */
+                        }
+                    },
+                    tooltip: {
+                        titleFont: { size: 16 }, /* Increased font size */
+                        bodyFont: { size: 14 }, /* Increased font size */
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                if (Array.isArray(label)) {
+                                  return label.join(''); 
+                                } else {
+                                  return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
