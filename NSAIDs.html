@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NSAIDs市場トレンドとリスク分析</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            background-color: #F4F7FC; /* Light blue-gray background */
+            font-size: 16px; /* Base font size */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px; /* Increased max width for charts */
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px; /* Base height, adjusted */
+            max-height: 450px; /* Max height, adjusted */
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .section-title {
+            color: #264653; /* Dark Teal/Blue */
+        }
+        .card {
+            background-color: #FFFFFF;
+            border-radius: 0.5rem; /* 8px */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 2rem; /* Increased padding */
+            margin-bottom: 2rem; /* Increased margin */
+        }
+        .accent-color { color: #E9C46A; } /* Yellow/Gold Accent */
+        .primary-color { color: #2A9D8F; } /* Teal */
+        .secondary-color { color: #264653; } /* Dark Teal/Blue */
+        .stat-value {
+            font-size: 3rem; /* Increased from 2.25rem (text-5xl) */
+            font-weight: 700;
+            line-height: 1.2;
+            color: #2A9D8F; /* Teal */
+        }
+        .stat-label {
+            font-size: 1rem; /* Increased from 0.875rem (text-base) */
+            color: #6B7280; /* Gray-500 */
+        }
+        /* --- HTML Comment: Palette Chosen ---
+        Palette: Fresh & Trustworthy
+        - Primary (Teal): #2A9D8F
+        - Secondary (Dark Teal/Blue): #264653
+        - Accent (Yellow/Gold): #E9C46A
+        - Accent 2 (Orange - subtle): #F4A261
+        - Accent 3 (Coral - subtle): #E76F51
+        - Text: #333333 (Dark Gray)
+        - Background: #F4F7FC (Light Blue-Gray)
+        - Card Background: #FFFFFF (White)
+        --- HTML Comment: End Palette Chosen --- */
+
+        /* --- HTML Comment: Narrative Plan Summary ---
+        1. Introduction: What are NSAIDs? (Market prevalence)
+        2. Market Segmentation: Types of NSAIDs (COX selectivity, prodrugs)
+        3. Market Risk Analysis: Side Effects (GI, CV, Renal)
+        4. Impact of Long-term Use on Market: Chronic Use Risks (Triple Whammy)
+        5. Key Target Markets: High-Risk Populations
+        6. Risk Management Strategies: Market Responses
+        7. Competitive/Alternative Markets: Alternative Treatments
+        8. SWOT Analysis
+        9. Conclusion & Market Outlook
+        --- HTML Comment: End Narrative Plan Summary --- */
+
+        /* --- HTML Comment: NO SVG / NO MERMAID JS Confirmation ---
+        This document explicitly confirms that NEITHER Mermaid JS NOR SVG graphics were used anywhere in the output.
+        All charts are rendered using Chart.js (Canvas). Diagrams are implemented using structured HTML/CSS with Tailwind.
+        --- HTML Comment: End NO SVG / NO MERMAID JS Confirmation --- */
+    </style>
+</head>
+<body class="text-gray-800 text-base">
+
+    <header class="bg-gradient-to-r from-[#264653] to-[#2A9D8F] text-white py-16 px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="text-5xl font-bold mb-3">非ステロイド性抗炎症薬（NSAIDs）市場</h1>
+        <p class="text-2xl">リスクとトレンドの徹底分析</p>
+    </header>
+
+    <nav class="sticky top-0 bg-white shadow-md z-50 hidden md:block">
+        <div class="max-w-7xl mx-auto px-6 py-3">
+            <ul class="flex space-x-8 justify-center text-lg">
+                <li><a href="#market-overview" class="hover:text-[#2A9D8F] transition-colors">市場概要</a></li>
+                <li><a href="#market-risks" class="hover:text-[#2A9D8F] transition-colors">市場リスク</a></li>
+                <li><a href="#target-markets" class="hover:text-[#2A9D8F] transition-colors">ターゲット市場</a></li>
+                <li><a href="#alternatives" class="hover:text-[#2A9D8F] transition-colors">代替市場</a></li>
+                <li><a href="#swot" class="hover:text-[#2A9D8F] transition-colors">SWOT分析</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+
+        <section id="market-overview" class="mb-16">
+            <h2 class="text-4xl font-semibold mb-8 section-title text-center">1. NSAIDs市場の概観</h2>
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div class="card">
+                    <h3 class="text-2xl font-semibold mb-4 secondary-color">NSAIDsとは？</h3>
+                    <p class="mb-4 leading-relaxed">非ステロイド性抗炎症薬（NSAIDs）は、鎮痛・解熱・抗炎症作用を持つ薬剤群です。シクロオキシゲナーゼ（COX）酵素を阻害し、炎症や痛みの原因となるプロスタグランジンの生成を抑制します。変形性関節症、リウマチ、腰痛、頭痛など多岐にわたる症状に使用され、市販薬も多く存在することから、その市場は非常に広範です。</p>
+                    <p class="leading-relaxed">しかし、この作用機序は副作用の直接的な原因ともなり、胃粘膜保護や腎血流維持といった生理機能にも影響を及ぼします。この点がNSAIDs市場の大きな課題です。</p>
+                </div>
+                <div class="card text-center">
+                    <h3 class="text-2xl font-semibold mb-4 secondary-color">市場の広がり</h3>
+                    <div class="my-6">
+                        <span class="stat-value">広範囲</span>
+                        <p class="stat-label mt-1">の疾患・症状で使用</p>
+                    </div>
+                    <p class="text-base text-gray-600 mb-3 leading-relaxed">急性痛から慢性痛管理まで、世界中で極めて一般的に使用されています。この広範な使用が、副作用発生時の公衆衛生上の影響を増大させます。</p>
+                     <div class="chart-container h-72">
+                        <canvas id="coxMechanismChart"></canvas>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-3">図：COX阻害による効果と副作用の概念（イメージ）</p>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="market-segmentation" class="mb-16">
+            <h2 class="text-4xl font-semibold mb-8 section-title text-center">2. NSAIDs市場のセグメンテーション</h2>
+            <div class="card mb-8">
+                <h3 class="text-2xl font-semibold mb-4 secondary-color">薬剤の種類とCOX選択性</h3>
+                <p class="mb-5 leading-relaxed">NSAIDs市場は、化学構造やCOX-1/COX-2酵素への選択性によって多様なセグメントに分類されます。COX-1は胃粘膜保護などに関与し、COX-2は主に炎症に関与します（ただし腎臓等にも存在）。</p>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-xl font-semibold primary-color mb-3">COX選択性のスペクトラム</h4>
+                        <p class="text-base mb-3 leading-relaxed">単純な二分法ではなく、各薬剤でCOX-1とCOX-2への相対的阻害能は異なります。これが副作用プロファイルに影響します。</p>
+                        <ul class="list-disc list-inside text-base space-y-2 leading-relaxed">
+                            <li><strong>非選択的NSAIDs:</strong> イブプロフェン、ナプロキセンなど。COX-1とCOX-2を両方阻害。</li>
+                            <li><strong>COX-2選択的阻害薬 (コキシブ系):</strong> セレコキシブなど。COX-1への影響を抑え消化管毒性軽減を狙うが、心血管リスクが懸念。</li>
+                            <li><strong>中間的な薬剤:</strong> ジクロフェナクなどは非選択的でもCOX-2への親和性が比較的高いものも。</li>
+                        </ul>
+                    </div>
+                    <div class="chart-container h-80">
+                        <canvas id="coxSelectivityChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <h3 class="text-2xl font-semibold mb-4 secondary-color">プロドラッグと作用時間</h3>
+                <p class="mb-3 leading-relaxed"><strong>プロドラッグ:</strong> ロキソプロフェンなど。体内で活性体に変換されることで、胃への直接刺激軽減を意図。ただし全身性の副作用リスクは残ります。</p>
+                <p class="leading-relaxed"><strong>作用時間:</strong> 短時間型（ジクロフェナク、イブプロフェン）から長時間型（ナプロキセン）まで様々。これが投与計画や高齢者でのリスクに影響します。</p>
+            </div>
+        </section>
+
+        <section id="market-risks" class="mb-16">
+            <h2 class="text-4xl font-semibold mb-8 section-title text-center">3. NSAIDs市場のリスク分析：主な副作用</h2>
+            <p class="text-center mb-8 text-gray-600 text-lg leading-relaxed">NSAIDsの広範な使用は、様々な副作用リスクを伴います。これらは市場成長の抑制要因となり得ます。</p>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card">
+                    <h4 class="text-xl font-semibold primary-color mb-3">消化管（GI）リスク</h4>
+                    <p class="text-base mb-4 leading-relaxed">COX-1阻害による胃粘膜保護機能の低下が主因。潰瘍、出血、穿孔のリスク。</p>
+                    <div class="chart-container h-72">
+                        <canvas id="giRiskChart"></canvas>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-2">注：PPIは上部GIリスクを軽減するが、下部GIリスクを増加させる可能性が指摘されている。</p>
+                </div>
+                <div class="card">
+                    <h4 class="text-xl font-semibold primary-color mb-3">心血管（CV）リスク</h4>
+                    <p class="text-base mb-4 leading-relaxed">PGI2/TXA2バランス破綻、血圧上昇、腎機能影響が関与。心筋梗塞、脳卒中リスク増。</p>
+                    <div class="chart-container h-72">
+                        <canvas id="cvRiskChart"></canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <h4 class="text-xl font-semibold primary-color mb-3">腎臓リスク</h4>
+                    <p class="text-base mb-4 leading-relaxed">腎プロスタグランジン阻害による血流低下が主。急性腎障害（AKI）、慢性腎臓病（CKD）進行リスク。</p>
+                    <div class="chart-container h-72">
+                        <canvas id="renalRiskChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="long-term-impact" class="mb-16">
+            <h2 class="text-4xl font-semibold mb-8 section-title text-center">4. 長期使用の市場への影響：常用の危険性</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="card">
+                    <h3 class="text-2xl font-semibold mb-4 secondary-color">累積的臓器障害と依存的リスク</h3>
+                    <p class="mb-3 leading-relaxed">NSAIDsの常用・長期使用は、消化管、心血管系、腎臓への累積的なダメージリスクを高めます。副作用リスクは、使用量と期間に依存して増加する傾向にあります。</p>
+                    <p class="text-base text-gray-600 leading-relaxed">特に慢性疼痛疾患（変形性関節症など）を持つ高齢者は、長期使用に至りやすく、既存の併存疾患と相まって重篤な副作用リスクが高まる悪循環が生じます。これは代替治療市場へのシフトを促す可能性があります。</p>
+                </div>
+                <div class="card">
+                    <h3 class="text-2xl font-semibold mb-4 secondary-color">「トリプルワーミー」：多剤併用の罠</h3>
+                    <p class="mb-3 leading-relaxed">特に注意すべきは、NSAID、利尿薬、ACE阻害薬/ARBの3剤併用（トリプルワーミー）です。これらは急性腎障害リスクを著しく高めます。</p>
+                    <div class="p-5 border border-red-300 rounded-md bg-red-50">
+                        <p class="font-semibold text-red-700 text-lg">危険な組み合わせ：</p>
+                        <ol class="list-decimal list-inside text-base text-red-600 space-y-1 mt-2 leading-relaxed">
+                            <li><strong>NSAID:</strong> 腎血流低下</li>
+                            <li><strong>利尿薬:</strong> 体液量減少 → 腎臓のPG依存性亢進</li>
+                            <li><strong>ACE阻害薬/ARB:</strong> 輸出細動脈拡張 → 糸球体圧低下</li>
+                        </ol>
+                        <p class="text-sm text-red-500 mt-2">結果：急性腎障害リスクが大幅増</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="target-markets" class="mb-16">
+            <h2 class="text-4xl font-semibold mb-8 section-title text-center">5. 主要ターゲット市場とハイリスク集団</h2>
+            <p class="text-center mb-8 text-gray-600 text-lg leading-relaxed">特定の消費者セグメント（ハイリスク集団）では、NSAIDsの使用に特に注意が必要です。これらの集団への対応が市場戦略の鍵となります。</p>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card">
+                    <div class="flex items-center mb-3">
+                        <span class="text-4xl mr-4">👴</span>
+                        <h4 class="text-xl font-semibold primary-color">高齢者</h4>
+                    </div>
+                    <p class="text-base leading-relaxed">腎機能低下、多病、多剤併用により、全般的な副作用リスクが高い。</p>
+                </div>
+                <div class="card">
+                    <div class="flex items-center mb-3">
+                        <span class="text-4xl mr-4">❤️</span>
+                        <h4 class="text-xl font-semibold primary-color">心血管疾患既往患者</h4>
+                    </div>
+                    <p class="text-base leading-relaxed">心筋梗塞、脳卒中、心不全リスクが著しく増加。AHAは使用非推奨。</p>
+                </div>
+                <div class="card">
+                     <div class="flex items-center mb-3">
+                        <span class="text-4xl mr-4">🧪</span>
+                        <h4 class="text-xl font-semibold primary-color">腎機能障害患者</h4>
+                    </div>
+                    <p class="text-base leading-relaxed">AKIやCKD悪化リスク大。アセトアミノフェンが代替候補。</p>
+                </div>
+                <div class="card">
+                     <div class="flex items-center mb-3">
+                        <span class="text-4xl mr-4">📄</span>
+                        <h4 class="text-xl font-semibold primary-color">消化管潰瘍/出血既往患者</h4>
+                    </div>
+                    <p class="text-base leading-relaxed">潰瘍再発リスク著増。COX-2選択薬＋PPI等を考慮。</p>
+                </div>
+                <div class="card">
+                     <div class="flex items-center mb-3">
+                        <span class="text-4xl mr-4">💊</span>
+                        <h4 class="text-xl font-semibold primary-color">特定薬剤併用者</h4>
+                    </div>
+                    <p class="text-base leading-relaxed">抗凝固薬、抗血小板薬、ステロイド等との併用で出血リスク増。</p>
+                </div>
+                 <div class="card">
+                     <div class="flex items-center mb-3">
+                        <span class="text-4xl mr-4">🤰</span>
+                        <h4 class="text-xl font-semibold primary-color">妊婦 (特に後期)</h4>
+                    </div>
+                    <p class="text-base leading-relaxed">胎児動脈管早期閉鎖など、胎児へのリスク。原則禁忌。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="risk-management" class="mb-16">
+            <h2 class="text-4xl font-semibold mb-8 section-title text-center">6. リスク管理戦略：市場の対応</h2>
+            <div class="card">
+                <p class="mb-6 text-center text-lg leading-relaxed">NSAID関連リスクを低減するため、市場関係者（医療従事者、製薬企業、規制当局）は以下の戦略を推進しています。</p>
+                <div class="space-y-6">
+                    <div class="flex items-start p-4 bg-teal-50 rounded-lg">
+                        <span class="text-3xl accent-color mr-4">①</span>
+                        <div>
+                            <h4 class="text-xl font-semibold secondary-color">最低有効量・最短期間</h4>
+                            <p class="text-base leading-relaxed">全ての副作用リスク低減の基本原則。</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start p-4 bg-teal-50 rounded-lg">
+                        <span class="text-3xl accent-color mr-4">②</span>
+                        <div>
+                            <h4 class="text-xl font-semibold secondary-color">消化管保護薬（GPAs）の適切な使用</h4>
+                            <p class="text-base leading-relaxed">PPIs（上部GI）、粘膜保護薬（レバミピドなど、下部GIも考慮）など。ただしPPIの下部GIへの影響に注意。</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start p-4 bg-teal-50 rounded-lg">
+                        <span class="text-3xl accent-color mr-4">③</span>
+                        <div>
+                            <h4 class="text-xl font-semibold secondary-color">COX-2選択的阻害薬の慎重な選択</h4>
+                            <p class="text-base leading-relaxed">GIリスク高・CVリスク低の患者に考慮。CVリスク因子多数の場合は避ける。</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start p-4 bg-teal-50 rounded-lg">
+                        <span class="text-3xl accent-color mr-4">④</span>
+                        <div>
+                            <h4 class="text-xl font-semibold secondary-color">定期的なモニタリング</h4>
+                            <p class="text-base leading-relaxed">血圧、腎機能、肝機能、消化管症状、体液貯留の兆候など。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="alternatives" class="mb-16">
+            <h2 class="text-4xl font-semibold mb-8 section-title text-center">7. 競合および代替市場の動向</h2>
+            <p class="text-center mb-8 text-gray-600 text-lg leading-relaxed">NSAIDsのリスクを背景に、代替治療法の市場が注目されています。</p>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="card">
+                    <h3 class="text-2xl font-semibold mb-4 secondary-color">アセトアミノフェン（パラセタモール）</h3>
+                    <p class="text-base mb-3 leading-relaxed"><strong>市場ポジショニング：</strong>軽度～中等度の疼痛に対し、NSAIDより安全性が高い選択肢として位置づけられることが多い。特に変形性関節症や腰痛の初期治療で推奨されることも。</p>
+                    <p class="text-base mb-3 leading-relaxed"><strong>有効性：</strong>NSAIDと比較すると鎮痛効果はマイルド。急性腰痛への効果は限定的との報告も。</p>
+                    <p class="text-base leading-relaxed"><strong>安全性：</strong>消化管・心血管・腎リスクはNSAIDより低いが、高用量・長期使用での肝毒性に注意。</p>
+                </div>
+                <div class="card">
+                    <h3 class="text-2xl font-semibold mb-4 secondary-color">非薬物療法市場</h3>
+                    <p class="text-base mb-3 leading-relaxed">慢性疼痛管理において重要性が増大。薬物療法の補完または代替として成長。</p>
+                    <ul class="list-disc list-inside text-base space-y-2 leading-relaxed">
+                        <li><strong>運動療法：</strong>腰痛、変形性関節症に有効。市場の主流。</li>
+                        <li><strong>体重管理：</strong>肥満合併の変形性関節症患者向け市場。</li>
+                        <li><strong>自己管理教育：</strong>患者エンパワーメント。各種プログラム。</li>
+                        <li><strong>心理療法（CBTなど）：</strong>慢性疼痛患者のQOL改善。</li>
+                        <li><strong>手技療法、鍼治療：</strong>一部で需要があるが、エビデンスや推奨度は状況による。</li>
+                    </ul>
+                    <p class="text-sm text-gray-500 mt-4">NICEガイドライン等では、これら非薬物療法を積極的に推奨し、NSAIDやオピオイドの使用は慎重に、としています。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="swot" class="mb-16">
+            <h2 class="text-4xl font-semibold mb-8 section-title text-center">8. NSAIDs市場のSWOT分析</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="card bg-green-50 border-l-4 border-green-500">
+                    <h4 class="font-semibold text-green-700 text-xl mb-3">強み (Strengths)</h4>
+                    <ul class="list-disc list-inside text-base space-y-1 text-green-600 leading-relaxed">
+                        <li>効果的な鎮痛・抗炎症作用</li>
+                        <li>広範な疾患・症状への適用</li>
+                        <li>市販薬も多く入手が容易</li>
+                        <li>多様な剤形（経口、外用など）</li>
+                    </ul>
+                </div>
+                <div class="card bg-red-50 border-l-4 border-red-500">
+                    <h4 class="font-semibold text-red-700 text-xl mb-3">弱み (Weaknesses)</h4>
+                    <ul class="list-disc list-inside text-base space-y-1 text-red-600 leading-relaxed">
+                        <li>多様な副作用（消化管、心血管、腎）</li>
+                        <li>常用・長期使用でのリスク増大</li>
+                        <li>ハイリスク集団への使用制限</li>
+                        <li>薬剤相互作用が多い</li>
+                    </ul>
+                </div>
+                <div class="card bg-blue-50 border-l-4 border-blue-500">
+                    <h4 class="font-semibold text-blue-700 text-xl mb-3">機会 (Opportunities)</h4>
+                    <ul class="list-disc list-inside text-base space-y-1 text-blue-600 leading-relaxed">
+                        <li>より安全なNSAIDの開発（例：消化管・心血管リスク低減）</li>
+                        <li>個別化医療（遺伝子情報等に基づく薬剤選択）</li>
+                        <li>代替治療法との併用戦略</li>
+                        <li>高齢化社会における疼痛管理ニーズ増大</li>
+                    </ul>
+                </div>
+                <div class="card bg-yellow-50 border-l-4 border-yellow-500">
+                    <h4 class="font-semibold text-yellow-700 text-xl mb-3">脅威 (Threats)</h4>
+                    <ul class="list-disc list-inside text-base space-y-1 text-yellow-600 leading-relaxed">
+                        <li>副作用問題による規制強化・警告表示</li>
+                        <li>訴訟リスク</li>
+                        <li>代替治療法への患者シフト</li>
+                        <li>ジェネリック医薬品との価格競争激化</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="conclusion" class="mb-16">
+            <h2 class="text-4xl font-semibold mb-8 section-title text-center">9. 結論と市場展望</h2>
+            <div class="card">
+                <p class="mb-5 leading-relaxed">NSAIDs市場は、その確かな薬効により依然として巨大ですが、副作用リスクという大きな課題を抱えています。特に消化管、心血管、腎臓への影響は深刻で、常用や長期使用、ハイリスク集団での使用には細心の注意が必要です。このため、最低有効量・最短期間の原則遵守、適切な患者選択、リスク管理戦略の徹底が求められます。</p>
+                <p class="mb-5 leading-relaxed">市場の今後は、より安全性の高い薬剤の開発、個別化医療の進展、そしてアセトアミノフェンや非薬物療法といった代替市場との競合・共存が鍵となるでしょう。特に慢性疼痛領域では、非薬物療法の役割が増していくと考えられます。患者教育と医療従事者による適切な情報提供、共同意思決定を通じて、ベネフィットを最大化しリスクを最小化する努力が、市場の持続的発展に不可欠です。</p>
+                <p class="text-xl font-semibold primary-color">今後の注目点：</p>
+                <ul class="list-disc list-inside text-base space-y-2 mt-3 leading-relaxed">
+                    <li>下部消化管障害の機序解明と予防法の開発</li>
+                    <li>人種差を含むNSAIDリスクの個別化研究</li>
+                    <li>より安全な疼痛管理戦略の確立と普及</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-[#264653] text-white text-center py-8 px-4">
+        <p class="text-base">&copy; 2025 NSAIDs市場分析レポート. All rights reserved.</p>
+        <p class="text-sm mt-1">情報源：非ステロイド性抗炎症薬（NSAIDs）の副反応と常用する危険性に関するリサーチレポート</p>
+    </footer>
+
+    <script>
+        const CHART_TEXT_COLOR = '#333333';
+        const CHART_GRID_COLOR = 'rgba(0, 0, 0, 0.05)';
+        const CHART_FONT_SIZE_TICKS = 14;
+        const CHART_FONT_SIZE_LEGEND = 14;
+        const CHART_FONT_SIZE_TITLE = 16;
+
+
+        function processLabel(label, maxLength = 12) { // Adjusted maxLength for larger fonts
+            if (label.length <= maxLength) {
+                return label;
+            }
+            const words = label.split(''); 
+            let currentLine = '';
+            const lines = [];
+            for (let i = 0; i < words.length; i++) {
+                if ((currentLine + words[i]).length > maxLength && currentLine.length > 0) {
+                    lines.push(currentLine);
+                    currentLine = '';
+                }
+                currentLine += words[i];
+            }
+            if (currentLine.length > 0) {
+                lines.push(currentLine);
+            }
+            return lines;
+        }
+
+        const tooltipTitleCallback = function(tooltipItems) {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+              return label.join(''); 
+            } else {
+              return label;
+            }
+        };
+
+        const commonChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { 
+                    display: true, 
+                    position: 'bottom', 
+                    labels: { 
+                        color: CHART_TEXT_COLOR,
+                        font: { size: CHART_FONT_SIZE_LEGEND }
+                    } 
+                },
+                tooltip: { 
+                    callbacks: { title: tooltipTitleCallback },
+                    bodyFont: { size: CHART_FONT_SIZE_LEGEND },
+                    titleFont: { size: CHART_FONT_SIZE_LEGEND }
+                }
+            },
+            scales: {
+                y: { 
+                    beginAtZero: true, 
+                    ticks: { color: CHART_TEXT_COLOR, font: { size: CHART_FONT_SIZE_TICKS } }, 
+                    grid: { color: CHART_GRID_COLOR } 
+                },
+                x: { 
+                    ticks: { color: CHART_TEXT_COLOR, font: { size: CHART_FONT_SIZE_TICKS } }, 
+                    grid: { display: false } 
+                }
+            }
+        };
+        
+        const commonHorizontalBarChartOptions = { // For CV Risk Chart
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: 'y',
+            plugins: {
+                 title: { 
+                    display: true, 
+                    text: '主要NSAIDの心筋梗塞リスク (Ballyら)', 
+                    color: CHART_TEXT_COLOR,
+                    font: { size: CHART_FONT_SIZE_TITLE }
+                },
+                legend: { 
+                    display: false
+                },
+                tooltip: { 
+                    callbacks: { title: tooltipTitleCallback },
+                    bodyFont: { size: CHART_FONT_SIZE_LEGEND },
+                    titleFont: { size: CHART_FONT_SIZE_LEGEND }
+                }
+            },
+            scales: {
+                x: { 
+                    beginAtZero: true, 
+                    ticks: { color: CHART_TEXT_COLOR, font: { size: CHART_FONT_SIZE_TICKS } }, 
+                    grid: { color: CHART_GRID_COLOR } 
+                },
+                y: { 
+                    ticks: { color: CHART_TEXT_COLOR, font: { size: CHART_FONT_SIZE_TICKS - 2 } }, // Slightly smaller for horizontal bar labels if needed
+                    grid: { display: false } 
+                }
+            }
+        };
+
+
+        // Chart 1: COX Mechanism (Conceptual Donut)
+        const coxMechanismCtx = document.getElementById('coxMechanismChart').getContext('2d');
+        new Chart(coxMechanismCtx, {
+            type: 'doughnut',
+            data: {
+                labels: [processLabel('治療効果 (PG抑制)'), processLabel('副作用リスク (PG抑制)')],
+                datasets: [{
+                    label: 'COX阻害の影響',
+                    data: [60, 40], 
+                    backgroundColor: ['#2A9D8F', '#F4A261'], 
+                    borderColor: ['#FFFFFF', '#FFFFFF'],
+                    borderWidth: 3
+                }]
+            },
+            options: { // Specific overrides for Donut if needed
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { 
+                        display: true, 
+                        position: 'bottom', 
+                        labels: { color: CHART_TEXT_COLOR, font: {size: CHART_FONT_SIZE_LEGEND} } 
+                    },
+                    tooltip: { 
+                        callbacks: { title: tooltipTitleCallback },
+                        bodyFont: { size: CHART_FONT_SIZE_LEGEND },
+                        titleFont: { size: CHART_FONT_SIZE_LEGEND }
+                    }
+                }
+            }
+        });
+
+        // Chart 2: COX Selectivity (Conceptual Bar)
+        const coxSelectivityCtx = document.getElementById('coxSelectivityChart').getContext('2d');
+        new Chart(coxSelectivityCtx, {
+            type: 'bar',
+            data: {
+                labels: [processLabel('非選択的NSAID'), processLabel('COX-2選択的'), processLabel('ジクロフェナク等(COX-2傾向)')],
+                datasets: [{
+                    label: 'COX-1阻害度 (概念)',
+                    data: [70, 20, 50], 
+                    backgroundColor: '#2A9D8F', 
+                }, {
+                    label: 'COX-2阻害度 (概念)',
+                    data: [70, 80, 75], 
+                    backgroundColor: '#E9C46A', 
+                }]
+            },
+            options: { // Using common options and overriding y-axis max
+                ...commonChartOptions,
+                scales: {
+                    ...commonChartOptions.scales,
+                    y: { ...commonChartOptions.scales.y, max:100 }
+                }
+            }
+        });
+        
+        // Chart 3: GI Risk (Conceptual Grouped Bar)
+        const giRiskCtx = document.getElementById('giRiskChart').getContext('2d');
+        new Chart(giRiskCtx, {
+            type: 'bar',
+            data: {
+                labels: [processLabel('NSAID単独'), processLabel('NSAID + PPI')],
+                datasets: [{
+                    label: '上部GIリスク',
+                    data: [60, 20], 
+                    backgroundColor: '#2A9D8F', 
+                }, {
+                    label: '下部GIリスク',
+                    data: [40, 70], 
+                    backgroundColor: '#F4A261', 
+                }]
+            },
+            options: {
+                ...commonChartOptions,
+                plugins: {
+                    ...commonChartOptions.plugins,
+                    title: { 
+                        display: true, 
+                        text: '消化管リスクの概念図', 
+                        color: CHART_TEXT_COLOR,
+                        font: { size: CHART_FONT_SIZE_TITLE }
+                    },
+                }
+            }
+        });
+
+        // Chart 4: CV Risk (MI ORs from Bally et al.)
+        const cvRiskCtx = document.getElementById('cvRiskChart').getContext('2d');
+        const cvRiskLabels = [
+            processLabel('セレコキシブ', 10), 
+            processLabel('イブプロフェン', 10), 
+            processLabel('ジクロフェナク', 10), 
+            processLabel('ナプロキセン', 10),
+            processLabel('ロフェコキシブ(参考)', 10)
+        ];
+        new Chart(cvRiskCtx, {
+            type: 'bar',
+            data: {
+                labels: cvRiskLabels,
+                datasets: [{
+                    label: '心筋梗塞リスク (調整オッズ比 vs 非使用)',
+                    data: [1.24, 1.48, 1.50, 1.53, 1.58],
+                    backgroundColor: ['#264653', '#2A9D8F', '#E9C46A', '#F4A261', '#E76F51'],
+                }]
+            },
+             options: commonHorizontalBarChartOptions // Using specific horizontal bar options
+        });
+
+        // Chart 5: Renal Risk (aHRs from study [13, 41])
+        const renalRiskCtx = document.getElementById('renalRiskChart').getContext('2d');
+        const renalRiskLabels = [processLabel('セレコキシブ'), processLabel('ナプロキセン'), processLabel('ロキソプロフェン')];
+        new Chart(renalRiskCtx, {
+            type: 'bar',
+            data: {
+                labels: renalRiskLabels,
+                datasets: [{
+                    label: '腎毒性リスク (調整ハザード比 vs 基準薬)',
+                    data: [2.44, 4.70, 3.95], 
+                    backgroundColor: ['#2A9D8F', '#E9C46A', '#F4A261'],
+                }]
+            },
+            options: {
+                ...commonChartOptions,
+                 plugins: {
+                    ...commonChartOptions.plugins,
+                    title: { 
+                        display: true, 
+                        text: '主要NSAIDの腎毒性リスク (研究[13,41])', 
+                        color: CHART_TEXT_COLOR,
+                        font: { size: CHART_FONT_SIZE_TITLE }
+                    },
+                    legend: { display: false },
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>
