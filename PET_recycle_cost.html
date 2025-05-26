@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PETボトル：新規製造 vs リサイクル コストと採算性インフォグラフィック</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Noto Sans JP', 'Inter', sans-serif; 
+            background-color: #F0F8FF; /* AliceBlue - Very Light Blue */
+            color: #023047; /* Dark Blue/Black for text */
+            font-size: 1.1rem; /* Base font size increased */
+        }
+        .chart-container { 
+            position: relative; 
+            width: 100%; 
+            max-width: 600px; 
+            margin-left: auto; 
+            margin-right: auto; 
+            height: 300px; 
+            max-height: 400px; 
+        }
+        @media (min-width: 768px) { 
+            .chart-container { 
+                height: 350px; 
+                 max-width: 650px;
+            } 
+        }
+        .bar-chart-container {
+            position: relative; 
+            width: 100%; 
+            max-width: 800px;
+            margin-left: auto; 
+            margin-right: auto; 
+            height: 400px; 
+            max-height: 500px;
+        }
+        @media (min-width: 768px) { 
+            .bar-chart-container { 
+                height: 450px; 
+            } 
+        }
+        .stat-card { 
+            background-color: white; 
+            border-radius: 0.75rem; 
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); 
+            padding: 2rem; 
+            margin-bottom: 2rem; 
+        }
+        .section-title { 
+            font-size: 2.25rem; 
+            font-weight: 700;
+            color: #0077B6; /* Primary Blue */
+            border-bottom: 3px solid #00B4D8; /* Secondary Blue */
+            padding-bottom: 1rem; 
+            margin-bottom: 2rem; 
+        }
+        .accent-text { 
+            color: #FFB703; /* Amber Accent */
+            font-weight: 700;
+        }
+        .flowchart-step { 
+            border: 2px solid #00B4D8; 
+            background-color: #E0F7FA; 
+            padding: 1.25rem; 
+            border-radius: 0.5rem; 
+            text-align: center; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            font-size: 1.15rem; 
+        }
+        .flowchart-arrow { 
+            text-align: center; 
+            font-size: 2.25rem; 
+            color: #0077B6; 
+            margin-top: 0.75rem; 
+            margin-bottom: 0.75rem; 
+            line-height: 1;
+        }
+        .nav-button {
+            background-color: #0077B6;
+            color: white;
+            padding: 0.6rem 1.2rem; 
+            border-radius: 0.375rem;
+            transition: background-color 0.3s ease;
+            font-weight: 600;
+        }
+        .nav-button:hover {
+            background-color: #005A8D;
+        }
+        .sticky-nav {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background-color: rgba(240, 248, 255, 0.95); 
+            backdrop-filter: blur(5px);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.25rem; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        th, td {
+            border: 1px solid #90E0EF; 
+            padding: 1rem; 
+            text-align: left;
+            font-size: 1.05rem; 
+        }
+        th {
+            background-color: #00B4D8; 
+            color: white;
+            font-weight: 600;
+        }
+        tr:nth-child(even) {
+            background-color: #E0F7FA; 
+        }
+        tr:hover {
+            background-color: #CAF0F8; 
+        }
+    </style>
+    <!-- 
+        Infographic Narrative Plan:
+        1. Introduction: PET bottle economy, recycling necessity, focus on cost/profitability.
+        2. Virgin PET Production Cost: Raw materials, energy, manufacturing, overall profile (Table III-1).
+        3. PET Recycling Cost: Collection/sorting, transport, mechanical recycling, chemical (briefly), rPET profile (Table IV-1).
+        4. Cost Comparison: Virgin vs. rPET, factors (Table V-1).
+        5. PET Recycling Profitability: Revenue (rPET sales, EPR), determinants (Table VI-1).
+        6. Improving Profitability: Tech, market, policy.
+        7. Conclusion & Recommendations.
+
+        Visualization Choices (Summary - Confirming NO SVG, NO MERMAID JS):
+        - Virgin PET Cost Breakdown (Table III-1 data): Donut Chart (Chart.js Canvas).
+        - rPET Cost Breakdown (Table IV-1 data): Donut Chart (Chart.js Canvas).
+        - Virgin PET vs. rPET Relative Cost: Grouped Bar Chart (Chart.js Canvas) - illustrative.
+        - Key Profitability Factors (Table VI-1 data): Styled HTML Table (Tailwind CSS).
+        - Virgin Production Process: Flow Chart (HTML/CSS with Tailwind).
+        - Mechanical Recycling Process: Flow Chart (HTML/CSS with Tailwind).
+        - Recycling Rate (e.g., 85.0% from report [46]): Single Big Number/Donut Chart (Chart.js Canvas).
+        - EPR System Overview: Textual explanation with key figures as "Single Big Number" (HTML/CSS).
+
+        Color Palette: Brilliant Blues (#0077B6, #00B4D8, #90E0EF, #E0F7FA, #F0F8FF) with Accent (#FFB703) and Dark Text (#023047).
+        
+        Confirmation: NEITHER Mermaid JS NOR SVG were used anywhere in this output. All diagrams are HTML/CSS or Canvas-based via Chart.js.
+    -->
+</head>
+<body class="antialiased">
+
+    <header class="bg-[#0077B6] text-white py-10 text-center"> 
+        <div class="container mx-auto px-4">
+            <h1 class="text-5xl font-bold mb-3">PETボトルリサイクルの経済学</h1> 
+            <p class="text-2xl">新規製造コスト vs リサイクルコスト：採算性の徹底分析</p> 
+        </div>
+    </header>
+
+    <nav class="sticky-nav shadow-md py-4 mb-10"> 
+        <div class="container mx-auto px-4 flex flex-wrap justify-center gap-3 md:gap-4"> 
+            <a href="#introduction" class="nav-button text-base md:text-lg">序論</a> 
+            <a href="#virgin-cost" class="nav-button text-base md:text-lg">新規コスト</a>
+            <a href="#recycle-cost" class="nav-button text-base md:text-lg">リサイクルコスト</a>
+            <a href="#comparison" class="nav-button text-base md:text-lg">コスト比較</a>
+            <a href="#profitability" class="nav-button text-base md:text-lg">採算性</a>
+            <a href="#improvement" class="nav-button text-base md:text-lg">採算性向上</a>
+            <a href="#conclusion" class="nav-button text-base md:text-lg">結論</a>
+        </div>
+    </nav>
+
+    <main class="max-w-screen-xl mx-auto px-4 py-8"> 
+
+        <section id="introduction" class="mb-16"> 
+            <h2 class="section-title">1. はじめに：PETボトル経済とリサイクルの採算性</h2>
+            <div class="stat-card">
+                <p class="text-xl mb-5">PETボトルは、その優れた特性から飲料容器として広く普及し、私たちの生活に不可欠なものとなっています。日本国内でも年間184万トンのPET樹脂が供給され、その37%がボトル用途です（出典: [3]）。しかし、その大量消費はプラスチック廃棄物問題を引き起こし、循環型経済への移行と効果的なリサイクルシステムの確立が急務となっています。</p> 
+                <p class="text-xl mb-5">本インフォグラフィックは、「ペットボトルの新規製造コストとリサイクルコストの比較分析およびリサイクルの採算性評価」報告書に基づき、PETボトルの新規製造とリサイクルにおける経済的側面、特に<span class="accent-text">コスト構造とリサイクルの採算性</span>に焦点を当てて解説します。</p>
+                <div class="text-center mt-8"> 
+                    <span class="text-7xl">💰</span> <span class="text-7xl">♻️</span> 
+                    <p class="mt-3 text-xl font-semibold">リサイクルの「なぜ」から「どうすれば儲かるのか」へ。</p> 
+                </div>
+            </div>
+        </section>
+
+        <section id="virgin-cost" class="mb-16">
+            <h2 class="section-title">2. 新規（バージン）PETボトル製造のコスト構造</h2>
+            <div class="stat-card">
+                <p class="text-xl mb-5">バージンPETボトルの製造コストは、主に原油価格に連動する<span class="accent-text">原材料費</span>と<span class="accent-text">エネルギー費</span>に大きく左右されます。これらの変動は最終製品コストに直接影響を与えます。</p>
+                <div class="grid md:grid-cols-2 gap-10 items-center"> 
+                    <div>
+                        <h3 class="text-2xl font-semibold mb-3 text-[#0077B6]">主なコスト構成要素 (推定割合)</h3> 
+                        <ul class="list-disc list-inside space-y-2 text-xl"> 
+                            <li>原材料 (PTA, MEG): <span class="font-bold">40-60%</span></li>
+                            <li>エネルギー (プロセス熱, 電力): <span class="font-bold">20-30%</span></li>
+                            <li>資本減価償却・間接費: <span class="font-bold">10-20%</span></li>
+                            <li>人件費: <span class="font-bold">5-10%</span></li>
+                            <li>その他 (輸送, 添加剤等): <span class="font-bold">5-10%</span></li>
+                        </ul>
+                        <p class="text-base mt-3 text-gray-600">出典: 報告書 表III-1。割合は目安であり変動します。</p> 
+                        <p class="text-xl mt-5">例えば、500ml清涼飲料のPETボトル容器自体のコストは<span class="accent-text">約17円</span>との試算もあります (出典: [27])。</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="virginPetCostChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="stat-card mt-10"> 
+                <h3 class="text-2xl font-semibold mb-4 text-[#0077B6]">新規PET生産プロセス概要</h3>
+                <div class="space-y-3"> 
+                    <div class="flowchart-step">石油/天然ガス (原料)</div>
+                    <div class="flowchart-arrow">▼</div>
+                    <div class="flowchart-step">PTA/MEG製造 (中間化学品)</div>
+                    <div class="flowchart-arrow">▼</div>
+                    <div class="flowchart-step">PET樹脂重合</div>
+                    <div class="flowchart-arrow">▼</div>
+                    <div class="flowchart-step">プリフォーム製造・ボトル成形</div>
+                    <div class="flowchart-arrow">▼</div>
+                    <div class="flowchart-step bg-[#FFB703] text-[#023047] font-semibold">完成PETボトル</div>
+                </div>
+                <p class="mt-4 text-lg">各段階で大規模な設備投資とエネルギー消費が発生します。</p> 
+            </div>
+        </section>
+
+        <section id="recycle-cost" class="mb-16">
+            <h2 class="section-title">3. PETボトルリサイクルのコスト構造</h2>
+            <div class="stat-card">
+                <p class="text-xl mb-5">リサイクルPET (rPET) のコストは、回収から再生ペレット製造までの多岐にわたる工程で発生します。特に<span class="accent-text">回収・選別コスト</span>と<span class="accent-text">再生プロセス費用</span>が重要です。</p>
+                <div class="grid md:grid-cols-2 gap-10 items-center">
+                     <div>
+                        <h3 class="text-2xl font-semibold mb-3 text-[#0077B6]">メカニカルrPETペレット製造のコスト構成 (推定割合)</h3>
+                        <ul class="list-disc list-inside space-y-2 text-xl">
+                            <li>ベール状PET調達: <span class="font-bold">30-50%</span></li>
+                            <li>選別・洗浄: <span class="font-bold">10-20%</span></li>
+                            <li>破砕・溶融・ペレット化: <span class="font-bold">15-25%</span></li>
+                            <li>エネルギー: <span class="font-bold">10-20%</span></li>
+                            <li>その他（輸送、人件費等）: <span class="font-bold">10-20%</span></li>
+                        </ul>
+                        <p class="text-base mt-3 text-gray-600">出典: 報告書 表IV-1。割合は目安であり変動します。</p>
+                        <p class="text-xl mt-5">市町村によるPETボトル分別収集・選別保管費用は、平成22年度で<span class="accent-text">約418億円</span>と推計されています (出典: [30])。</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="rPetCostChart"></canvas>
+                    </div>
+                </div>
+                 <p class="text-xl mt-8">ケミカルリサイクルは高品質な再生が可能ですが、一般にメカニカルリサイクルより<span class="accent-text">エネルギー集約的で高コスト</span>とされています (出典: [37, 38, 10])。</p>
+            </div>
+             <div class="stat-card mt-10">
+                <h3 class="text-2xl font-semibold mb-4 text-[#0077B6]">メカニカルリサイクルプロセス概要</h3>
+                <div class="space-y-3">
+                    <div class="flowchart-step">使用済みPETボトル回収・梱包(ベール)</div>
+                    <div class="flowchart-arrow">▼</div>
+                    <div class="flowchart-step">選別・ベール解砕・予備洗浄</div>
+                    <div class="flowchart-arrow">▼</div>
+                    <div class="flowchart-step">破砕 (フレーク化)・洗浄・分離</div>
+                    <div class="flowchart-arrow">▼</div>
+                    <div class="flowchart-step">乾燥・溶融・ペレット化</div>
+                    <div class="flowchart-arrow">▼</div>
+                    <div class="flowchart-step bg-[#FFB703] text-[#023047] font-semibold">再生PET (rPET) ペレット</div>
+                </div>
+                <p class="mt-4 text-lg">投入ベールの品質や歩留まり率がコストに大きく影響します。</p>
+            </div>
+        </section>
+
+        <section id="comparison" class="mb-16">
+            <h2 class="section-title">4. コスト比較分析：バージンPET vs. リサイクルPET</h2>
+            <div class="stat-card">
+                <p class="text-xl mb-8">多くの場合、特に高品質なrPETの製造コストはバージンPETを<span class="accent-text">上回る</span>傾向にあります。この価格差は、回収・選別コスト、規模の経済の違い、品質維持の難しさなどに起因します。</p>
+                <div class="bar-chart-container mb-10"> 
+                    <canvas id="costComparisonChart"></canvas>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8"> 
+                    <div>
+                        <h4 class="font-semibold text-xl text-[#0077B6]">rPETが高コストになる主な要因:</h4> 
+                        <ul class="list-disc list-inside space-y-1.5 mt-2 text-lg"> 
+                            <li>複雑な回収・選別プロセス</li>
+                            <li>バージン材に劣る規模の経済</li>
+                            <li>品質維持のための追加コスト</li>
+                            <li>バージンPET価格の変動リスク (出典: [40])</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-xl text-[#0077B6]">価格情報例:</h4>
+                        <ul class="list-disc list-inside space-y-1.5 mt-2 text-lg">
+                            <li>欧州rPET: バージン材の<span class="accent-text">1.3～1.6倍</span> (出典: [38])</li>
+                            <li>rPET繊維: バージンポリエステルより<span class="accent-text">20～30%高価</span> (出典: [39])</li>
+                            <li>国内家庭系PET買取価格目安: <span class="accent-text">40円/kg</span> (品質による) (出典: [41])</li>
+                        </ul>
+                    </div>
+                </div>
+                <p class="text-xl mt-8">ただし、技術革新や規模拡大により、rPETのコスト効率は改善の余地があります。</p>
+            </div>
+        </section>
+
+        <section id="profitability" class="mb-16">
+            <h2 class="section-title">5. PETリサイクル事業の採算性分析</h2>
+            <div class="stat-card">
+                <p class="text-xl mb-5">リサイクル事業の採算性は、rPETの販売価格、補助金制度、そしてバージンPET価格との競争など、多くの要因に左右されます。</p>
+                <div class="grid md:grid-cols-2 gap-10 items-start">
+                    <div>
+                        <h3 class="text-2xl font-semibold mb-4 text-[#0077B6]">主な収益源</h3>
+                        <p class="text-xl mb-3"><span class="font-semibold">1. rPET製品の販売:</span> 市場価格は品質、需給、バージンPET価格に影響されます。ブランドオーナーによる再生材利用コミットメントが需要を押し上げています (出典: [43, 44])。</p>
+                        <p class="text-xl"><span class="font-semibold">2. 拡大生産者責任 (EPR) 制度等:</span> 日本では容器包装リサイクル法に基づき、飲料メーカー等がリサイクル費用を負担。500mlボトル1本あたり<span class="accent-text">約0.8円</span>の委託料試算も (出典: [27])。指定法人からの拠出金も重要な資金源です (出典: [30, 45])。</p>
+                        <div class="mt-8"> 
+                             <h3 class="text-2xl font-semibold mb-2 text-[#0077B6]">日本のPETボトルリサイクル率</h3>
+                             <p class="text-6xl font-bold accent-text">85.0%</p> 
+                             <p class="text-lg">(2023年度実績、出典: [46])</p>
+                             <p class="text-base text-gray-600 mt-1">高い回収率は安定供給の基盤ですが、品質も重要です。</p>
+                        </div>
+                    </div>
+                    <div class="chart-container h-[280px] md:h-[320px]"> 
+                         <canvas id="recyclingRateChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="stat-card mt-10">
+                <h3 class="text-2xl font-semibold mb-5 text-[#0077B6]">採算性に影響を与える主要因 (報告書 表VI-1より抜粋)</h3>
+                <div class="overflow-x-auto">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>要因</th>
+                                <th>採算性への影響</th>
+                                <th>備考</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>バージンPET価格</td>
+                                <td class="accent-text">大 (価格下落時に悪化)</td>
+                                <td>rPET価格に連動</td>
+                            </tr>
+                            <tr>
+                                <td>rPET需要 (ブランドコミットメント等)</td>
+                                <td class="text-green-600 font-semibold">大 (需要増は改善要因)</td>
+                                <td>安定需要は価格維持に貢献</td>
+                            </tr>
+                            <tr>
+                                <td>回収効率とベール品質</td>
+                                <td class="text-green-600 font-semibold">大 (高品質化は改善要因)</td>
+                                <td>低品質は処理コスト増</td>
+                            </tr>
+                            <tr>
+                                <td>エネルギー価格</td>
+                                <td class="accent-text">大 (価格上昇時に悪化)</td>
+                                <td>処理コストの主要因</td>
+                            </tr>
+                             <tr>
+                                <td>リサイクル技術と歩留まり</td>
+                                <td class="text-green-600 font-semibold">大 (技術向上は改善要因)</td>
+                                <td>高効率・高歩留まりはコスト減</td>
+                            </tr>
+                            <tr>
+                                <td>規制 (再生材利用義務, EPR等)</td>
+                                <td class="text-green-600 font-semibold">大 (適切な制度設計は改善要因)</td>
+                                <td>需要創出、資金還流</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="improvement" class="mb-16">
+            <h2 class="section-title">6. リサイクル採算性向上のための課題と機会</h2>
+            <div class="stat-card">
+                <p class="text-xl mb-5">PETリサイクルの採算性を高め、持続可能な循環システムを構築するには、技術、市場、政策の各側面からの統合的な取り組みが不可欠です。</p>
+                <div class="grid md:grid-cols-3 gap-8"> 
+                    <div class="p-5 bg-[#E0F7FA] rounded-lg shadow"> 
+                        <h3 class="font-semibold text-2xl mb-3 text-[#0077B6]">技術革新</h3> 
+                        <ul class="list-disc list-inside space-y-1.5 text-lg"> 
+                            <li>AI活用等の自動選別技術</li>
+                            <li>高エネルギー効率プロセス</li>
+                            <li>ケミカルリサイクルの実用化</li>
+                        </ul>
+                    </div>
+                    <div class="p-5 bg-[#E0F7FA] rounded-lg shadow">
+                        <h3 class="font-semibold text-2xl mb-3 text-[#0077B6]">市場開発</h3>
+                        <ul class="list-disc list-inside space-y-1.5 text-lg">
+                            <li>rPET用途の拡大 (繊維, シート等)</li>
+                            <li>ブランドの再生材利用目標</li>
+                            <li>消費者意識の向上</li>
+                        </ul>
+                    </div>
+                    <div class="p-5 bg-[#E0F7FA] rounded-lg shadow">
+                        <h3 class="font-semibold text-2xl mb-3 text-[#0077B6]">政策・インフラ</h3>
+                        <ul class="list-disc list-inside space-y-1.5 text-lg">
+                            <li>実効性あるEPR制度強化</li>
+                            <li>リサイクルしやすい容器設計</li>
+                            <li>大規模リサイクルプラント投資</li>
+                        </ul>
+                    </div>
+                </div>
+                <p class="text-xl mt-8">これら三位一体の取り組みが、コスト削減、品質向上、安定需要確保に繋がり、リサイクル産業の成長を促進します。</p>
+            </div>
+        </section>
+
+        <section id="conclusion" class="mb-16">
+            <h2 class="section-title">7. 結論と戦略的提言</h2>
+            <div class="stat-card">
+                <p class="text-xl mb-5">バージンPET製造コストは原油価格に、rPETコストは回収効率や技術、バージン材との競争力に左右されます。現状、高品質rPETはバージン材より高コストな場合が多いですが、技術革新、市場成熟、政策支援により採算性向上の可能性があります。</p>
+                <h3 class="text-2xl font-semibold mt-8 mb-4 text-[#0077B6]">ステークホルダーへの提言</h3> 
+                <ul class="list-disc list-inside space-y-3 text-xl"> 
+                    <li><span class="font-semibold">産業界:</span> リサイクル容易設計の推進、先進技術への投資、rPETの安定的利用。</li>
+                    <li><span class="font-semibold">政策立案者:</span> 実効性あるEPR制度、再生材利用目標設定と支援、公正な競争条件確保。</li>
+                    <li><span class="font-semibold">投資家:</span> 成長分野としてのリサイクル産業への注目、技術・市場のデューデリジェンス。</li>
+                </ul>
+                <p class="text-xl mt-8">PETリサイクルの経済的実行可能性を高めることは、持続可能な社会システム構築の鍵です。技術、市場、政策が一体となり推進されることで、より強固な循環型経済への道が開かれます。</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-[#023047] text-white text-center py-10 mt-16"> 
+        <p class="text-lg">&copy; 2025 PETボトルリサイクル採算性インフォグラフィック</p> 
+        <p class="text-base mt-1.5">本インフォグラフィックは提供された調査報告書に基づいて作成されています。</p> 
+        <p class="text-sm mt-2.5">出典記号（例：[3]）は、元報告書の参考文献番号に対応します。</p> 
+    </footer>
+
+    <script>
+        function wrapLabel(str, maxWidth) {
+            if (!str || typeof str !== 'string') return '';
+            str = String(str); 
+            if (str.length <= maxWidth) return str;
+            const words = str.split(' ');
+            let lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if (word.length > maxWidth && currentLine === '') {
+                    lines.push(word.substring(0, maxWidth -1) + '…');
+                    currentLine = ''; 
+                    break; 
+                }
+                if ((currentLine + word).length <= maxWidth || currentLine === '') {
+                    currentLine += (currentLine === '' ? '' : ' ') + word;
+                } else {
+                    lines.push(currentLine);
+                    currentLine = word;
+                }
+            }
+            if (currentLine !== '') lines.push(currentLine);
+            return lines.length > 0 ? lines : [str.substring(0, maxWidth -1) + '…'];
+        }
+
+        const defaultTooltipCallbacks = {
+            title: function(tooltipItems) {
+                const item = tooltipItems[0];
+                if (!item || !item.chart || !item.chart.data || !item.chart.data.labels) return '';
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                    return label.join(' ');
+                }
+                return label || '';
+            },
+            label: function(context) {
+                let labelText = context.dataset.label || ''; 
+                if (labelText) {
+                    labelText += ': ';
+                }
+                if (context.parsed !== null && context.parsed !== undefined && typeof context.parsed === 'number') {
+                    labelText += context.parsed.toFixed(1) + '%';
+                }
+                return labelText;
+            }
+        };
+        
+        const commonChartOptions = (titleText) => ({
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: titleText,
+                    padding: { top: 12, bottom: 18 }, 
+                    font: { size: 18, family: "'Noto Sans JP', 'Inter', sans-serif", weight: '600' }, 
+                    color: '#023047'
+                },
+                legend: {
+                    position: 'bottom',
+                    labels: { 
+                        font: { size: 13, family: "'Noto Sans JP', 'Inter', sans-serif" }, 
+                        boxWidth: 14, 
+                        padding: 18, 
+                        generateLabels: function(chart) {
+                            const data = chart.data;
+                            if (data.labels.length && data.datasets.length) {
+                                return data.labels.map(function(label, i) {
+                                    const meta = chart.getDatasetMeta(0);
+                                    const style = meta.controller.getStyle(i);
+                                    return {
+                                        text: Array.isArray(label) ? label.join(' ') : String(label),
+                                        fillStyle: style.backgroundColor,
+                                        strokeStyle: style.borderColor,
+                                        lineWidth: style.borderWidth,
+                                        hidden: isNaN(data.datasets[0].data[i]) || meta.data[i].hidden,
+                                        index: i
+                                    };
+                                });
+                            }
+                            return [];
+                        }
+                    }
+                },
+                tooltip: { 
+                    callbacks: defaultTooltipCallbacks,
+                    bodyFont: { family: "'Noto Sans JP', 'Inter', sans-serif", size: 14 }, 
+                    titleFont: { family: "'Noto Sans JP', 'Inter', sans-serif", size: 15, weight: 'bold' }, 
+                    backgroundColor: 'rgba(2, 48, 71, 0.85)', 
+                    titleColor: '#FFFFFF',
+                    bodyColor: '#FFFFFF',
+                    borderColor: '#00B4D8',
+                    borderWidth: 1,
+                    padding: 12, 
+                    cornerRadius: 4
+                }
+            }
+        });
+
+        // Virgin PET Cost Chart
+        const virginPetCostCtx = document.getElementById('virginPetCostChart').getContext('2d');
+        new Chart(virginPetCostCtx, {
+            type: 'doughnut',
+            data: {
+                labels: [wrapLabel('原材料(PTA,MEG)',16), wrapLabel('エネルギー',16), wrapLabel('資本減価償却・間接費',20), wrapLabel('人件費',16), wrapLabel('その他',16)],
+                datasets: [{
+                    label: 'コスト割合',
+                    data: [50, 25, 15, 7, 3], 
+                    backgroundColor: ['#0077B6', '#00B4D8', '#90E0EF', '#FFB703', '#FFDDAA'],
+                    borderColor: '#FFFFFF',
+                    borderWidth: 2
+                }]
+            },
+            options: commonChartOptions('新規PET樹脂製造の推定コスト内訳 (%)')
+        });
+
+        // rPET Cost Chart
+        const rPetCostCtx = document.getElementById('rPetCostChart').getContext('2d');
+        new Chart(rPetCostCtx, {
+            type: 'doughnut',
+            data: {
+                labels: [wrapLabel('ベール状PET調達',16), wrapLabel('選別・洗浄',16), wrapLabel('破砕・溶融・ペレット化',20), wrapLabel('エネルギー',16), wrapLabel('その他(輸送,人件費等)',20)],
+                datasets: [{
+                    label: 'コスト割合',
+                    data: [40, 15, 20, 15, 10], 
+                    backgroundColor: ['#0077B6', '#00B4D8', '#90E0EF', '#FFB703', '#FFDDAA'],
+                    borderColor: '#FFFFFF',
+                    borderWidth: 2
+                }]
+            },
+            options: commonChartOptions('メカニカルrPETペレット製造の推定コスト内訳 (%)')
+        });
+        
+        // Cost Comparison Chart
+        const costComparisonCtx = document.getElementById('costComparisonChart').getContext('2d');
+        new Chart(costComparisonCtx, {
+            type: 'bar',
+            data: {
+                labels: [wrapLabel('バージンPET', 16), wrapLabel('高品質rPET (推定)', 20)],
+                datasets: [{
+                    label: '相対的製造コスト指数 (バージンPET = 100)',
+                    data: [100, 145], 
+                    backgroundColor: ['#0077B6', '#FFB703'],
+                    borderColor: '#023047',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                ...commonChartOptions('バージンPET vs 高品質rPET：相対的コスト比較 (推定)'),
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'コスト指数', font: { size: 14, family: "'Noto Sans JP', 'Inter', sans-serif" } }, 
+                        ticks: { font: { size: 12, family: "'Noto Sans JP', 'Inter', sans-serif" } } 
+                    },
+                    x: {
+                         ticks: { font: { size: 14, family: "'Noto Sans JP', 'Inter', sans-serif" } } 
+                    }
+                },
+                plugins: { 
+                    ...commonChartOptions('バージンPET vs 高品質rPET：相対的コスト比較 (推定)').plugins,
+                    tooltip: {
+                        ...commonChartOptions().plugins.tooltip, 
+                        callbacks: {
+                             title: defaultTooltipCallbacks.title, 
+                             label: function(context) { 
+                                let labelText = context.dataset.label || '';
+                                if (labelText) {
+                                    labelText += ': ';
+                                }
+                                if (context.parsed && typeof context.parsed.y === 'number') {
+                                    labelText += context.parsed.y.toFixed(0); 
+                                }
+                                return labelText;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Recycling Rate Chart
+        const recyclingRateCtx = document.getElementById('recyclingRateChart').getContext('2d');
+        new Chart(recyclingRateCtx, {
+            type: 'doughnut',
+            data: {
+                labels: [wrapLabel('リサイクルされたPET',16), wrapLabel('未リサイクルPET',16)],
+                datasets: [{
+                    label: 'PETボトルリサイクル率',
+                    data: [85.0, 15.0], 
+                    backgroundColor: ['#0077B6', '#D3D3D3'], 
+                    borderColor: '#FFFFFF',
+                    borderWidth: 2
+                }]
+            },
+             options: {
+                ...commonChartOptions('日本のPETボトルリサイクル率 (2023年度)'),
+                cutout: '60%', 
+                 plugins: {
+                    ...commonChartOptions('日本のPETボトルリサイクル率 (2023年度)').plugins,
+                    title: { 
+                        display: true,
+                        text: '日本のPETボトルリサイクル率 (2023年度)',
+                        padding: { top: 12, bottom: 6 }, 
+                        font: { size: 16, family: "'Noto Sans JP', 'Inter', sans-serif", weight: '600' }, 
+                         color: '#023047'
+                    },
+                    legend: { 
+                        position: 'right',
+                        labels: { 
+                            font: { size: 13, family: "'Noto Sans JP', 'Inter', sans-serif" }, 
+                            boxWidth: 14, 
+                            padding: 12, 
+                             generateLabels: commonChartOptions().plugins.legend.labels.generateLabels
+                        }
+                    }
+                }
+            }
+        });
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    const navHeight = document.querySelector('.sticky-nav').offsetHeight;
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - navHeight - 20; 
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: "smooth"
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
