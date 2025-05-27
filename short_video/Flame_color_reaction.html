@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>量子力学で解き明かす！炎色反応のしくみ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #0B0C10; /* Cosmic Blue (Dark) */
+            color: #F0F8FF; /* Comet White */
+        }
+        .theme-card {
+            background-color: #1F2833; /* Nebula Blue (Mid) */
+            border-left-width: 4px;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(255, 107, 107, 0.1), 0 4px 6px -2px rgba(255, 107, 107, 0.05); /* Flame Redの影 */
+        }
+        .theme-title {
+            color: #FF6B6B; /* Flame Red */
+            font-weight: bold;
+        }
+        .theme-icon {
+            font-size: 2.5rem;
+            margin-right: 1rem;
+            color: #FF6B6B; /* Flame Red */
+        }
+        .point-category {
+            color: #FFD166; /* Sunlight Yellow */
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+        .point-list li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: flex-start;
+        }
+        .point-list li::before {
+            content: '🔥'; /* 炎の絵文字 */
+            color: #FF6B6B; /* Flame Red */
+            margin-right: 0.5rem;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+        .header-main {
+            background: linear-gradient(135deg, #1F2833 0%, #0B0C10 100%);
+            border-bottom: 2px solid #FF6B6B; /* Flame Red */
+        }
+        .header-icon {
+            font-size: 3rem;
+            color: #FF6B6B; /* Flame Red */
+        }
+        .code-block {
+            background-color: #2d3748; /* やや明るい背景 */
+            color: #e2e8f0;
+            padding: 0.5em 1em;
+            border-radius: 0.25em;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9em;
+            display: inline-block;
+        }
+        .electron-orbit-diagram {
+            background-color: #2a303c;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9em;
+            border: 1px solid #4A5568;
+        }
+        .orbit-level {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+        .orbit-name {
+            width: 3em;
+            color: #A79AFF; /* Galactic Purple */
+        }
+        .orbit-electrons {
+            color: #4BEBFF; /* Electric Blue */
+        }
+        .energy-arrow {
+            margin: 0.5rem 0;
+            text-align: center;
+            color: #FFD166; /* Sunlight Yellow */
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body class="antialiased">
+
+    <header class="header-main text-white py-10 shadow-2xl">
+        <div class="container mx-auto px-6 text-center">
+            <div class="header-icon mb-4">💡</div>
+            <h1 class="text-4xl md:text-5xl font-bold theme-title">量子力学で解き明かす！炎色反応のしくみ</h1>
+            <p class="mt-3 text-lg text-gray-300">なぜ金属は炎の中で特有の色を放つのか？その謎に迫ります。</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 md:px-6 py-12">
+
+        <section id="intro" class="theme-card border-red-400">
+            <div class="flex items-center mb-4">
+                <span class="theme-icon">🤔</span>
+                <h2 class="text-3xl theme-title">はじめに：花火の色と"ドン引き"の真相</h2>
+            </div>
+            <p class="mb-2 text-gray-300 text-lg">
+                花火の美しい色は、炎色反応によるものです。リチウムは赤、ナトリウムは黄色、バリウムは緑…これらの知識を披露して「ドン引き」された経験はありませんか？
+            </p>
+            <p class="mb-4 text-gray-300 text-lg">
+                それは単に知識をひけらかしたからではありません。「なぜそうなるのか」を量子力学のレベルで説明できなかったからかもしれません。このインフォグラフィックで、その「なぜ」を解き明かし、恋の導火線に再び火を灯しましょう！
+            </p>
+        </section>
+
+        <section id="steps" class="theme-card border-yellow-400">
+            <div class="flex items-center mb-4">
+                <span class="theme-icon">🔢</span>
+                <h2 class="text-3xl theme-title">炎色反応の3ステップ</h2>
+            </div>
+            <p class="mb-4 text-gray-300 text-lg">炎色反応は、大きく分けて以下の3つのステップで起こります。</p>
+            <ul class="point-list list-inside space-y-2 text-gray-200">
+                <li>
+                    <strong class="text-yellow-300">ステップ1：原子化</strong><br>
+                    金属やその塩が炎の熱エネルギーによってバラバラになり、中性の原子（ガス状原子）になる。
+                    <div class="text-sm text-gray-400 mt-1">例：NaCl (塩化ナトリウム) → Na (ナトリウム原子) + Cl</div>
+                </li>
+                <li>
+                    <strong class="text-yellow-300">ステップ2：電子の励起 (れいき)</strong><br>
+                    原子内の電子が、さらに熱エネルギーを吸収し、よりエネルギーの高い不安定な状態（励起状態）に移る。
+                    <div class="text-sm text-gray-400 mt-1">電子が「ジャンプアップ」するイメージです。</div>
+                </li>
+                <li>
+                    <strong class="text-yellow-300">ステップ3：発光と基底状態への遷移</strong><br>
+                    励起された電子は不安定なため、すぐに元の安定な状態（基底状態）に戻ろうとする。このとき、吸収したエネルギーとの差分を光として放出する。
+                    <div class="text-sm text-gray-400 mt-1">この光が、私たちが見る炎色反応の色です！</div>
+                </li>
+            </ul>
+        </section>
+
+        <section id="sodium-example" class="theme-card border-red-400">
+            <div class="flex items-center mb-4">
+                <span class="theme-icon">✨</span>
+                <h2 class="text-3xl theme-title">具体例：ナトリウム (Na) の場合</h2>
+            </div>
+            <p class="mb-4 text-gray-300 text-lg">
+                最も有名な炎色反応の一つ、ナトリウムの黄色い光を例に、量子力学的な視点から見ていきましょう。
+            </p>
+
+            <div>
+                <h3 class="point-category text-xl mb-2">ナトリウム原子の電子配置</h3>
+                <p class="text-gray-300 mb-2">
+                    ナトリウム原子 (原子番号11) は11個の電子を持っています。これらの電子は、エネルギーの低い順に特定の「部屋」（電子軌道）に入っていきます。
+                </p>
+                <div class="electron-orbit-diagram">
+                    <div class="text-center mb-2 text-yellow-300 font-semibold">ナトリウム原子 (基底状態)</div>
+                    <div class="orbit-level"><span class="orbit-name">3p</span> <span class="orbit-electrons">[ ] [ ] [ ]</span></div>
+                    <div class="orbit-level"><span class="orbit-name">3s</span> <span class="orbit-electrons">[↑ ]</span> &lt;- 最外殻電子 (価電子)</div>
+                    <div class="orbit-level"><span class="orbit-name">2p</span> <span class="orbit-electrons">[↑↓][↑↓][↑↓]</span></div>
+                    <div class="orbit-level"><span class="orbit-name">2s</span> <span class="orbit-electrons">[↑↓]</span></div>
+                    <div class="orbit-level"><span class="orbit-name">1s</span> <span class="orbit-electrons">[↑↓]</span></div>
+                    <div class="text-xs text-gray-400 mt-2 text-right">↑ エネルギー高</div>
+                </div>
+                <p class="text-gray-300 mt-3 mb-2">
+                    最も外側にある3s軌道の電子 (価電子) が、炎色反応の主役です。
+                </p>
+            </div>
+
+            <div>
+                <h3 class="point-category text-xl mt-4 mb-2">励起と発光のプロセス</h3>
+                <ol class="list-decimal list-inside space-y-2 text-gray-200 pl-4">
+                    <li><strong class="text-yellow-300">熱エネルギー吸収と励起:</strong><br>
+                        3s軌道の電子が炎から熱エネルギーを受け取り、よりエネルギーの高い3p軌道へジャンプします（励起）。
+                        <div class="electron-orbit-diagram my-2">
+                            <div class="text-center mb-2 text-yellow-300 font-semibold">励起状態</div>
+                            <div class="orbit-level"><span class="orbit-name">3p</span> <span class="orbit-electrons">[↑ ] [ ] [ ]</span> &lt;- 電子がここにジャンプ！</div>
+                            <div class="energy-arrow">電子が励起 (エネルギー吸収)</div>
+                            <div class="orbit-level"><span class="orbit-name">3s</span> <span class="orbit-electrons">[ ]</span></div>
+                        </div>
+                    </li>
+                    <li><strong class="text-yellow-300">基底状態への遷移と光の放出:</strong><br>
+                        励起状態は不安定なので、電子はすぐに元の3s軌道へ戻ります。このとき、3p軌道と3s軌道のエネルギー差に相当するエネルギーを、光として放出します。
+                        <div class="electron-orbit-diagram my-2">
+                             <div class="text-center mb-2 text-yellow-300 font-semibold">基底状態へ戻る</div>
+                            <div class="orbit-level"><span class="orbit-name">3p</span> <span class="orbit-electrons">[ ] [ ] [ ]</span></div>
+                            <div class="energy-arrow">光を放出！ (エネルギー差分) ↓</div>
+                            <div class="orbit-level"><span class="orbit-name">3s</span> <span class="orbit-electrons">[↑ ]</span> &lt;- 電子がここに戻る</div>
+                        </div>
+                        このエネルギー差 (<code class="code-block">ΔE</code>) と放出される光の振動数 (<code class="code-block">ν</code>) の関係は、プランク定数 (<code class="code-block">h</code>) を用いて <code class="code-block">ΔE = hν</code> と表されます。
+                    </li>
+                    <li><strong class="text-yellow-300">特有の色（黄色）:</strong><br>
+                        ナトリウムの場合、この時に放出される光の波長は約589nmです。これは人間の目には黄色として認識されるため、ナトリウムの炎色反応は黄色く見えるのです。
+                    </li>
+                </ol>
+                 <p class="text-gray-300 mt-3 mb-2">
+                    この一連のプロセスは非常に速く、ナトリウムの場合は約10<sup>-8</sup>秒（1億分の1秒）というスケールで起こります。
+                </p>
+            </div>
+        </section>
+
+        <section id="why-alkali" class="theme-card border-yellow-400">
+            <div class="flex items-center mb-4">
+                <span class="theme-icon">🔬</span>
+                <h2 class="text-3xl theme-title">なぜアルカリ金属・アルカリ土類金属で顕著なの？</h2>
+            </div>
+            <p class="mb-4 text-gray-300 text-lg">
+                炎色反応が特にアルカリ金属（リチウム、ナトリウムなど）やアルカリ土類金属（カルシウム、バリウムなど）で観察されやすいのには、いくつかの理由があります。
+            </p>
+            <ul class="point-list list-inside space-y-2 text-gray-200">
+                <li>
+                    <strong class="text-yellow-300">原子化されやすい:</strong><br>
+                    これらの金属は比較的低い温度でも容易に中性の原子になりやすい性質があります。
+                </li>
+                <li>
+                    <strong class="text-yellow-300">電子が励起されやすい:</strong><br>
+                    最外殻電子が原子核から比較的緩く束縛されており、少ないエネルギーで励起しやすい（基底状態と励起状態のエネルギーギャップが小さい場合が多い）。
+                </li>
+                <li>
+                    <strong class="text-yellow-300">放出光が可視光領域にある:</strong><br>
+                    励起状態から基底状態に戻る際に放出される光の波長が、ちょうど人間の目で見える範囲（可視光領域、約400nm～700nm）に入ることが多い。
+                    <div class="text-sm text-gray-400 mt-1">エネルギーギャップが大きすぎると紫外線、小さすぎると赤外線となり、目には見えません。</div>
+                </li>
+            </ul>
+            <p class="mt-4 text-gray-300 text-lg">
+                他の金属でも炎色反応は起こり得ますが、これらの条件を満たしにくい場合、色は見えにくかったり、全く見えなかったりします。
+            </p>
+        </section>
+
+        <section id="conclusion" class="theme-card border-red-400">
+            <div class="flex items-center mb-4">
+                <span class="theme-icon">💡</span>
+                <h2 class="text-3xl theme-title">まとめ：ミクロの世界への扉</h2>
+            </div>
+            <p class="mb-4 text-gray-300 text-lg">
+                炎色反応は、単に「金属と色の対応を覚える」だけのものではありません。その背後には、電子のエネルギー準位、励起、光の放出といった量子力学の奥深い世界が広がっています。
+            </p>
+            <p class="text-gray-300 text-lg">
+                このミクロな視点を持つことで、化学現象への理解が深まり、花火の色も一層味わい深いものになるでしょう。興味を持たれた方は、ぜひ量子力学や化学結合論の世界も覗いてみてください。
+            </p>
+        </section>
+
+    </main>
+
+    <footer class="py-8 text-center border-t border-gray-700">
+        <p class="text-gray-400">&copy; 2024 量子力学で解き明かす炎色反応. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
