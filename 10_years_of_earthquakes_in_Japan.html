@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="ja" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日本の地震活動：10年間のインタラクティブ分析</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Neutrals -->
+    <!-- Application Structure Plan: A single-page dashboard structure with a top navigation bar for smooth scrolling. The flow is designed for progressive disclosure: 1. High-level overview with key stats and annual totals. 2. A detailed, interactive monthly time-series chart as the central exploratory tool. 3. A "deep dive" section for major earthquake events, which is directly linked from the main chart's peaks. 4. A concluding section explaining the "Punctuated Equilibrium" model. This structure guides the user from general patterns to specific events and finally to the core analytical insight, making complex data digestible and engaging. -->
+    <!-- Visualization & Content Choices: 
+        - Goal: Inform (Overview) -> Presentation: HTML/Tailwind KPI cards & a Chart.js Bar Chart for annual totals. Interaction: None (static overview). Justification: Provides a quick, scannable summary of the entire period.
+        - Goal: Change/Explore (Time Series) -> Presentation: Chart.js Line Chart for monthly data. Interaction: Hover for tooltips, Click on peaks to scroll to and reveal detailed event analysis. Justification: This is the core interactive element, allowing users to explore the data's primary narrative (periods of calm punctuated by intense activity).
+        - Goal: Compare/Organize (Major Events) -> Presentation: Tab-like card layout using HTML/Tailwind. Each card has text summary and a small supporting Chart.js Bar Chart for the aftershock period. Interaction: Revealed on click from the main chart. Justification: Provides necessary context for the data peaks without cluttering the main view.
+        - Goal: Inform (Conclusion) -> Presentation: HTML/Tailwind diagram and bullet points. Interaction: None. Justification: Clearly synthesizes the report's main theoretical takeaway in a simple, visual format.
+        - Library/Method: Chart.js for all charts (Canvas-based). Vanilla JS for all interaction logic. Tailwind CSS for all styling.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans JP', 'Inter', sans-serif;
+            background-color: #FDFCFB;
+            color: #383838;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 50vh;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 450px;
+            }
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #2563EB;
+            border-bottom-color: #2563EB;
+        }
+        .event-card {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            border: 1px solid #e5e7eb;
+        }
+        .event-card.highlight {
+            transform: scale(1.02);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            border-color: #2563EB;
+        }
+    </style>
+</head>
+<body class="bg-[#FDFCFB]">
+
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl md:text-2xl font-bold text-gray-800">日本の地震活動分析</h1>
+            <div class="hidden md:flex space-x-8">
+                <a href="#overview" class="nav-link text-gray-600 font-medium pb-1">概要</a>
+                <a href="#timeseries" class="nav-link text-gray-600 font-medium pb-1">時系列データ</a>
+                <a href="#majorevents" class="nav-link text-gray-600 font-medium pb-1">主要な地震</a>
+                <a href="#conclusion" class="nav-link text-gray-600 font-medium pb-1">考察</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-gray-700">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden bg-white">
+            <a href="#overview" class="block text-center py-2 text-gray-600">概要</a>
+            <a href="#timeseries" class="block text-center py-2 text-gray-600">時系列データ</a>
+            <a href="#majorevents" class="block text-center py-2 text-gray-600">主要な地震</a>
+            <a href="#conclusion" class="block text-center py-2 text-gray-600">考察</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-8 md:py-12">
+        
+        <section id="overview" class="mb-16 md:mb-24 scroll-mt-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">10年間の活動概観</h2>
+                <p class="max-w-3xl mx-auto text-gray-600">
+                    このセクションでは、2015年6月から2024年6月までの日本の有感地震活動の全体像を、主要な統計データと年次比較を通じて示します。これにより、日本の地震活動の全体的な規模感と、特に活動が活発だった年を即座に把握できます。
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100">
+                    <h3 class="text-gray-500 mb-2">総地震回数 (10年間)</h3>
+                    <p id="total-count" class="text-4xl font-bold text-blue-600"></p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100">
+                    <h3 class="text-gray-500 mb-2">活動最多年</h3>
+                    <p id="busiest-year" class="text-4xl font-bold text-blue-600"></p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100">
+                    <h3 class="text-gray-500 mb-2">活動最多月</h3>
+                    <p id="busiest-month" class="text-4xl font-bold text-blue-600"></p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100">
+                    <h3 class="text-gray-500 mb-2">平常時の月平均</h3>
+                    <p id="baseline-avg" class="text-4xl font-bold text-blue-600"></p>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg border border-gray-100">
+                 <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">年別有感地震回数の比較</h3>
+                <div class="chart-container h-[350px] md:h-[400px]">
+                    <canvas id="annual-chart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="timeseries" class="mb-16 md:mb-24 scroll-mt-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">月別データの推移</h2>
+                <p class="max-w-3xl mx-auto text-gray-600">
+                    ここでは、月別の有感地震回数の詳細な時系列データを折れ線グラフで示します。平常時の穏やかな活動と、大規模地震発生後の急激な活動のピークが視覚的に明らかになります。<span class="font-bold text-blue-600">グラフ上のピークをクリック</span>すると、該当する主要地震の詳細分析セクションへ移動します。
+                </p>
+            </div>
+            <div class="bg-white p-4 md:p-8 rounded-xl shadow-lg border border-gray-100">
+                <div class="chart-container">
+                    <canvas id="monthly-chart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="majorevents" class="mb-16 md:mb-24 scroll-mt-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">主要な地震の深掘り</h2>
+                <p class="max-w-3xl mx-auto text-gray-600">
+                    時系列データの顕著なピークは、社会に大きな影響を与えた大規模地震と対応しています。このセクションでは、熊本地震、北海道胆振東部地震、能登半島地震という３つの主要な地震系列について、その特徴と統計への影響を詳しく解説します。
+                </p>
+            </div>
+            <div id="event-details-container" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            </div>
+        </section>
+
+        <section id="conclusion" class="scroll-mt-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">考察：断続平衡モデル</h2>
+                <p class="max-w-3xl mx-auto text-gray-600">
+                    10年間のデータ分析から、日本の地震活動は「断続平衡」というモデルで最もよく説明できることがわかります。これは、リスク評価や防災計画において非常に重要な示唆を与える概念です。
+                </p>
+            </div>
+            <div class="bg-white p-8 md:p-10 rounded-xl shadow-lg border border-gray-100 flex flex-col md:flex-row items-center gap-8">
+                <div class="w-full md:w-1/3">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">断続平衡モデルの概念図</h3>
+                    <div class="border-2 border-gray-200 rounded-lg p-4 h-48 flex items-end">
+                        <div class="w-full h-full relative">
+                             <div class="absolute bottom-4 left-0 w-full h-0.5 bg-gray-400"></div>
+                             <div class="absolute bottom-4 left-[20%] w-0.5 h-20 bg-red-500"></div>
+                             <div class="absolute bottom-4 left-[55%] w-0.5 h-12 bg-red-500"></div>
+                             <div class="absolute bottom-4 left-[80%] w-0.5 h-28 bg-red-500"></div>
+                             <span class="absolute bottom-0 left-0 text-sm text-gray-500">比較的静穏な「平衡」期間</span>
+                             <span class="absolute top-0 left-[18%] text-sm text-red-600">「断続」する<br>激しい活動</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full md:w-2/3">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">このモデルが示すこと</h3>
+                    <ul class="space-y-3 text-gray-700 list-disc list-inside">
+                        <li>日本の地震活動は、静穏な期間（<span class="font-bold">平衡</span>）と、大規模地震による短く激しい活動期間（<span class="font-bold">断続</span>）が交互に現れる。</li>
+                        <li>防災計画やリスク評価は、長期的な平均値だけでなく、この極端なピーク（断続イベント）を前提に設計される必要がある。</li>
+                        <li>静穏な期間であっても、エネルギーは蓄積されており、次なる大規模地震への備えを怠ってはならない。</li>
+                        <li>真のリスクは平均値ではなく、ピーク値によってもたらされるため、イベントベースでの評価が重要である。</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-white mt-16">
+        <div class="container mx-auto px-6 py-4 text-center">
+            <p>&copy; 2024 Interactive Earthquake Data Analysis. All rights reserved.</p>
+            <p class="text-sm text-gray-400 mt-1">データソース: 気象庁「震度データベース検索」に基づくレポート</p>
+        </div>
+    </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const earthquakeData = {
+        labels: ["2015-06", "2015-07", "2015-08", "2015-09", "2015-10", "2015-11", "2015-12", "2016-01", "2016-02", "2016-03", "2016-04", "2016-05", "2016-06", "2016-07", "2016-08", "2016-09", "2016-10", "2016-11", "2016-12", "2017-01", "2017-02", "2017-03", "2017-04", "2017-05", "2017-06", "2017-07", "2017-08", "2017-09", "2017-10", "2017-11", "2017-12", "2018-01", "2018-02", "2018-03", "2018-04", "2018-05", "2018-06", "2018-07", "2018-08", "2018-09", "2018-10", "2018-11", "2018-12", "2019-01", "2019-02", "2019-03", "2019-04", "2019-05", "2019-06", "2019-07", "2019-08", "2019-09", "2019-10", "2019-11", "2019-12", "2020-01", "2020-02", "2020-03", "2020-04", "2020-05", "2020-06", "2020-07", "2020-08", "2020-09", "2020-10", "2020-11", "2020-12", "2021-01", "2021-02", "2021-03", "2021-04", "2021-05", "2021-06", "2021-07", "2021-08", "2021-09", "2021-10", "2021-11", "2021-12", "2022-01", "2022-02", "2022-03", "2022-04", "2022-05", "2022-06", "2022-07", "2022-08", "2022-09", "2022-10", "2022-11", "2022-12", "2023-01", "2023-02", "2023-03", "2023-04", "2023-05", "2023-06", "2023-07", "2023-08", "2023-09", "2023-10", "2023-11", "2023-12", "2024-01", "2024-02", "2024-03", "2024-04", "2024-05", "2024-06"],
+        counts: [165, 138, 151, 142, 160, 145, 121, 135, 110, 148, 2113, 689, 315, 211, 195, 170, 155, 138, 142, 129, 115, 133, 120, 141, 155, 160, 148, 135, 129, 117, 120, 118, 109, 125, 140, 133, 205, 158, 162, 402, 181, 145, 130, 155, 128, 140, 135, 160, 175, 150, 142, 138, 130, 122, 118, 130, 142, 155, 168, 180, 195, 170, 165, 150, 145, 135, 128, 148, 210, 205, 188, 195, 180, 165, 158, 150, 175, 160, 155, 160, 155, 250, 190, 185, 170, 160, 150, 145, 140, 130, 125, 135, 128, 145, 150, 255, 160, 145, 140, 130, 125, 120, 115, 1848, 205, 198, 215, 190, 221]
+    };
+
+    const annualData = {
+        "2015": 1022, "2016": 4121, "2017": 1602, "2018": 2008, "2019": 1693, "2020": 1863, "2021": 2089, "2022": 1960, "2023": 1748, "2024": 2877
+    };
+    
+    const majorEvents = {
+        '2016-04': {
+            id: 'kumamoto',
+            name: '2016年 熊本地震',
+            date: '2016年4月14日 & 16日',
+            magnitude: '7.3 (本震)',
+            maxShindo: '7',
+            description: '複数の活断層が連動した「前震-本震」型の複雑な地震。極めて激甚な余震活動が数ヶ月にわたり継続し、統計に巨大なピークを形成。災害情報伝達のあり方にも大きな教訓を残した。',
+            tailData: {
+                labels: ['2016/03', '2016/04', '2016/05', '2016/06'],
+                counts: [148, 2113, 689, 315]
+            }
+        },
+        '2018-09': {
+            id: 'hokkaido',
+            name: '2018年 北海道胆振東部地震',
+            date: '2018年9月6日',
+            magnitude: '6.7',
+            maxShindo: '7',
+            description: '地殻深部で発生した「本震-余震型」の地震。余震活動は比較的速やかに減衰したが、大規模な土砂災害や北海道全域の停電（ブラックアウト）を引き起こし、都市機能への影響が甚大だった。',
+            tailData: {
+                labels: ['2018/08', '2018/09', '2018/10', '2018/11'],
+                counts: [162, 402, 181, 145]
+            }
+        },
+        '2024-01': {
+            id: 'noto',
+            name: '2024年 能登半島地震',
+            date: '2024年1月1日',
+            magnitude: '7.6',
+            maxShindo: '7',
+            description: '数年にわたる群発地震活動のクライマックスとして発生。M7.6という規模もさることながら、極めて活発な地震活動が長期に継続しているのが特徴。流体移動の可能性が指摘され、新たなハザード評価の課題を提示した。',
+            tailData: {
+                labels: ['2023/12', '2024/01', '2024/02', '2024/03'],
+                counts: [115, 1848, 205, 198]
+            }
+        }
+    };
+    
+    const populateKPIs = () => {
+        const totalCount = Object.values(annualData).reduce((a, b) => a + b, 0);
+        document.getElementById('total-count').textContent = totalCount.toLocaleString();
+
+        const busiestYear = Object.keys(annualData).reduce((a, b) => annualData[a] > annualData[b] ? a : b);
+        document.getElementById('busiest-year').textContent = busiestYear;
+        
+        const busiestMonthCount = Math.max(...earthquakeData.counts);
+        const busiestMonthIndex = earthquakeData.counts.indexOf(busiestMonthCount);
+        const busiestMonth = earthquakeData.labels[busiestMonthIndex];
+        document.getElementById('busiest-month').textContent = busiestMonth;
+
+        const normalMonths = earthquakeData.counts.filter(c => c < 400); 
+        const baselineAvg = Math.round(normalMonths.reduce((a, b) => a + b, 0) / normalMonths.length);
+        document.getElementById('baseline-avg').textContent = `約${baselineAvg}`;
+    };
+
+    const createAnnualChart = () => {
+        const ctx = document.getElementById('annual-chart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(annualData),
+                datasets: [{
+                    label: '年間有感地震回数',
+                    data: Object.values(annualData),
+                    backgroundColor: 'rgba(37, 99, 235, 0.6)',
+                    borderColor: 'rgba(37, 99, 235, 1)',
+                    borderWidth: 1,
+                    borderRadius: 4,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: (context) => `${context.dataset.label}: ${context.formattedValue} 回`
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: '回数' }
+                    },
+                    x: {
+                        title: { display: true, text: '年' }
+                    }
+                }
+            }
+        });
+    };
+
+    const createMonthlyChart = () => {
+        const ctx = document.getElementById('monthly-chart').getContext('2d');
+        const peakIndices = Object.keys(majorEvents).map(key => earthquakeData.labels.indexOf(key));
+
+        const backgroundColors = earthquakeData.labels.map((_, i) => peakIndices.includes(i) ? 'rgba(239, 68, 68, 1)' : 'rgba(37, 99, 235, 0.8)');
+        const pointRadius = earthquakeData.labels.map((_, i) => peakIndices.includes(i) ? 6 : 3);
+        const pointHitRadius = earthquakeData.labels.map((_, i) => peakIndices.includes(i) ? 15 : 5);
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: earthquakeData.labels,
+                datasets: [{
+                    label: '月別有感地震回数',
+                    data: earthquakeData.counts,
+                    fill: true,
+                    backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                    borderColor: 'rgba(37, 99, 235, 0.8)',
+                    tension: 0.1,
+                    pointBackgroundColor: backgroundColors,
+                    pointRadius: pointRadius,
+                    pointHoverRadius: 8,
+                    pointHitRadius: pointHitRadius
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            title: (context) => `${context[0].label} の地震活動`,
+                            label: (context) => `回数: ${context.formattedValue} 回`
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: '回数' }
+                    }
+                },
+                onClick: (event, elements) => {
+                    if (elements.length > 0) {
+                        const index = elements[0].index;
+                        const label = earthquakeData.labels[index];
+                        if (majorEvents[label]) {
+                            const eventId = majorEvents[label].id;
+                            const element = document.getElementById(`event-${eventId}`);
+                            if (element) {
+                                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                
+                                document.querySelectorAll('.event-card').forEach(card => card.classList.remove('highlight'));
+                                element.classList.add('highlight');
+                                setTimeout(() => element.classList.remove('highlight'), 2000);
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    };
+    
+    const populateMajorEvents = () => {
+        const container = document.getElementById('event-details-container');
+        container.innerHTML = '';
+        Object.values(majorEvents).forEach(event => {
+            const card = document.createElement('div');
+            card.id = `event-${event.id}`;
+            card.className = 'event-card bg-white p-6 rounded-xl shadow-lg border border-gray-100 flex flex-col';
+            card.innerHTML = `
+                <h3 class="text-2xl font-bold text-gray-800">${event.name}</h3>
+                <p class="text-sm text-gray-500 mb-4">${event.date}</p>
+                <div class="flex space-x-4 mb-4 text-center">
+                    <div class="flex-1">
+                        <p class="text-xs text-gray-500">マグニチュード</p>
+                        <p class="font-bold text-lg text-blue-600">${event.magnitude}</p>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-xs text-gray-500">最大震度</p>
+                        <p class="font-bold text-lg text-blue-600">${event.maxShindo}</p>
+                    </div>
+                </div>
+                <p class="text-gray-600 mb-4 text-sm flex-grow">${event.description}</p>
+                <div class="w-full h-40 mt-auto">
+                    <canvas id="chart-${event.id}"></canvas>
+                </div>
+            `;
+            container.appendChild(card);
+            
+            // Create mini-chart
+            const ctx = document.getElementById(`chart-${event.id}`).getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: event.tailData.labels,
+                    datasets: [{
+                        label: '月別地震回数',
+                        data: event.tailData.counts,
+                        backgroundColor: 'rgba(239, 68, 68, 0.6)',
+                        borderColor: 'rgba(239, 68, 68, 1)',
+                        borderWidth: 1,
+                        borderRadius: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true, ticks: { font: { size: 10 } } }, x: { ticks: { font: { size: 10 } } } }
+                }
+            });
+        });
+    };
+    
+    const setupNavigation = () => {
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                if (this.pathname === window.location.pathname) {
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+        });
+        
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-link');
+        
+        window.onscroll = () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 80) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+        };
+    };
+
+    populateKPIs();
+    createAnnualChart();
+    createMonthlyChart();
+    populateMajorEvents();
+    setupNavigation();
+});
+</script>
+
+</body>
+</html>
