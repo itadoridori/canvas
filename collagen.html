@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>コラーゲン完全ガイド：美と健康の仕組み</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans JP', 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .card {
+            background-color: white;
+            border-radius: 1.5rem; /* 24px */
+            padding: 2rem; /* 32px */
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+        }
+        .step-connector::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: -2rem; /* h-8 */
+            width: 2px;
+            height: 2rem; /* h-8 */
+            background-color: #93c5fd; /* blue-300 */
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        /* スクロールアニメーション用 */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- ヘッダー -->
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-md">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold gradient-text">コラーゲン完全ガイド</h1>
+            <nav class="hidden md:flex space-x-8">
+                <a href="#synthesis" class="text-gray-600 hover:text-blue-500 transition">作られる仕組み</a>
+                <a href="#roles" class="text-gray-600 hover:text-blue-500 transition">体での役割</a>
+                <a href="#supplements" class="text-gray-600 hover:text-blue-500 transition">サプリの効果</a>
+                <a href="#practical" class="text-gray-600 hover:text-blue-500 transition">食事と栄養</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main class="container mx-auto px-6 py-12 md:py-20">
+
+        <!-- ヒーローセクション -->
+        <section class="text-center mb-20 md:mb-32 fade-in">
+            <h2 class="text-4xl md:text-6xl font-extrabold mb-4">
+                <span class="gradient-text">コラーゲン</span>のすべて
+            </h2>
+            <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+                体をつくるタンパク質の約30%を占めるコラーゲン。その正体から、美と健康への活かし方まで、科学的根拠に基づいてわかりやすく解説します。
+            </p>
+        </section>
+
+        <!-- 第1章: コラーゲンの生合成 -->
+        <section id="synthesis" class="mb-20 md:mb-32">
+            <h3 class="text-3xl font-bold text-center mb-12 reveal">
+                <span class="gradient-text">STAGE 1</span><br>コラーゲンが作られる仕組み
+            </h3>
+            
+            <p class="text-center max-w-2xl mx-auto mb-16 text-gray-600 reveal">
+                私たちの体の中では、まるで精密な工場のように、日々コラーゲンが生産されています。遺伝情報から強靭な線維になるまでの、驚くべきプロセスを見ていきましょう。
+            </p>
+
+            <!-- 生合成プロセス -->
+            <div class="space-y-16">
+                <!-- Step 1 & 2: 細胞内 -->
+                <div class="card reveal">
+                    <h4 class="font-bold text-2xl mb-4 text-blue-600">細胞の中：設計図からプロコラーゲンへ</h4>
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <div class="space-y-4">
+                            <div class="flex items-start space-x-4">
+                                <div class="bg-blue-100 text-blue-600 font-bold rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0">1</div>
+                                <div><strong class="text-blue-500">転写・翻訳：</strong>核にある遺伝子(設計図)がコピーされ、アミノ酸の鎖(プロα鎖)が作られます。</div>
+                            </div>
+                            <div class="flex items-start space-x-4">
+                                <div class="bg-blue-100 text-blue-600 font-bold rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0">2</div>
+                                <div><strong class="text-blue-500">３本鎖の形成：</strong>３本のアミノ酸の鎖が寄り集まり、特徴的な「三重らせん構造」のプロコラーゲンになります。</div>
+                            </div>
+                        </div>
+                        <div class="flex justify-center">
+                             <svg class="w-48 h-48" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="#EBF8FF" d="M46.8,-63.9C61.4,-57.1,74.7,-45,82.4,-29.9C90.1,-14.8,92.1,3.3,86.2,18.7C80.3,34.1,66.4,46.8,51.8,56.7C37.2,66.5,21.9,73.5,6,73.7C-9.8,73.9,-19.6,67.3,-32.5,60.2C-45.4,53,-61.4,45.3,-69.1,33.5C-76.8,21.7,-76.2,5.8,-71.4,-9C-66.6,-23.7,-57.6,-37.3,-46,-47.4C-34.4,-57.5,-20.2,-64.1,-5,-65.9C10.2,-67.7,20.5,-64.8,32.3,-64.5C44.1,-64.2,57.4,-67.6,46.8,-63.9Z" transform="translate(100 100)" />
+                                <text x="65" y="110" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#2B6CB0">細胞内</text>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 必須材料のインフォグラフィック -->
+                <div class="card bg-blue-50 border border-blue-200 reveal">
+                     <h4 class="font-bold text-2xl mb-6 text-center text-blue-700">安定化に不可欠な「鍵」となる材料</h4>
+                     <div class="grid md:grid-cols-2 gap-8 text-center">
+                         <div class="bg-white p-6 rounded-xl shadow-md">
+                            <div class="flex justify-center mb-3">
+                                <svg class="w-16 h-16 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.121 15.879A6 6 0 0112.001 12m2.122-3.879A6 6 0 0012.001 12M12.001 12L12 12m0-4a2 2 0 100 4 2 2 0 000-4z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21a9 9 0 100-18 9 9 0 000 18z"></path></svg>
+                            </div>
+                            <h5 class="font-bold text-xl mb-2">ビタミンC</h5>
+                            <p class="text-gray-600 text-sm">三重らせん構造をガッチリと安定させる酵素の働きを助けます。不足すると壊れやすいコラーゲンしか作れません（壊血病の原因）。</p>
+                         </div>
+                         <div class="bg-white p-6 rounded-xl shadow-md">
+                            <div class="flex justify-center mb-3">
+                               <svg class="w-16 h-16 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                            </div>
+                             <h5 class="font-bold text-xl mb-2">鉄</h5>
+                            <p class="text-gray-600 text-sm">ビタミンCと共に、酵素が働くために必須のミネラル。鉄不足もコラーゲン生成を妨げる一因になります。</p>
+                         </div>
+                     </div>
+                </div>
+
+                <!-- Step 3 & 4: 細胞外 -->
+                <div class="card reveal">
+                    <h4 class="font-bold text-2xl mb-4 text-blue-600">細胞の外：成熟と強靭化</h4>
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <div>
+                             <svg class="w-48 h-48 mx-auto" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                               <path fill="#EBF8FF" d="M68.5,-59.9C83.5,-45.8,87,-22.9,82.4,-4.3C77.8,14.3,65.1,28.7,51.8,42.4C38.5,56.1,24.6,69.2,6.5,72.7C-11.6,76.2,-28,70.2,-42.6,60C-57.1,49.8,-70,35.4,-75.4,18.7C-80.9,2,-79,-16.9,-70,-31.8C-61.1,-46.7,-45.1,-57.6,-28.9,-63.3C-12.7,-69,--6.4,-69.5,4.9,-70.6C16.1,-71.7,32.3,-73.4,46.1,-69.8C60,-66.2,73.5,-57.2,68.5,-59.9Z" transform="translate(100 100)" />
+                               <text x="65" y="110" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#2B6CB0">細胞外</text>
+                           </svg>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex items-start space-x-4">
+                                <div class="bg-blue-100 text-blue-600 font-bold rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0">3</div>
+                                <div><strong class="text-blue-500">成熟：</strong>細胞の外に出たプロコラーゲンは、端っこが切り取られ、成熟したトロポコラーゲンになります。</div>
+                            </div>
+                             <div class="flex items-start space-x-4">
+                                <div class="bg-blue-100 text-blue-600 font-bold rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0">4</div>
+                                <div><strong class="text-blue-500">集合と架橋：</strong>分子同士が自然に集まって線維を形成。さらに分子間が「架橋」によって結びつけられ、非常に強靭なコラーゲン線維が完成します。</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 第2章: コラーゲンの役割 -->
+        <section id="roles" class="mb-20 md:mb-32">
+            <h3 class="text-3xl font-bold text-center mb-12 reveal">
+                <span class="gradient-text">STAGE 2</span><br>全身で活躍！コラーゲンの役割
+            </h3>
+            <p class="text-center max-w-2xl mx-auto mb-16 text-gray-600 reveal">
+                コラーゲンは全身のあらゆる組織で、私たちの体を支えています。まるで建物の鉄骨のように、強度や弾力性を与えているのです。
+            </p>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- 皮膚 -->
+                <div class="card reveal">
+                    <div class="flex justify-center mb-4">
+                         <svg class="w-20 h-20 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M15 21v-1a6 6 0 00-5.176-5.97M15 21h6v-1a6 6 0 00-9-5.197"></path></svg>
+                    </div>
+                    <h4 class="text-xl font-bold text-center mb-2">皮膚のハリと弾力</h4>
+                    <p class="text-gray-600 text-sm">真皮の約75%を占め、I型とIII型が網目状の構造を形成。肌の土台となり、ハリや弾力を保ちます。シワやたるみはコラーゲンの減少・劣化が大きな原因です。</p>
+                </div>
+                <!-- 骨 -->
+                <div class="card reveal" style="animation-delay: 0.1s;">
+                     <div class="flex justify-center mb-4">
+                        <svg class="w-20 h-20 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 8c0 3.866-3.582 7-8 7S0 11.866 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7zM4.5 9.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21c-3.866 0-7-3.582-7-8s3.134-8 7-8 7 3.582 7 8-3.134 8-7 8zm-8-8a2.5 2.5 0 100-5 2.5 2.5 0 000 5z"></path></svg>
+                    </div>
+                    <h4 class="text-xl font-bold text-center mb-2">骨のしなやかさ</h4>
+                    <p class="text-gray-600 text-sm">骨の有機成分の約90%がI型コラーゲン。カルシウムが硬さを、コラーゲンが柔軟性を与える「鉄筋コンクリート」のような構造で、骨が折れにくくしています。</p>
+                </div>
+                <!-- 関節 -->
+                <div class="card reveal" style="animation-delay: 0.2s;">
+                    <div class="flex justify-center mb-4">
+                       <svg class="w-20 h-20 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 11l3-3m0 0l3 3m-3-3v8m0-13a9 9 0 110 18 9 9 0 010-18z"></path></svg>
+                    </div>
+                    <h4 class="text-xl font-bold text-center mb-2">関節のクッション</h4>
+                    <p class="text-gray-600 text-sm">関節軟骨の主成分はII型コラーゲン。水分を抱え込み、衝撃を吸収するクッションとして機能します。変形性関節症は、この軟骨がすり減ることが原因です。</p>
+                </div>
+                <!-- 腱・靭帯 -->
+                 <div class="card reveal" style="animation-delay: 0.3s;">
+                    <div class="flex justify-center mb-4">
+                        <svg class="w-20 h-20 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                    </div>
+                    <h4 class="text-xl font-bold text-center mb-2">腱・靭帯の強度</h4>
+                    <p class="text-gray-600 text-sm">筋肉と骨、骨と骨をつなぐ腱や靭帯は、ほぼI型コラーゲン線維の束でできており、運動による強い力に耐えることができます。</p>
+                </div>
+                <!-- 血管 -->
+                 <div class="card reveal" style="animation-delay: 0.4s;">
+                     <div class="flex justify-center mb-4">
+                       <svg class="w-20 h-20 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                    </div>
+                    <h4 class="text-xl font-bold text-center mb-2">血管のしなやかさ</h4>
+                    <p class="text-gray-600 text-sm">動脈などの血管壁にもコラーゲンは存在し、血圧に耐えるための構造と弾力性を与えています。健康な血管の維持にも不可欠です。</p>
+                </div>
+                <!-- 髪・爪 -->
+                <div class="card reveal" style="animation-delay: 0.5s;">
+                   <div class="flex justify-center mb-4">
+                        <svg class="w-20 h-20 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <h4 class="text-xl font-bold text-center mb-2">髪・爪の土台</h4>
+                    <p class="text-gray-600 text-sm">髪や爪自体の主成分はケラチンですが、コラーゲンは毛包や爪床の皮膚組織を健康に保ち、間接的に髪や爪の成長を支えています。</p>
+                </div>
+            </div>
+
+            <!-- コラーゲンを減らす要因 -->
+            <div class="mt-20 md:mt-24 p-8 bg-white rounded-2xl shadow-lg reveal">
+                <h4 class="font-bold text-2xl mb-6 text-center text-red-600">要注意！コラーゲンを減らす「4大要因」</h4>
+                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
+                    <div class="p-4 rounded-lg bg-red-50">
+                        <h5 class="font-bold">加齢</h5>
+                        <p class="text-sm text-red-700">合成能力が低下し、分解が上回るようになります。</p>
+                    </div>
+                    <div class="p-4 rounded-lg bg-red-50">
+                        <h5 class="font-bold">紫外線</h5>
+                        <p class="text-sm text-red-700">コラーゲンを分解する酵素を増やし、光老化を促進。</p>
+                    </div>
+                     <div class="p-4 rounded-lg bg-red-50">
+                        <h5 class="font-bold">糖化</h5>
+                        <p class="text-sm text-red-700">糖と結びつき、硬くもろくなります（AGEsの生成）。</p>
+                    </div>
+                    <div class="p-4 rounded-lg bg-red-50">
+                        <h5 class="font-bold">ホルモン変化</h5>
+                        <p class="text-sm text-red-700">特に閉経後の女性ホルモン減少は合成を低下させます。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 第3章: サプリメントの効果 -->
+        <section id="supplements" class="mb-20 md:mb-32">
+            <h3 class="text-3xl font-bold text-center mb-12 reveal">
+                <span class="gradient-text">STAGE 3</span><br>サプリメントは本当に効くのか？
+            </h3>
+            <p class="text-center max-w-3xl mx-auto mb-16 text-gray-600 reveal">
+                「食べてもアミノ酸に分解されるだけ」は古い常識。最新の研究では、特定の「コラーゲンペプチド」が体に吸収され、”指令”を出すことで、自らのコラーゲン生成を促すことがわかってきました。
+            </p>
+
+            <!-- 吸収メカニズムの比較 -->
+            <div class="grid md:grid-cols-2 gap-8 mb-16">
+                <!-- 昔の考え -->
+                <div class="card border-2 border-red-200 reveal">
+                    <h4 class="text-xl font-bold text-red-600 mb-4 text-center">【旧説】分解されるだけ</h4>
+                    <div class="flex flex-col items-center text-center">
+                        <div class="text-5xl mb-4">🥩</div>
+                        <p class="font-semibold">高分子コラーゲン</p>
+                        <p class="text-sm text-gray-500">(食事由来)</p>
+                        <div class="text-4xl my-4 text-gray-400">↓</div>
+                        <div class="text-5xl mb-4">⚙️</div>
+                        <p class="font-semibold">消化・分解</p>
+                        <div class="text-4xl my-4 text-gray-400">↓</div>
+                         <div class="text-5xl mb-4">🧱</div>
+                        <p class="font-semibold">バラバラのアミノ酸</p>
+                        <p class="text-sm text-gray-500">他のタンパク質と同じ材料に</p>
+                    </div>
+                </div>
+                <!-- 今の考え -->
+                 <div class="card border-2 border-green-300 reveal">
+                    <h4 class="text-xl font-bold text-green-600 mb-4 text-center">【新説】指令を出すペプチド</h4>
+                    <div class="flex flex-col items-center text-center">
+                        <div class="text-5xl mb-4">💧</div>
+                        <p class="font-semibold">低分子コラーゲンペプチド</p>
+                        <p class="text-sm text-gray-500">(サプリメント)</p>
+                        <div class="text-4xl my-4 text-gray-400">↓</div>
+                        <div class="text-5xl mb-4">🚀</div>
+                        <p class="font-semibold">特定ペプチドとして吸収</p>
+                        <div class="text-4xl my-4 text-gray-400">↓</div>
+                        <div class="text-5xl mb-4">📢</div>
+                        <p class="font-semibold">細胞に「作れ！」と指令</p>
+                        <p class="text-sm text-gray-500">自らのコラーゲン生成を促進</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 臨床試験の結果 -->
+            <div class="reveal">
+                <h4 class="text-2xl font-bold text-center mb-8">科学が示す、コラーゲンペプチドの効果</h4>
+                <div class="space-y-6">
+                    <div class="p-6 bg-white rounded-xl shadow-md flex items-center space-x-6">
+                        <div class="bg-blue-100 p-3 rounded-full"><span class="text-3xl">💧</span></div>
+                        <div>
+                            <h5 class="font-bold text-blue-700">皮膚の健康</h5>
+                            <p class="text-gray-600">複数の臨床試験で、水分量・弾力性の向上、シワの減少が報告されています。(2.5g-10g/日)</p>
+                        </div>
+                    </div>
+                    <div class="p-6 bg-white rounded-xl shadow-md flex items-center space-x-6">
+                       <div class="bg-green-100 p-3 rounded-full"><span class="text-3xl">🦵</span></div>
+                        <div>
+                            <h5 class="font-bold text-green-700">関節の健康</h5>
+                            <p class="text-gray-600">変形性関節症の痛みやこわばりを軽減する可能性が示唆されています。</p>
+                        </div>
+                    </div>
+                    <div class="p-6 bg-white rounded-xl shadow-md flex items-center space-x-6">
+                        <div class="bg-yellow-100 p-3 rounded-full"><span class="text-3xl">🦴</span></div>
+                        <div>
+                            <h5 class="font-bold text-yellow-700">骨の健康</h5>
+                            <p class="text-gray-600">閉経後の女性において、骨密度の有意な増加が確認された研究があります。(5g/日)</p>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-xs text-center text-gray-500 mt-4">※効果には個人差があり、特定の製品の効果を保証するものではありません。</p>
+            </div>
+        </section>
+
+
+        <!-- 第4章: 実践的な知識 -->
+        <section id="practical" class="mb-20 md:mb-32">
+            <h3 class="text-3xl font-bold text-center mb-12 reveal">
+                <span class="gradient-text">STAGE 4</span><br>コラーゲンを賢く摂る方法
+            </h3>
+            <p class="text-center max-w-2xl mx-auto mb-16 text-gray-600 reveal">
+                サプリメントも有効ですが、基本はやはり食事から。コラーゲン生成をサポートする栄養素をバランス良く摂ることが、美と健康への一番の近道です。
+            </p>
+
+            <!-- 栄養素のインフォグラフィック -->
+             <div class="card bg-gray-100 reveal">
+                <h4 class="text-2xl font-bold text-center mb-8">コラーゲン合成を支える「チーム」</h4>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-white p-4 rounded-lg shadow">
+                        <h5 class="font-bold text-lg mb-2 text-orange-500">ビタミンC</h5>
+                        <p class="text-sm">赤ピーマン、キウイ、ブロッコリー</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow">
+                        <h5 class="font-bold text-lg mb-2 text-red-500">鉄</h5>
+                        <p class="text-sm">豚レバー、あさり、赤身肉、小松菜</p>
+                    </div>
+                     <div class="bg-white p-4 rounded-lg shadow">
+                        <h5 class="font-bold text-lg mb-2 text-gray-700">アミノ酸（タンパク質）</h5>
+                        <p class="text-sm">肉、魚、卵、大豆製品</p>
+                    </div>
+                     <div class="bg-white p-4 rounded-lg shadow">
+                        <h5 class="font-bold text-lg mb-2 text-green-500">亜鉛</h5>
+                        <p class="text-sm">牡蠣、赤身肉、ナッツ類</p>
+                    </div>
+                     <div class="bg-white p-4 rounded-lg shadow">
+                        <h5 class="font-bold text-lg mb-2 text-purple-500">銅</h5>
+                        <p class="text-sm">レバー、牡蠣、豆類</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow flex items-center justify-center">
+                        <p class="text-center font-bold text-blue-600">+ バランスの良い食事</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- サプリメント選びのポイント -->
+            <div class="mt-16 reveal">
+                <h4 class="text-2xl font-bold text-center mb-8">サプリメント選びの3つのポイント</h4>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="text-center p-6 border-2 border-blue-200 rounded-2xl">
+                        <div class="text-blue-500 font-bold text-5xl mb-2">1</div>
+                        <h5 class="font-bold text-lg mb-2">形態をチェック</h5>
+                        <p class="text-sm text-gray-600">吸収されやすい「コラーゲンペプチド」または「加水分解コラーゲン」と記載されたものを選びましょう。</p>
+                    </div>
+                    <div class="text-center p-6 border-2 border-blue-200 rounded-2xl">
+                         <div class="text-blue-500 font-bold text-5xl mb-2">2</div>
+                        <h5 class="font-bold text-lg mb-2">用量を確認</h5>
+                        <p class="text-sm text-gray-600">研究で効果が示されているのは1日2.5g〜10g。製品の推奨量を確認し、継続することが大切です。</p>
+                    </div>
+                     <div class="text-center p-6 border-2 border-blue-200 rounded-2xl">
+                         <div class="text-blue-500 font-bold text-5xl mb-2">3</div>
+                        <h5 class="font-bold text-lg mb-2">相乗効果のある成分</h5>
+                        <p class="text-sm text-gray-600">ビタミンCなど、コラーゲン合成を助ける成分が一緒に配合されていると、より効果が期待できます。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 結論 -->
+        <section class="text-center bg-white p-8 md:p-16 rounded-2xl shadow-2xl reveal">
+            <h3 class="text-3xl font-bold mb-6 gradient-text">結論：賢いコラーゲンとの付き合い方</h3>
+            <div class="max-w-3xl mx-auto space-y-4 text-gray-700">
+                <p>コラーゲンサプリメントは、科学的根拠に基づけば、美と健康をサポートする有効な選択肢です。しかし、それは魔法の薬ではありません。</p>
+                <p class="font-bold text-lg text-blue-600">
+                    基本は、コラーゲン生成に必要な栄養素をバランス良く摂る「健康的な食事」。
+                </p>
+                <p>
+                    その上で、目的に合わせて質の良いコラーゲンペプチド製品を「補う」という考え方が最も賢明です。
+                </p>
+                 <p>
+                    自分の体と向き合い、情報を見極めながら、あなたに合った方法でコラーゲンと上手に付き合っていきましょう。
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- フッター -->
+    <footer class="bg-gray-800 text-white mt-20">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <p class="text-sm text-gray-400">本ページの情報は、提供された分析レポートに基づいて作成されたものであり、医学的な助言に代わるものではありません。健康上の懸念がある場合は、専門の医療機関にご相談ください。</p>
+            <p class="text-sm mt-2">&copy; 2025 Collagen Guide. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // スクロールで要素を表示するIntersection Observer
+        const revealElements = document.querySelectorAll('.reveal');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // 一度表示されたら監視を停止
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1 // 10%要素が見えたら発火
+        });
+
+        revealElements.forEach(el => {
+            observer.observe(el);
+        });
+
+        // スムーススクロール
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
