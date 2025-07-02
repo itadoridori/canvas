@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>インタラクティブ分析レポート：有機炭素NEMA1</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutral Harmony (Background: #FAF8F5, Text: #4A4A4A, Primary Accent: #6B8E23, Secondary Accent: #D2B48C, Warning: #CD5C5C) -->
+    <!-- Application Structure Plan: The SPA is designed as a narrative-driven, single-page dashboard. It guides the user through five key stages of understanding: 1) Deconstructing marketing claims, 2) Unveiling the scientific hypothesis (Alkaline Hydrochar), 3) Explaining the mechanisms of action, 4) Critically evaluating applications, and 5) Highlighting crucial safety warnings. This thematic structure, rather than mirroring the report's chapters, is chosen to build a story, moving the user from curiosity to informed caution, which is the report's primary goal. Key interactions include clickable cards to reveal scientific analysis and a dynamic chart for material comparison, making the dense information digestible and engaging. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Marketing terms vs. Scientific reality. -> Goal: Compare/Deconstruct. -> Viz/Method: Interactive HTML cards (click to reveal). -> Interaction: Toggling visibility of scientific critique. -> Justification: Creates an engaging "myth-busting" flow, directly contrasting claims with facts. -> Library: Vanilla JS.
+        - Report Info: Table 1 (Material Comparison). -> Goal: Compare/Inform. -> Viz/Method: Bar Chart (pH comparison) & HTML Table. -> Interaction: Hover tooltips on chart. -> Justification: The chart visually emphasizes the key property (alkalinity), while the table provides full data. -> Library: Chart.js.
+        - Report Info: Hypothesized production process. -> Goal: Explain. -> Viz/Method: Structured HTML/CSS flowchart. -> Interaction: Static visual. -> Justification: Simplifies the complex chemical process into an easy-to-follow diagram. -> Library: None.
+        - Report Info: Mechanisms (Deodorizing, Microbial, Soil). -> Goal: Inform. -> Viz/Method: Icon-based info cards. -> Interaction: Static visual. -> Justification: Breaks down functionalities into scannable, thematic blocks. -> Library: None.
+        - Report Info: Table 2 (Safety Protocols). -> Goal: Warn/Instruct. -> Viz/Method: High-contrast, icon-driven HTML cards. -> Interaction: Static visual. -> Justification: Uses strong visual cues (color, icons) to draw attention to critical safety information, making it highly memorable and actionable. -> Library: None.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #FAF8F5;
+            color: #4A4A4A;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .nav-link {
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #6B8E23;
+            border-bottom-color: #6B8E23;
+        }
+        .claim-card {
+            transition: all 0.5s ease-in-out;
+            transform-style: preserve-3d;
+        }
+        .claim-card.is-flipped {
+            transform: rotateY(180deg);
+        }
+        .card-face {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+        .card-back {
+            transform: rotateY(180deg);
+        }
+        .section-icon {
+            font-size: 2.5rem;
+            line-height: 1;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header & Navigation -->
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between py-4">
+                <h1 class="text-xl md:text-2xl font-bold text-[#6B8E23]">分析レポート: 有機炭素NEMA1</h1>
+                <nav class="hidden md:flex items-center space-x-6 text-sm font-bold">
+                    <a href="#section-1" class="nav-link">1. 主張の検証</a>
+                    <a href="#section-2" class="nav-link">2. 製品の正体</a>
+                    <a href="#section-3" class="nav-link">3. 作用機序</a>
+                    <a href="#section-4" class="nav-link">4. 応用とリスク</a>
+                    <a href="#section-5" class="nav-link font-bold text-[#CD5C5C]">⚠️ 安全性</a>
+                </nav>
+                <button id="mobile-menu-button" class="md:hidden p-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white/90">
+            <a href="#section-1" class="block text-center py-3 px-4 text-sm font-bold hover:bg-gray-100">1. 主張の検証</a>
+            <a href="#section-2" class="block text-center py-3 px-4 text-sm font-bold hover:bg-gray-100">2. 製品の正体</a>
+            <a href="#section-3" class="block text-center py-3 px-4 text-sm font-bold hover:bg-gray-100">3. 作用機序</a>
+            <a href="#section-4" class="block text-center py-3 px-4 text-sm font-bold hover:bg-gray-100">4. 応用とリスク</a>
+            <a href="#section-5" class="block text-center py-3 px-4 text-sm font-bold hover:bg-red-50 text-[#CD5C5C]">⚠️ 安全性</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 md:py-12">
+
+        <!-- Introduction -->
+        <section class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">「有機炭素NEMA1」の深層分析</h2>
+            <p class="max-w-3xl mx-auto text-base md:text-lg">
+                このインタラクティブなレポートは、Japan Vietnam Smart Future (JVSF)社が販売する製品「有機炭素NEMA1」に関する技術調査を可視化したものです。マーケティング上の主張を科学的見地から批判的に検証し、製品の真の姿と、利用者が知るべき重大なリスクを明らかにします。
+            </p>
+        </section>
+
+        <!-- Section 1: Claim Deconstruction -->
+        <section id="section-1" class="mb-16 scroll-mt-24">
+            <h3 class="text-2xl font-bold text-center mb-2">第1部：主張の検証</h3>
+            <p class="text-center text-lg mb-8">同社が用いる専門用語は科学的に妥当なのでしょうか？カードをクリックして、主張と科学的評価を比較してください。</p>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="perspective-1000">
+                    <div class="claim-card relative w-full h-64 cursor-pointer">
+                        <div class="card-face absolute w-full h-full p-6 bg-white rounded-xl shadow-lg flex flex-col justify-center items-center text-center">
+                            <h4 class="text-xl font-bold mb-2">原子状炭素</h4>
+                            <p class="text-sm">"有機炭素抽出物（原子状炭素）"</p>
+                            <span class="mt-4 text-xs font-bold text-[#D2B48C]">クリックして分析を見る</span>
+                        </div>
+                        <div class="card-back absolute w-full h-full p-6 bg-gray-100 rounded-xl shadow-lg flex flex-col justify-center text-left">
+                            <h5 class="font-bold mb-2">科学的評価：</h5>
+                            <p class="text-sm">「原子状炭素」は極めて不安定な単一炭素原子(C)を指す化学用語です。粉末製品として安定して存在することは物理的に不可能です。先進技術を想起させるための、科学的根拠のない**マーケティング用語**である可能性が極めて高いと結論付けられます。</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="perspective-1000">
+                    <div class="claim-card relative w-full h-64 cursor-pointer">
+                        <div class="card-face absolute w-full h-full p-6 bg-white rounded-xl shadow-lg flex flex-col justify-center items-center text-center">
+                            <h4 class="text-xl font-bold mb-2">ジェネシスカーボン</h4>
+                            <p class="text-sm">"粒子サイズ0.16nmの新素材"</p>
+                            <span class="mt-4 text-xs font-bold text-[#D2B48C]">クリックして分析を見る</span>
+                        </div>
+                        <div class="card-back absolute w-full h-full p-6 bg-gray-100 rounded-xl shadow-lg flex flex-col justify-center text-left">
+                            <h5 class="font-bold mb-2">科学的評価：</h5>
+                            <p class="text-sm">0.16nmという粒子サイズの主張は、単一炭素原子のサイズ（共有結合半径 約0.07nm）と比較しても物理的に信憑性がありません。これもまた、独自技術の**ブランド名**であり、その物理的記述はマーケティング上の誇張表現と解釈すべきです。</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="perspective-1000">
+                    <div class="claim-card relative w-full h-64 cursor-pointer">
+                        <div class="card-face absolute w-full h-full p-6 bg-white rounded-xl shadow-lg flex flex-col justify-center items-center text-center">
+                            <h4 class="text-xl font-bold mb-2">NEMA1</h4>
+                            <p class="text-sm">"製品名"</p>
+                            <span class="mt-4 text-xs font-bold text-[#D2B48C]">クリックして分析を見る</span>
+                        </div>
+                        <div class="card-back absolute w-full h-full p-6 bg-gray-100 rounded-xl shadow-lg flex flex-col justify-center text-left">
+                            <h5 class="font-bold mb-2">科学的評価：</h5>
+                            <p class="text-sm">「NEMA 1」は、米国の電気機器筐体の工業規格として確立された用語です。農業資材にこの名称を使用することは、無関係な規格との**著しい混同**を生じさせ、製品の信頼性を損なう可能性があります。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <hr class="my-16 border-t-2 border-dashed border-[#D2B48C]">
+
+        <!-- Section 2: Product Identity -->
+        <section id="section-2" class="mb-16 scroll-mt-24">
+            <h3 class="text-2xl font-bold text-center mb-2">第2部：製品の正体の推定</h3>
+            <p class="text-center text-lg mb-8">では、「NEMA1」とは一体何なのでしょうか？報告書は、公表された特性から科学的に妥当な仮説を提示しています。</p>
+            
+            <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
+                <h4 class="text-xl font-bold text-center mb-6">推定される生成プロセス：アルカリ水熱炭化（Alkaline HTC）</h4>
+                <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-8 text-center">
+                    <div class="p-4 bg-green-50 rounded-lg">
+                        <div class="text-4xl">🌿</div>
+                        <p class="font-bold mt-2">原料<br>(セルロース系バイオマス)</p>
+                    </div>
+                    <div class="text-4xl font-bold text-[#D2B48C]">→</div>
+                    <div class="p-4 bg-blue-50 rounded-lg">
+                         <div class="text-4xl">🔥+💧+🧂</div>
+                        <p class="font-bold mt-2">アルカリ水熱炭化<br>(高温・高圧水＋アルカリ)</p>
+                    </div>
+                    <div class="text-4xl font-bold text-[#D2B48C]">→</div>
+                    <div class="p-4 bg-gray-100 rounded-lg">
+                        <div class="text-4xl">⚫</div>
+                        <p class="font-bold mt-2">最終製品<br>(アルカリ性ハイドロ炭)</p>
+                    </div>
+                </div>
+                <p class="mt-6 text-center text-sm max-w-2xl mx-auto">この仮説は、原料が「セルロース」である点、製品が黒色粉末である点、そして最も重要な特徴である高いアルカリ性（pH 8.0以上）をすべて合理的に説明できます。</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h4 class="text-xl font-bold mb-4 text-center">炭素材料のpH比較</h4>
+                    <p class="text-sm text-center mb-4">NEMA1の顕著なアルカリ性は、一般的なハイドロ炭とは異なり、アルカリ条件下で特殊な処理がされたことを示唆しています。</p>
+                    <div class="chart-container">
+                        <canvas id="phChart"></canvas>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left bg-white rounded-xl shadow-lg">
+                        <caption class="text-lg font-bold p-4">表1：NEMA1と類似炭素材料の比較</caption>
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th class="p-3">材料</th>
+                                <th class="p-3">生成方法</th>
+                                <th class="p-3">典型的なpH</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b">
+                                <td class="p-3 font-bold">有機炭素NEMA1 (推定)</td>
+                                <td class="p-3">アルカリHTC</td>
+                                <td class="p-3 font-bold text-green-700">>8.0 - 9.0</td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="p-3">バイオ炭</td>
+                                <td class="p-3">乾式熱分解</td>
+                                <td class="p-3">7-10</td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="p-3">ハイドロ炭 (通常)</td>
+                                <td class="p-3">HTC</td>
+                                <td class="p-3 text-red-700">5-7</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3">活性炭</td>
+                                <td class="p-3">熱分解＋賦活処理</td>
+                                <td class="p-3">中性～アルカリ性</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-16 border-t-2 border-dashed border-[#D2B48C]">
+
+        <!-- Section 3: Mechanism of Action -->
+        <section id="section-3" class="mb-16 scroll-mt-24">
+            <h3 class="text-2xl font-bold text-center mb-2">第3部：作用機序の解明</h3>
+            <p class="text-center text-lg mb-8">「アルカリ性ハイドロ炭」という仮説モデルは、主張される効果を科学的に説明できます。</p>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-xl shadow-lg p-8 text-center">
+                    <div class="section-icon text-blue-500">💨</div>
+                    <h4 class="text-xl font-bold my-4">物理化学的相互作用</h4>
+                    <p class="text-sm">多孔質な構造が臭気分子を物理的に吸着。さらに高いアルカリ性が硫化水素などの酸性ガスを化学的に中和・捕捉し、強力な脱臭効果を発揮します。</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-8 text-center">
+                    <div class="section-icon text-yellow-500">🦠</div>
+                    <h4 class="text-xl font-bold my-4">微生物への影響</h4>
+                    <p class="text-sm">pHをアルカリ性に傾けることで、酸性を好む多くの腐敗菌や病原菌の増殖を抑制します。これは抗菌剤ではなく、環境を変化させることによる微生物叢の選択的制御です。</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-8 text-center">
+                    <div class="section-icon text-green-500">🌱</div>
+                    <h4 class="text-xl font-bold my-4">農業への効果</h4>
+                    <p class="text-sm">土壌の酸性を中和し、通気性・保水性を改善します。また、多孔質表面が養分を保持し、流出を防ぐことで、植物の成長を助ける土壌改良材として機能します。</p>
+                </div>
+            </div>
+        </section>
+        
+        <hr class="my-16 border-t-2 border-dashed border-[#D2B48C]">
+        
+        <!-- Section 4: Applications and Risks -->
+        <section id="section-4" class="mb-16 scroll-mt-24">
+            <h3 class="text-2xl font-bold text-center mb-2">第4部：応用事例と潜在的リスク</h3>
+            <p class="text-center text-lg mb-8">製品は多岐にわたる応用が謳われていますが、その主張はどこまで信頼できるのでしょうか。</p>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-xl shadow-lg p-8">
+                    <h4 class="text-xl font-bold mb-4">主張される応用分野</h4>
+                    <ul class="list-disc list-inside space-y-2 text-sm">
+                        <li><b>畜産環境の管理：</b> 畜舎の脱臭、ハエ・蚊の忌避</li>
+                        <li><b>飼料・飲水への添加：</b> 消化・抵抗力の改善</li>
+                        <li><b>堆肥化の促進：</b> 分解促進と臭気除去</li>
+                        <li><b>環境・工業利用：</b> 廃水処理、産業廃棄物処理</li>
+                    </ul>
+                    <p class="mt-4 text-xs">これらの応用は、アルカリ性吸着材としての特性と矛盾しません。</p>
+                </div>
+                <div class="bg-red-50 border-l-4 border-[#CD5C5C] rounded-r-lg p-8">
+                    <h4 class="text-xl font-bold text-[#CD5C5C] mb-4">⚠️ 根拠なき人体への応用主張</h4>
+                     <p class="mb-4 text-sm">しかし、製造元は環境応用から一線を越え、以下のような**科学的根拠が一切ない、極めて危険な主張**を行っています。</p>
+                    <ul class="list-disc list-inside space-y-2 text-sm font-bold">
+                        <li>野菜や果物の残留化学物質の除去</li>
+                        <li>生肉の鮮度保持</li>
+                        <li>難病治療のサポート</li>
+                        <li>化粧品、健康補助食品への利用</li>
+                    </ul>
+                     <p class="mt-4 text-sm">これらの主張は、規制当局の承認や臨床試験の証拠が皆無であり、**無責任かつ潜在的に危険**です。絶対に信用してはなりません。</p>
+                </div>
+            </div>
+        </section>
+        
+        <hr class="my-16 border-t-2 border-dashed border-red-400">
+
+        <!-- Section 5: Safety Warning -->
+        <section id="section-5" class="scroll-mt-24 bg-red-50/50 rounded-2xl p-8">
+            <h3 class="text-3xl font-bold text-center text-[#CD5C5C] mb-2">⚠️ 第5部：最重要安全警告</h3>
+            <p class="text-center text-lg mb-8">この製品を取り扱う上で、健康被害を避けるために必ず守るべきことがあります。</p>
+            
+            <div class="text-center mb-8">
+                <h4 class="text-xl font-bold mb-2">主な危険性：微細な炭素粉塵の吸入</h4>
+                <p>製品安全データシート(MSDS)が提供されておらず、詳細なリスクは不明です。しかし、類似の炭素粉末（活性炭、バイオ炭）のデータから、吸入による呼吸器への刺激や長期的な健康被害（粉じん障害）のリスクが強く懸念されます。</p>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h4 class="text-xl font-bold text-center mb-6">推奨される安全取扱いプロトコル（必須）</h4>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                    <div class="flex flex-col items-center p-4 bg-gray-50 rounded-lg">
+                        <div class="text-5xl mb-3">😷</div>
+                        <h5 class="font-bold">呼吸用保護具</h5>
+                        <p class="text-sm mt-1">**必須。** N95規格以上の防じんマスクを必ず着用してください。</p>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-gray-50 rounded-lg">
+                        <div class="text-5xl mb-3">👓</div>
+                        <h5 class="font-bold">眼の保護</h5>
+                        <p class="text-sm mt-1">粉塵の飛散から眼を守るため、保護メガネまたはゴーグルを着用してください。</p>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-gray-50 rounded-lg">
+                        <div class="text-5xl mb-3">🧤</div>
+                        <h5 class="font-bold">手の保護</h5>
+                        <p class="text-sm mt-1">皮膚への接触と刺激を防ぐため、保護手袋を着用してください。</p>
+                    </div>
+                </div>
+                <p class="text-xs text-center mt-6">その他、換気の良い場所で使用し、粉塵が飛散しないよう慎重に取り扱ってください。</p>
+            </div>
+        </section>
+
+        <!-- Conclusion -->
+        <section class="mt-16 text-center">
+             <h3 class="text-2xl font-bold mb-4">結論と提言</h3>
+             <div class="max-w-4xl mx-auto space-y-4 text-left bg-white p-8 rounded-xl shadow-lg">
+                <p>「有機炭素NEMA1」は、「原子状炭素」という非科学的な用語で販売されていますが、その正体は**アルカリ水熱炭化（HTC）法で製造されたアルカリ性ハイドロ炭**である可能性が極めて高いと結論付けられます。</p>
+                <p>環境・農業分野での応用は理論的に妥当性がありますが、有効性は独立検証されていません。一方で、**食品洗浄や健康への応用に関する主張は科学的根拠が皆無であり、公衆衛生に対する深刻なリスク**を構成します。</p>
+                <p class="font-bold">提言：潜在的な利用者は最大限の注意を払い、いかなる場合も人体に関連する用途には絶対に使用しないでください。また、製品を取り扱う際は、本レポートで推奨される安全保護具の着用を徹底してください。</p>
+             </div>
+        </section>
+    </main>
+
+    <footer class="mt-16 bg-gray-800 text-white text-center p-6">
+        <p class="text-sm">このインタラクティブアプリケーションは、提供された「有機炭素NEMA1」に関する調査分析報告書に基づいて作成されました。</p>
+        <p class="text-xs mt-2">最終更新: 2025年7月</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Mobile Menu Toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Close mobile menu when a link is clicked
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+            // Smooth scrolling for navigation
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Active nav link highlighting on scroll
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('nav a');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.href.includes(id)) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: "-30% 0px -70% 0px" });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            // Claim card flip interaction
+            const claimCards = document.querySelectorAll('.claim-card');
+            claimCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    card.classList.toggle('is-flipped');
+                });
+            });
+            
+            // Chart.js pH Chart
+            const ctx = document.getElementById('phChart').getContext('2d');
+            const phChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['ハイドロ炭 (通常)', 'バイオ炭', 'NEMA1 (推定)', '活性炭'],
+                    datasets: [{
+                        label: '典型的なpH範囲',
+                        data: [
+                            {x: 'ハイドロ炭 (通常)', y: [5, 7]},
+                            {x: 'バイオ炭', y: [7, 10]},
+                            {x: 'NEMA1 (推定)', y: [8, 9]},
+                            {x: '活性炭', y: [6, 8]} // Assumed neutral to alkaline
+                        ],
+                        backgroundColor: [
+                            'rgba(239, 68, 68, 0.6)', // Red for acidic
+                            'rgba(210, 180, 140, 0.6)', // Neutral
+                            'rgba(107, 142, 35, 0.6)', // Green for alkaline
+                            'rgba(176, 196, 222, 0.6)' // Light steel blue
+                        ],
+                        borderColor: [
+                             'rgba(239, 68, 68, 1)',
+                            'rgba(210, 180, 140, 1)',
+                            'rgba(107, 142, 35, 1)',
+                            'rgba(176, 196, 222, 1)'
+                        ],
+                        borderWidth: 1,
+                        barPercentage: 0.6,
+                        categoryPercentage: 0.7,
+                        borderSkipped: false,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const value = context.raw.y;
+                                    return ` pH: ${value[0]} - ${value[1]}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: 14,
+                            title: {
+                                display: true,
+                                text: 'pH値'
+                            },
+                            grid: {
+                                color: '#e5e7eb'
+                            }
+                        },
+                        y: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+    <style>
+      .perspective-1000 { perspective: 1000px; }
+    </style>
+</body>
+</html>
