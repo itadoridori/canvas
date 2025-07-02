@@ -402,10 +402,10 @@
                     datasets: [{
                         label: '典型的なpH範囲',
                         data: [
-                            {x: 'ハイドロ炭 (通常)', y: [5, 7]},
-                            {x: 'バイオ炭', y: [7, 10]},
-                            {x: 'NEMA1 (推定)', y: [8, 9]},
-                            {x: '活性炭', y: [6, 8]} // Assumed neutral to alkaline
+                            [5, 7],
+                            [7, 10],
+                            [8, 9],
+                            [6, 8]
                         ],
                         backgroundColor: [
                             'rgba(239, 68, 68, 0.6)', // Red for acidic
@@ -436,7 +436,7 @@
                         tooltip: {
                             callbacks: {
                                 label: function(context) {
-                                    const value = context.raw.y;
+                                    const value = context.raw;
                                     return ` pH: ${value[0]} - ${value[1]}`;
                                 }
                             }
